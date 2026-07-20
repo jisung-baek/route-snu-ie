@@ -83,50 +83,98 @@
   transform: translateX(3px);
 }
 
-.grad-toggle {
-  display: inline-flex;
+.grad-edge-toggle {
+  position: sticky;
+  left: 106px;
+  z-index: 9;
+  grid-column: 10;
+  grid-row: 2 / -1;
+  align-self: stretch;
+  justify-self: stretch;
+  display: flex;
+  min-height: 0;
+  margin: 0;
+  padding: 22px 12px;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
-  height: 54px;
-  padding: 0 30px;
-  border: none;
-  border-radius: var(--radius-pill);
+  justify-content: center;
+  gap: 13px;
+  border: 1px solid var(--accent-6);
+  border-radius: calc(var(--radius-panel) + 4px);
+  background: var(--background);
+  color: var(--text-secondary);
+  box-shadow: none;
   cursor: pointer;
-  background: var(--accent-solid);
-  color: var(--accent-on-solid);
   font: inherit;
-  font-size: 16.5px;
+  text-align: center;
+  transition: border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease,
+    background var(--duration-fast) ease, color var(--duration-fast) ease;
+}
+
+.grad-edge-toggle:hover {
+  border-color: var(--accent-solid);
+  background: var(--accent-2);
+  color: var(--accent-text);
+  box-shadow: inset 0 0 0 1px var(--accent-solid);
+}
+
+.grad-edge-toggle:focus-visible {
+  outline: 3px solid var(--accent-6);
+  outline-offset: 3px;
+}
+
+.grad-edge-kicker {
+  color: var(--accent-text);
+  font-size: 11px;
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wider);
+  opacity: 0.68;
+}
+
+.grad-edge-label {
+  font-size: 15px;
   font-weight: var(--weight-bold);
-  letter-spacing: var(--tracking-wide);
-  box-shadow: 0 10px 26px rgba(10, 95, 214, 0.34);
-  transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease, background var(--duration-fast) ease;
+  line-height: 1.45;
+  word-break: keep-all;
 }
 
-.grad-toggle:hover {
-  background: var(--accent-solid-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 16px 34px rgba(10, 95, 214, 0.44);
-}
-
-.grad-toggle .chev {
+.grad-edge-arrow {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--accent-6);
+  background: transparent;
+  color: var(--accent-text);
   font-size: var(--text-xl);
-  transition: transform 0.25s ease;
+  transition: transform var(--duration-fast) ease, background var(--duration-fast) ease;
 }
 
-.grad-toggle[aria-expanded="true"] .chev {
+.grad-edge-toggle:hover .grad-edge-arrow {
+  transform: translateX(4px);
+  border-color: var(--accent-solid);
+  background: var(--background);
+}
+
+.grad-edge-toggle .label-open {
+  display: none;
+}
+
+.grad-edge-toggle[aria-expanded="true"] .label-closed {
+  display: none;
+}
+
+.grad-edge-toggle[aria-expanded="true"] .label-open {
+  display: inline;
+}
+
+.grad-edge-toggle[aria-expanded="true"] .grad-edge-arrow {
   transform: rotate(180deg);
 }
 
-.grad-toggle .label-open {
-  display: none;
-}
-
-.grad-toggle[aria-expanded="true"] .label-closed {
-  display: none;
-}
-
-.grad-toggle[aria-expanded="true"] .label-open {
-  display: inline;
+.grad-edge-toggle[aria-expanded="true"]:hover .grad-edge-arrow {
+  transform: rotate(180deg) translateX(4px);
 }
 
 .roadmap-wrapper {
@@ -141,15 +189,15 @@
 .roadmap-grid {
   position: relative;
   display: grid;
-  grid-template-columns: 96px repeat(8, minmax(112px, 1fr));
+  grid-template-columns: 96px repeat(8, minmax(112px, 1fr)) 144px;
   grid-template-rows: 40px minmax(64px, auto) minmax(64px, auto) minmax(108px, auto) repeat(7, minmax(64px, auto));
   gap: 12px 10px;
-  min-width: 1080px;
+  min-width: 1240px;
   padding: 14px;
 }
 
 .roadmap-grid.show-grad {
-  grid-template-columns: 96px repeat(8, minmax(102px, 1fr)) 24px repeat(8, minmax(116px, 1fr));
+  grid-template-columns: 96px repeat(8, minmax(102px, 1fr)) 144px repeat(8, minmax(116px, 1fr));
   min-width: 2300px;
 }
 
@@ -206,16 +254,6 @@
   background: var(--accent-bg-subtle);
   color: var(--accent-text);
   font-weight: var(--weight-bold);
-}
-
-.grad-divider {
-  grid-column: 10;
-  grid-row: 1 / -1;
-  z-index: 1;
-  align-self: stretch;
-  justify-self: center;
-  width: 0;
-  border-left: 1px solid var(--border-subtle);
 }
 
 .grad-sep {
@@ -537,26 +575,6 @@
     justify-content: center;
   }
 
-  /* Fix B: de-emphasize the optional grad-toggle on mobile so it reads as a peer to
-     .code-guide-btn instead of a mandatory primary CTA. Desktop rule above is untouched. */
-  .grad-toggle {
-    width: 100%;
-    height: 46px;
-    justify-content: center;
-    font-size: var(--text-md);
-    border: 1px solid var(--border-subtle);
-    background: var(--background);
-    color: var(--text);
-    box-shadow: none;
-  }
-
-  .grad-toggle:hover {
-    background: var(--background);
-    border-color: var(--accent-solid);
-    color: var(--accent-text);
-    box-shadow: none;
-    transform: none;
-  }
 }
 </style>
 </head>
@@ -585,11 +603,6 @@
           <span>신 교과목 코드 읽는 방법</span>
           <span class="arrow" aria-hidden="true">→</span>
         </a>
-        <button class="grad-toggle" id="gradToggle" aria-expanded="false" aria-controls="ugGrid">
-          <span class="label-closed">대학원 교과목 이어보기</span>
-          <span class="label-open">대학원 교과목 접기</span>
-          <span class="chev" aria-hidden="true">→</span>
-        </button>
       </div>
       <div class="legend" aria-label="범례">
         <ul>
@@ -616,7 +629,13 @@
         <div class="term-header c6" style="grid-row:1;">3학년<br>2학기</div>
         <div class="term-header c7" style="grid-row:1;">4학년<br>1학기</div>
         <div class="term-header c8" style="grid-row:1;">4학년<br>2학기</div>
-        <div class="grad-divider grad-col"></div>
+        <button class="grad-edge-toggle" id="gradEdgeToggle" type="button" aria-expanded="false" aria-controls="ugGrid">
+          <span class="grad-edge-kicker label-closed">학부 로드맵 다음</span>
+          <span class="grad-edge-kicker label-open">학부 로드맵으로</span>
+          <span class="grad-edge-label label-closed">대학원 교과목<br>이어보기</span>
+          <span class="grad-edge-label label-open">대학원 교과목<br>접기</span>
+          <span class="grad-edge-arrow" aria-hidden="true">→</span>
+        </button>
         <div class="grad-sep grad-col" style="grid-column:13;"></div>
         <div class="grad-sep grad-col" style="grid-column:17;"></div>
         <div class="term-header ghead grad-col" style="grid-column:11/13;">기초</div>
@@ -810,18 +829,24 @@ function bindTips(scope){
 
 /* ---------- graduate toggle (expands grid to the right) ---------- */
 function initGradToggle(){
-  const btn=document.getElementById("gradToggle");
+  const button=document.getElementById("gradEdgeToggle");
   const grid=document.getElementById("ugGrid");
   const wrapper=document.querySelector(".roadmap-wrapper");
-  btn.addEventListener("click",()=>{
-    const open=btn.getAttribute("aria-expanded")==="true";
-    btn.setAttribute("aria-expanded",String(!open));
-    grid.classList.toggle("show-grad",!open);
+  const setOpen=open=>{
+    button.setAttribute("aria-expanded",String(open));
+    grid.classList.toggle("show-grad",open);
     requestAnimationFrame(()=>{
       drawConnectors();
-      if(!open)wrapper.scrollTo({left:wrapper.scrollWidth,behavior:"smooth"});
-      else wrapper.scrollTo({left:0,behavior:"smooth"});
+      if(open){
+        const targetLeft=Math.max(0,button.offsetLeft-24);
+        wrapper.scrollTo({left:targetLeft,behavior:"smooth"});
+      }else{
+        wrapper.scrollTo({left:0,behavior:"smooth"});
+      }
     });
+  };
+  button.addEventListener("click",()=>{
+    setOpen(button.getAttribute("aria-expanded")!=="true");
   });
 }
 

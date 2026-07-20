@@ -1213,6 +1213,7 @@ p {
   .topbar {
     align-items: flex-start;
     flex-direction: column;
+    row-gap: var(--space-5);
     height: auto;
     padding-top: var(--space-5);
     padding-bottom: var(--space-5);
