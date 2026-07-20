@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>신 교과목 코드 읽는 방법 | SNU IE Navigator</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="css/base.css">
+<script defer src="js/script.js"></script>
+<style>
+.section.code-guide-page{max-width:1000px;}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:var(--accent-text);font-size:var(--text-base);font-weight:var(--weight-semibold);text-decoration:none;}
+.back-link:hover{text-decoration:underline;}
+
+.anatomy-card{margin-bottom:28px;padding:var(--space-7) clamp(20px,4vw,40px);border:1px solid var(--border-faint);border-radius:var(--radius-panel);background:var(--background);}
+.anatomy-card h2{margin:0 0 4px;font-size:var(--text-2xl);font-weight:var(--weight-bold);}
+.anatomy-ex{margin:0 0 24px;color:var(--text-secondary);font-size:var(--text-base);}
+.code-line{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:center;gap:10px;margin-bottom:18px;}
+.tok{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.tok .glyph{display:grid;place-items:center;min-width:64px;height:72px;padding:0 10px;border-radius:var(--radius-panel);
+  background:var(--accent-bg-subtle);color:var(--accent-text);font-size:32px;font-weight:var(--weight-bold);font-variant-numeric:tabular-nums;}
+.tok.pfx .glyph{min-width:76px;background:var(--text);color:var(--accent-on-solid);font-size:var(--text-2xl);}
+.tok .cap{color:var(--text-secondary);font-size:12.5px;font-weight:var(--weight-semibold);line-height:1.35;text-align:center;}
+.readout{margin:0;padding:14px 18px;border-radius:var(--radius-panel);background:var(--surface);font-size:var(--text-md);line-height:var(--leading-loose);text-align:center;}
+.readout b{color:var(--accent-text);}
+
+.code-guide-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px;}
+.pos-card{padding:20px 22px;border:1px solid var(--border-faint);border-radius:var(--radius-panel);background:var(--background);}
+.pos-card h3{display:flex;align-items:center;gap:8px;margin:0 0 4px;font-size:var(--text-lg);font-weight:var(--weight-bold);}
+.pos-tag{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;
+  border-radius:var(--radius-pill);background:var(--accent-solid);color:var(--accent-on-solid);font-size:11px;font-weight:var(--weight-bold);}
+.pos-card .note{margin:0 0 14px;color:var(--text-secondary);font-size:13.5px;line-height:1.6;}
+.chip-row{display:flex;flex-wrap:wrap;gap:8px;}
+.chip-row .chip{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border:1px solid var(--border-faint);
+  border-radius:var(--radius-pill);background:var(--surface);font-size:var(--text-sm);font-weight:var(--weight-semibold);}
+.chip-row .chip b{color:var(--accent-text);font-variant-numeric:tabular-nums;}
+
+.steps{display:grid;gap:8px;}
+.step{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border-radius:var(--radius-panel);background:var(--surface);
+  font-size:13.5px;line-height:1.55;}
+.step .k{flex-shrink:0;display:grid;place-items:center;width:26px;height:26px;border-radius:var(--radius-panel);
+  background:var(--accent-solid);color:var(--accent-on-solid);font-size:var(--text-sm);font-weight:var(--weight-bold);}
+.step b{color:var(--text);}
+
+.grad-card .code-guide-grid{margin-bottom:20px;}
+.tip{margin-top:0;padding:14px 18px;border-radius:var(--radius-panel);background:var(--accent-bg-subtle);color:var(--text);
+  font-size:13.5px;line-height:1.65;}
+
+.code-map-table{margin-bottom:8px;border:1px solid var(--border-faint);border-radius:var(--radius-panel);overflow:hidden;}
+.code-map-row{display:grid;grid-template-columns:1.6fr 1fr 1fr;}
+.code-map-row.head{background:var(--text);color:var(--accent-on-solid);font-size:var(--text-sm);font-weight:var(--weight-bold);}
+.code-map-row + .code-map-row{border-top:1px solid var(--border-faint);}
+.code-map-row span{padding:12px 16px;font-size:13.5px;}
+.code-map-row .name{font-weight:var(--weight-semibold);}
+.code-map-row .old{color:var(--text-tertiary);font-variant-numeric:tabular-nums;}
+.code-map-row .new{color:var(--accent-text);font-weight:var(--weight-bold);font-variant-numeric:tabular-nums;}
+
+@media (max-width:720px){
+  .code-guide-grid{grid-template-columns:1fr;}
+  .tok .glyph{min-width:52px;height:60px;font-size:26px;}
+  .tok.pfx .glyph{min-width:64px;font-size:var(--text-xl);}
+  .code-map-row{grid-template-columns:1.4fr 1fr 1fr;}
+  .code-map-row span{padding:10px 12px;font-size:12.5px;}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="SNU IE Navigator 홈"><span class="brand-mark">IE</span><span>SNU IE Navigator</span></a>
+  <nav class="nav" aria-label="주요 메뉴">
+    <a href="roadmap.html">전공 로드맵</a><a href="rules.html">이수규정</a><a href="faq.html">자주 묻는 질문</a><a href="courses.html">개설 과목 검색</a>
+  </nav>
+</header>
+
+<main>
+  <section class="section code-guide-page">
+    <a class="back-link" href="roadmap.html">← 전공 로드맵으로 돌아가기</a>
+    <div class="section-head">
+      <p class="eyebrow">Course Code Guide</p>
+      <h1>신 교과목 코드 읽는 방법</h1>
+      <p>산업공학과의 새 교과목 코드는 <b>IE.</b> 뒤에 오는 <b>네 자리 숫자</b>에 과목의 학년·분야·성격·수강순서 정보가 담겨 있습니다.
+        각 자리의 의미는 아래와 같습니다.</p>
+    </div>
+
+    <section class="anatomy-card">
+      <h2>학부 교과목 코드 &nbsp;IE.[학년][분야][일련][수강순서]</h2>
+      <p class="anatomy-ex">예시 · 최적화모형 및 응용</p>
+      <div class="code-line">
+        <div class="tok pfx"><span class="glyph">IE.</span><span class="cap">학과 코드</span></div>
+        <div class="tok"><span class="glyph">3</span><span class="cap">학년</span></div>
+        <div class="tok"><span class="glyph">3</span><span class="cap">분야<br>(최적화)</span></div>
+        <div class="tok"><span class="glyph">5</span><span class="cap">일련번호<br>(심화 5)</span></div>
+        <div class="tok"><span class="glyph">1</span><span class="cap">수강순서<br>(0코드 후)</span></div>
+      </div>
+      <p class="readout"><b>IE.3351</b> → <b>3</b>학년 · <b>최적화</b> 분야 · <b>심화</b> 과목(5번) · 동일 분야 <b>0코드 이수 후</b> 수강</p>
+    </section>
+
+    <div class="code-guide-grid">
+      <div class="pos-card">
+        <h3><span class="pos-tag">1</span>학년</h3>
+        <p class="note">과목이 개설되는 표준 학년(1~4)을 나타냅니다.</p>
+        <div class="chip-row">
+          <span class="chip"><b>1</b>1학년</span>
+          <span class="chip"><b>2</b>2학년</span>
+          <span class="chip"><b>3</b>3학년</span>
+          <span class="chip"><b>4</b>4학년</span>
+        </div>
+      </div>
+
+      <div class="pos-card">
+        <h3><span class="pos-tag">2</span>학문 분야</h3>
+        <p class="note">과목이 속한 9개 전공 분야를 나타냅니다.</p>
+        <div class="chip-row">
+          <span class="chip"><b>0</b>공통</span>
+          <span class="chip"><b>1</b>시스템설계</span>
+          <span class="chip"><b>2</b>시스템운영</span>
+          <span class="chip"><b>3</b>최적화</span>
+          <span class="chip"><b>4</b>확률모형</span>
+          <span class="chip"><b>5</b>데이터과학</span>
+          <span class="chip"><b>6</b>인간공학</span>
+          <span class="chip"><b>7</b>기술경영</span>
+          <span class="chip"><b>8</b>금융공학</span>
+        </div>
+      </div>
+
+      <div class="pos-card">
+        <h3><span class="pos-tag">3</span>과목 구분 · 일련번호</h3>
+        <p class="note">분야 안에서의 순번이자, 과목의 난이도 성격을 나타냅니다.</p>
+        <div class="chip-row">
+          <span class="chip"><b>1~4</b>기초 과목</span>
+          <span class="chip"><b>5~9</b>심화 과목</span>
+        </div>
+      </div>
+
+      <div class="pos-card">
+        <h3><span class="pos-tag">4</span>수강 순서</h3>
+        <p class="note">같은 분야 안에서 언제 들어야 하는지(선수 관계)를 나타냅니다.</p>
+        <div class="steps">
+          <div class="step"><span class="k">0</span><span><b>기초 · 선수과목 없음</b>: 바로 수강 가능</span></div>
+          <div class="step"><span class="k">1</span><span><b>심화 ①</b>: 동일 분야 <b>0코드</b> 과목을 이수한 뒤 수강</span></div>
+          <div class="step"><span class="k">2</span><span><b>심화 ②</b>: 동일 분야 <b>1코드</b> 과목을 이수한 뒤 수강</span></div>
+        </div>
+      </div>
+    </div>
+
+    <section class="anatomy-card grad-card">
+      <h2>대학원 교과목 코드 &nbsp;IE.G[분야][일련][성격]</h2>
+      <p class="anatomy-ex">앞자리 규칙(과정·분야)은 학부와 같고, 뒤 두 자리 의미가 다릅니다.</p>
+      <div class="code-guide-grid">
+        <div class="pos-card">
+          <h3><span class="pos-tag">3</span>일련번호 (학부 연계)</h3>
+          <p class="note">해당 대학원 과목과 연계되는 학부 과목이 있으면 <b>그 학부 과목의 일련번호</b>를 그대로 사용합니다.
+            연계 과목이 없으면 순서대로 1~9를 부여합니다.</p>
+          <div class="chip-row">
+            <span class="chip">제품공학 <b>G150</b></span>
+            <span class="chip">← 제품개발및품질설계 <b>351</b></span>
+          </div>
+        </div>
+        <div class="pos-card">
+          <h3><span class="pos-tag">4</span>과목 성격</h3>
+          <p class="note">대학원 과목의 수준을 기초 · 심화 · 응용으로 구분합니다.</p>
+          <div class="chip-row">
+            <span class="chip"><b>0</b>기초</span>
+            <span class="chip"><b>1</b>심화</span>
+            <span class="chip"><b>2</b>응용</span>
+          </div>
+        </div>
+      </div>
+      <p class="tip">💡 <b>분야 코드(둘째 자리)는 학부와 동일</b>합니다. 공통 0 · 시스템설계 1 · 시스템운영 2 · 최적화 3 · 확률모형 4 · 데이터과학 5 · 인간공학 6 · 기술경영 7 · 금융공학 8.</p>
+    </section>
+
+    <div class="section-head" style="margin-top:44px;">
+      <h2 style="margin:0 0 4px;font-size:var(--text-2xl);font-weight:var(--weight-bold);">구 코드 → 신 코드 예시</h2>
+      <p style="margin:0 0 20px;color:var(--text-secondary);font-size:var(--text-base);line-height:var(--leading-body);">기존 학수번호(406.xxx, M1505.xxxxxx)와 새 코드의 대응 관계입니다.
+        수강신청 시스템과 성적표에는 아직 구 코드가 함께 보일 수 있습니다.</p>
+    </div>
+    <div class="code-map-table">
+      <div class="code-map-row head"><span>과목명</span><span>구 교과목코드</span><span>신 교과목코드</span></div>
+      <div class="code-map-row"><span class="name">산업공학의 이해</span><span class="old">406.434</span><span class="new">IE.1010</span></div>
+      <div class="code-map-row"><span class="name">과학적 관리</span><span class="old">406.211</span><span class="new">IE.2020</span></div>
+      <div class="code-map-row"><span class="name">경영과학1</span><span class="old">406.315</span><span class="new">IE.2310</span></div>
+      <div class="code-map-row"><span class="name">데이터관리와 분석</span><span class="old">406.426B</span><span class="new">IE.2510</span></div>
+      <div class="code-map-row"><span class="name">인간공학</span><span class="old">406.304</span><span class="new">IE.2610</span></div>
+      <div class="code-map-row"><span class="name">생산관리</span><span class="old">406.310</span><span class="new">IE.3210</span></div>
+      <div class="code-map-row"><span class="name">산업공학통계</span><span class="old">406.432</span><span class="new">IE.3420</span></div>
+      <div class="code-map-row"><span class="name">최적화모형 및 응용</span><span class="old">406.321</span><span class="new">IE.3351</span></div>
+      <div class="code-map-row"><span class="name">데이터마이닝</span><span class="old">406.429</span><span class="new">IE.4520</span></div>
+      <div class="code-map-row"><span class="name">휴먼인터페이스 디자인</span><span class="old">406.427A</span><span class="new">IE.4651</span></div>
+      <div class="code-map-row"><span class="name">경제성공학</span><span class="old">406.314</span><span class="new">IE.4720</span></div>
+      <div class="code-map-row"><span class="name">최적화 알고리즘</span><span class="old">M1505.002000</span><span class="new">IE.4362</span></div>
+      <div class="code-map-row"><span class="name">산업 텍스트 애널리틱스</span><span class="old">M1505.002100</span><span class="new">IE.4551</span></div>
+    </div>
+
+    <div class="notice" style="margin-top:28px;">
+      <span aria-hidden="true">⚠</span>
+      <span>여기 정리된 코드는 학업 계획을 돕기 위한 비공식 안내입니다. 실제 수강신청 시 학수번호, 분반, 개설 여부는 수강편람과 수강신청 시스템에서 반드시 확인하세요.</span>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <p>Unofficial SNU IE academic navigator.</p>
+  <a href="https://ie.snu.ac.kr/" target="_blank" rel="noreferrer">서울대학교 산업공학과 공식 홈페이지</a>
+</footer>
+</body>
+</html>

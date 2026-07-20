@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>이수규정 | SNU IE Navigator</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+  <link rel="stylesheet" href="css/base.css">
+  <script defer src="js/script.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="SNU IE Navigator 홈">
+      <span class="brand-mark">IE</span>
+      <span>SNU IE Navigator</span>
+    </a>
+    <nav class="nav" aria-label="주요 메뉴">
+      <a href="roadmap.html">전공 로드맵</a>
+      <a class="active" href="rules.html">이수규정</a>
+      <a href="faq.html">자주 묻는 질문</a>
+      <a href="courses.html">개설 과목 검색</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="section rules-page">
+      <div class="section-head">
+        <p class="eyebrow">Requirements</p>
+        <h1>학번별 이수규정</h1>
+        <p>입학 학번을 선택하면 단전공생 이수학점, 교양 영역별 학점, 전선 인정 과목, 복수전공·부전공·자유전공 <br>기준을 보여줍니다. 자유전공학부에서 산업공학과로 주전공 진입한 학생은 산업공학과 주전공생 기준을 동일하게 적용받습니다.</p>
+      </div>
+
+      <div class="notice" aria-label="안내">
+        <span aria-hidden="true">⚠</span>
+        <span><strong>PDF로 확인하기:</strong> 이 페이지는 학번별 이수규정 PDF를 바탕으로 정리한 비공식 안내입니다. 최종 졸업 판정, 교과목 인정, 예외 처리는 본인 학번 PDF와 학과 행정실 기준으로 확인하세요.</span>
+      </div>
+
+      <div class="faq-cta">
+        <div class="faq-cta-copy">
+          <strong>교양 52학점, 어떤 과목으로 채우나요?</strong>
+          <span>학문의 토대·지성의 열쇠·베리타스 구성과 수학·영어 배치별 수강 과목, 과학 8학점 조합 규칙을 따로 정리했습니다. (25학번 이후)</span>
+        </div>
+        <a class="faq-cta-btn" href="liberal-arts.html">교양 이수 가이드 →</a>
+      </div>
+
+      <div class="year-picks" aria-label="학번 빠른 선택">
+        <span class="year-picks-label">입학 학번</span>
+        <button class="year-chip" type="button" data-year="2020">20학번</button>
+        <button class="year-chip" type="button" data-year="2021">21학번</button>
+        <button class="year-chip" type="button" data-year="2022">22학번</button>
+        <button class="year-chip" type="button" data-year="2023">23학번</button>
+        <button class="year-chip" type="button" data-year="2024">24학번</button>
+        <button class="year-chip active" type="button" data-year="2025">25학번</button>
+        <button class="year-chip" type="button" data-year="2026">26학번</button>
+      </div>
+      <div class="selected-pdf-link" id="selectedPdfLink" aria-live="polite"></div>
+      <div class="pdf-preview" id="pdfPreview" hidden></div>
+
+      <div class="rule-output" id="ruleOutput" aria-live="polite"></div>
+    </section>
+  </main>
+
+</body>
+</html>

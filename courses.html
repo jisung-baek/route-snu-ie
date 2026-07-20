@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>개설 과목 | SNU IE Navigator</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+  <link rel="stylesheet" href="css/base.css">
+  <script defer src="js/script.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="SNU IE Navigator 홈"><span class="brand-mark">IE</span><span>SNU IE Navigator</span></a>
+    <nav class="nav" aria-label="주요 메뉴">
+      <a href="roadmap.html">전공 로드맵</a><a href="rules.html">이수규정</a><a href="faq.html">자주 묻는 질문</a><a class="active" href="courses.html">개설 과목 검색</a>
+    </nav>
+  </header>
+  <main>
+    <section class="section">
+      <div class="section-head">
+        <p class="eyebrow">Courses</p>
+        <h1>개설 과목 탐색</h1>
+        <p>향후 2년간 개설 예정 과목을 과목명, 구분, 영역, 학기별로 검색하고 필터링할 수 있습니다.</p>
+        <p class="update-note">마지막 업데이트: 2026년 3월 30일 학과 홈페이지 게시 자료 기준 · 개설 여부는 해당 학기 한 학기 전 확정 자료로 확인하는 것이 가장 정확합니다.</p>
+      </div>
+      <div class="toolbar search-toolbar">
+        <label class="search" aria-label="개설 과목 검색">
+          <span aria-hidden="true">⌕</span>
+          <input id="courseSearch" type="search" placeholder="예: 데이터, 인간공학, 2026-1, 연합전공">
+        </label>
+      </div>
+      <div class="toolbar" aria-label="과목 필터">
+        <button class="filter active" type="button" data-filter="all">전체</button>
+        <button class="filter" type="button" data-filter="required">전공필수</button>
+        <button class="filter" type="button" data-filter="elective">전공선택</button>
+        <button class="filter" type="button" data-filter="graduate">대학원</button>
+        <button class="filter" type="button" data-filter="2025-2">2025-2</button>
+        <button class="filter" type="button" data-filter="2026-1">2026-1</button>
+        <button class="filter" type="button" data-filter="2026-2">2026-2</button>
+        <button class="filter" type="button" data-filter="2027-1">2027-1</button>
+        <button class="filter" type="button" data-filter="2027-2">2027-2</button>
+        <button class="filter" type="button" data-filter="2028-1">2028-1</button>
+      </div>
+      <p class="course-count" id="courseCount" aria-live="polite"></p>
+      <div class="course-grid" id="courseGrid"></div>
+    </section>
+  </main>
+</body>
+</html>

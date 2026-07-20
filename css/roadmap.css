@@ -1,0 +1,222 @@
+.roadmap-hero {
+  min-height: calc(100vh - 64px);
+  padding: 18px 2vw 24px;
+  background: linear-gradient(180deg, #f7f9fc 0%, #ffffff 88%);
+}
+
+.roadmap-title {
+  display: block;
+  width: min(1500px, 100%);
+  margin: 0 auto 12px;
+}
+
+.roadmap-title h1 {
+  max-width: none;
+  font-size: clamp(34px, 4.6vw, 58px);
+  white-space: nowrap;
+}
+
+.roadmap-wrapper {
+  position: relative;
+  width: min(1500px, 100%);
+  min-width: 1100px;
+  margin: 0 auto;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+  box-shadow: 0 18px 44px rgba(24, 33, 47, 0.12);
+}
+
+.roadmap-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 120px repeat(9, 1fr);
+  grid-template-rows: 42px repeat(9, minmax(76px, auto));
+  gap: 12px 8px;
+  min-width: 1100px;
+  padding: 12px;
+}
+
+.connector-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.connector-svg path {
+  fill: none;
+  stroke: #555;
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.term-header,
+.area-header {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 42px;
+  padding: 8px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.term-header {
+  border: 1px solid #cfd6de;
+  background: var(--white);
+  color: var(--ink);
+}
+
+.term-header.graduate {
+  background: #f1f5fb;
+  color: var(--snu-dark);
+}
+
+.area-header {
+  position: sticky;
+  left: 0;
+  z-index: 10;
+  background: #f5f5f5;
+  color: #101820;
+  font-weight: 600;
+}
+
+.area-header.corner {
+  background: var(--snu-dark);
+  color: var(--white);
+  font-weight: 900;
+}
+
+.lane-bg {
+  z-index: 0;
+  grid-column: 2 / -1;
+  min-height: 76px;
+  border-radius: 6px;
+  background: #ededed;
+}
+
+.course-cell,
+.course-box {
+  position: relative;
+  z-index: 3;
+}
+
+.course-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+.course-stack {
+  display: grid;
+  width: 100%;
+  gap: 8px;
+  align-content: center;
+  justify-items: center;
+}
+
+.course-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  justify-self: center;
+  width: calc(100% - 16px);
+  min-width: 0;
+  min-height: 40px;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  color: #333;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  word-break: keep-all;
+}
+
+.course-box.highlight {
+  border-color: #1b3f8b;
+  background: #1b3f8b;
+  color: #fff;
+}
+
+.course-box.graduate {
+  border-color: #1b3f8b;
+  background: #fff;
+  color: #1b3f8b;
+}
+
+.course-box.graduate.highlight {
+  background: #1b3f8b;
+  color: #fff;
+}
+
+.course-box.foundation {
+  border-color: #b8c5df;
+  color: #1b3f8b;
+}
+
+.course-box.slot-top {
+  align-self: start;
+}
+
+.course-box.slot-bottom {
+  align-self: end;
+}
+
+.row-head { grid-row: 1; }
+.row-math { grid-row: 2; }
+.row-intro { grid-row: 3; }
+.row-computing { grid-row: 4; }
+.row-data { grid-row: 5; }
+.row-or { grid-row: 6; }
+.row-scm { grid-row: 7; }
+.row-service { grid-row: 8; }
+.row-finance { grid-row: 9; }
+.row-human { grid-row: 10; }
+
+.col-area { grid-column: 1; }
+.col-1 { grid-column: 2; }
+.col-2 { grid-column: 3; }
+.col-3 { grid-column: 4; }
+.col-4 { grid-column: 5; }
+.col-5 { grid-column: 6; }
+.col-6 { grid-column: 7; }
+.col-7 { grid-column: 8; }
+.col-8 { grid-column: 9; }
+.col-9 { grid-column: 10; }
+
+@media (max-width: 720px) {
+  .roadmap-hero {
+    padding-top: 22px;
+  }
+
+  .roadmap-title h1 {
+    font-size: 34px;
+    white-space: normal;
+  }
+
+  .roadmap-wrapper {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .roadmap-grid {
+    grid-template-columns: 112px repeat(9, 112px);
+  }
+}

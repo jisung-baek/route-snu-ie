@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>교양 이수 가이드 | SNU IE Navigator</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="css/base.css">
+<script defer src="js/script.js"></script>
+<style>
+.section.liberal-page{max-width:1000px;}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;color:var(--accent-text);font-size:var(--text-base);font-weight:var(--weight-semibold);text-decoration:none;}
+.back-link:hover{text-decoration:underline;}
+
+/* 총괄 요약 */
+.total-card{margin-bottom:28px;padding:var(--space-7) clamp(20px,4vw,40px);border:1px solid var(--border-faint);
+  border-radius:var(--radius-panel);background:var(--background);}
+.total-card h2{margin:0 0 18px;font-size:var(--text-2xl);font-weight:var(--weight-bold);}
+.total-eq{display:flex;flex-wrap:wrap;align-items:stretch;gap:10px;margin-bottom:18px;}
+.total-eq .sum{display:grid;place-items:center;padding:16px 22px;border-radius:var(--radius-panel);
+  background:var(--accent-solid);color:var(--accent-on-solid);text-align:center;}
+.total-eq .sum b{display:block;font-size:var(--text-xl);font-weight:var(--weight-bold);font-variant-numeric:tabular-nums;}
+.total-eq .sum span{font-size:12.5px;opacity:.85;}
+.total-eq .op{display:grid;place-items:center;color:var(--text-tertiary);font-size:var(--text-lg);font-weight:var(--weight-bold);}
+.total-eq .part{display:grid;place-items:center;gap:2px;flex:1;min-width:150px;padding:16px 18px;
+  border-radius:var(--radius-panel);background:var(--surface);text-align:center;}
+.total-eq .part b{font-size:var(--text-lg);font-weight:var(--weight-bold);color:var(--accent-text);font-variant-numeric:tabular-nums;}
+.total-eq .part span{color:var(--text-secondary);font-size:12.5px;font-weight:var(--weight-semibold);}
+
+.breakdown{border:1px solid var(--border-faint);border-radius:var(--radius-panel);overflow:hidden;}
+.bd-row{display:grid;grid-template-columns:1.1fr 90px 2fr;align-items:center;}
+.bd-row.head{background:var(--text);color:var(--accent-on-solid);font-size:var(--text-sm);font-weight:var(--weight-bold);}
+.bd-row + .bd-row{border-top:1px solid var(--border-faint);}
+.bd-row span{padding:12px 16px;font-size:13.5px;line-height:1.6;}
+.bd-row .area{font-weight:var(--weight-semibold);}
+.bd-row .cr{color:var(--accent-text);font-weight:var(--weight-bold);font-variant-numeric:tabular-nums;}
+.bd-row .detail{color:var(--text-secondary);}
+.bd-row.sub .area{padding-left:30px;color:var(--text-secondary);font-weight:var(--weight-regular);}
+
+/* 영역별 카드 */
+.lib-card{margin-bottom:28px;padding:var(--space-7) clamp(20px,4vw,40px);border:1px solid var(--border-faint);border-radius:var(--radius-panel);background:var(--background);}
+.lib-card h2{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 4px;font-size:var(--text-2xl);font-weight:var(--weight-bold);}
+.lib-card h2 .idx{display:grid;place-items:center;width:30px;height:30px;border-radius:var(--radius-panel);
+  background:var(--accent-solid);color:var(--accent-on-solid);font-size:var(--text-base);font-weight:var(--weight-bold);}
+.lib-card h2 .cr-badge{padding:4px 10px;border-radius:var(--radius-pill);background:var(--accent-bg-subtle);
+  color:var(--accent-text);font-size:13px;font-weight:var(--weight-bold);font-variant-numeric:tabular-nums;}
+.lib-lead{margin:0 0 22px;color:var(--text-secondary);font-size:var(--text-base);line-height:var(--leading-body);}
+
+.case-list{display:grid;gap:10px;margin-bottom:18px;}
+.case{display:grid;grid-template-columns:minmax(150px,190px) 1fr;gap:14px;align-items:center;
+  padding:14px 16px;border-radius:var(--radius-panel);background:var(--surface);}
+.case .cond{display:inline-flex;align-items:center;justify-content:center;padding:6px 10px;border-radius:var(--radius-pill);
+  background:var(--accent-bg-subtle);color:var(--accent-text);font-size:13px;font-weight:var(--weight-bold);
+  font-variant-numeric:tabular-nums;text-align:center;line-height:1.4;}
+.case .plan{font-size:13.5px;line-height:1.7;}
+.case .plan b{color:var(--accent-text);}
+.case .plan .alt{color:var(--text-tertiary);font-weight:var(--weight-semibold);}
+
+.seq{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:14px;}
+.seq .node{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border:1px solid var(--border-faint);
+  border-radius:var(--radius-pill);background:var(--surface);font-size:var(--text-sm);font-weight:var(--weight-semibold);}
+.seq .node .when{color:var(--accent-text);font-size:12px;}
+.seq .arrow{color:var(--text-tertiary);font-size:var(--text-sm);}
+
+.combo-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
+.combo-card{padding:18px 20px;border:1px solid var(--border-faint);border-radius:var(--radius-panel);background:var(--background);}
+.combo-card h3{margin:0 0 10px;font-size:var(--text-lg);font-weight:var(--weight-bold);}
+.combo-card ul{margin:0;padding-left:18px;color:var(--text-secondary);font-size:13.5px;line-height:1.75;}
+.ok-list{display:grid;gap:7px;}
+.ok{display:flex;gap:9px;align-items:flex-start;font-size:13.5px;line-height:1.55;}
+.ok .mark{flex-shrink:0;display:grid;place-items:center;width:20px;height:20px;border-radius:var(--radius-pill);
+  background:var(--accent-bg-subtle);color:var(--accent-text);font-size:12px;font-weight:var(--weight-bold);}
+.ok.no .mark{background:var(--warning-3);color:var(--warning-11);}
+
+/* 2027-1 이론·실험 통합 예고 */
+.change-card{margin-bottom:28px;padding:var(--space-7) clamp(20px,4vw,40px);border:1px solid var(--warning-5);
+  border-left:4px solid var(--warning-9);border-radius:var(--radius-panel);background:var(--warning-3);}
+.change-card h2{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 6px;font-size:var(--text-2xl);font-weight:var(--weight-bold);color:var(--text);}
+.change-card h2 .when{padding:4px 10px;border-radius:var(--radius-pill);background:var(--warning-9);color:var(--background);
+  font-size:12.5px;font-weight:var(--weight-bold);}
+.change-card .lib-lead{color:var(--warning-11);}
+.merge-ex{display:grid;gap:8px;margin-bottom:20px;}
+.merge-ex .row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:12px 16px;border-radius:var(--radius-panel);
+  background:var(--background);font-size:13.5px;font-weight:var(--weight-semibold);}
+.merge-ex .row .arrow{color:var(--text-tertiary);}
+.merge-ex .row .after{color:var(--accent-text);font-weight:var(--weight-bold);}
+.merge-ex .row .cr{margin-left:auto;color:var(--text-secondary);font-size:12.5px;font-variant-numeric:tabular-nums;}
+.merge-table{margin-bottom:20px;border:1px solid var(--warning-5);border-radius:var(--radius-panel);overflow:hidden;background:var(--background);}
+.merge-table .mt-row{display:grid;grid-template-columns:150px 1fr;}
+.merge-table .mt-row.head{background:var(--warning-11);color:var(--background);font-size:var(--text-sm);font-weight:var(--weight-bold);}
+.merge-table .mt-row + .mt-row{border-top:1px solid var(--warning-5);}
+.merge-table .mt-row span{padding:11px 16px;font-size:13px;line-height:1.6;}
+.merge-table .mt-row .dept{font-weight:var(--weight-semibold);}
+.merge-table .mt-row .subj{color:var(--text-secondary);}
+.qa{display:grid;gap:14px;}
+.qa .item{padding:16px 18px;border-radius:var(--radius-panel);background:var(--background);}
+.qa .q{margin:0 0 8px;font-size:13.5px;font-weight:var(--weight-bold);line-height:1.6;}
+.qa .q::before{content:"Q. ";color:var(--accent-text);}
+.qa .a{margin:0;color:var(--text-secondary);font-size:13.5px;line-height:1.7;}
+.qa .a b{color:var(--text);}
+
+.area-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+.area-chips .chip{display:inline-flex;align-items:center;padding:9px 14px;border:1px solid var(--border-faint);
+  border-radius:var(--radius-pill);background:var(--surface);font-size:var(--text-sm);font-weight:var(--weight-semibold);}
+
+.tip{margin:0 0 12px;padding:14px 18px;border-radius:var(--radius-panel);background:var(--accent-bg-subtle);color:var(--text);
+  font-size:13.5px;line-height:1.7;}
+.tip:last-child{margin-bottom:0;}
+.tip b{font-weight:var(--weight-bold);}
+.foot-note{margin:0;color:var(--text-tertiary);font-size:12.5px;line-height:1.7;}
+.foot-note + .foot-note{margin-top:6px;}
+.foot-note b{color:var(--text-secondary);}
+
+@media (max-width:720px){
+  .combo-grid{grid-template-columns:1fr;}
+  .case{grid-template-columns:1fr;gap:10px;}
+  .case .cond{justify-self:start;}
+  .bd-row{grid-template-columns:1fr 70px;}
+  .bd-row .detail{grid-column:1 / -1;padding-top:0;}
+  .bd-row.head .detail{display:none;}
+  .total-eq .op{display:none;}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="SNU IE Navigator 홈"><span class="brand-mark">IE</span><span>SNU IE Navigator</span></a>
+  <nav class="nav" aria-label="주요 메뉴">
+    <a href="roadmap.html">전공 로드맵</a><a href="rules.html">이수규정</a><a href="faq.html">자주 묻는 질문</a><a href="courses.html">개설 과목 검색</a>
+  </nav>
+</header>
+
+<main>
+  <section class="section liberal-page">
+    <a class="back-link" href="index.html">← 홈으로 돌아가기</a>
+    <div class="section-head">
+      <p class="eyebrow">Liberal Arts Guide</p>
+      <h1>교양 이수 가이드</h1>
+      <p>산업공학과 교양 이수 요건인 <b>학문의 토대 · 지성의 열쇠 · 베리타스</b> 세 축을 영역별로 정리했습니다.
+        배치 결과에 따라 수강 과목이 달라지는 <b>수학 · 영어</b>와, 조합 규칙이 있는 <b>과학</b>을 특히 확인하세요.</p>
+    </div>
+
+    <div class="notice" aria-label="적용 범위 안내">
+      <span aria-hidden="true">⚠</span>
+      <span><strong>25학번 이후 기준입니다.</strong> 교양 영역 구분이 25학번부터 개편되어(지성의 열쇠 · 베리타스 신설),
+        24학번 이전에는 학문의 세계 · 과학적 사고와 실험 등 다른 영역 체계가 적용됩니다. 본인 학번의 요건은
+        <a href="rules.html">이수규정</a> 페이지의 학번별 교양 이수 구조와 학번 PDF에서 확인하세요.</span>
+    </div>
+
+    <!-- 총괄 -->
+    <section class="total-card">
+      <h2>교양 52학점 이상, 이렇게 구성됩니다</h2>
+      <div class="total-eq">
+        <div class="sum"><b>52학점</b><span>이상</span></div>
+        <div class="op" aria-hidden="true">=</div>
+        <div class="part"><b>40학점</b><span>학문의 토대</span></div>
+        <div class="op" aria-hidden="true">+</div>
+        <div class="part"><b>9학점</b><span>지성의 열쇠</span></div>
+        <div class="op" aria-hidden="true">+</div>
+        <div class="part"><b>3학점</b><span>베리타스</span></div>
+      </div>
+      <div class="breakdown">
+        <div class="bd-row head"><span>영역</span><span>학점</span><span>필수 교과목</span></div>
+        <div class="bd-row"><span class="area">글쓰기와 말하기</span><span class="cr">7</span><span class="detail">대학 글쓰기 1, 대학 글쓰기 2, 말하기와 토론</span></div>
+        <div class="bd-row"><span class="area">외국어</span><span class="cr">6</span><span class="detail">외국어 2개 교과목</span></div>
+        <div class="bd-row"><span class="area">수학 · 과학 · 컴퓨팅</span><span class="cr">27</span><span class="detail">아래 세 갈래를 합쳐 27학점</span></div>
+        <div class="bd-row sub"><span class="area">└ 수학</span><span class="cr">16</span><span class="detail">수학 1·2(또는 고급수학), 통계학과 통계학실험, 공학수학 1·2</span></div>
+        <div class="bd-row sub"><span class="area">└ 과학</span><span class="cr">8</span><span class="detail">물리학 · 화학 · 생물학 영역의 선택적 필수 과목</span></div>
+        <div class="bd-row sub"><span class="area">└ 컴퓨팅</span><span class="cr">3</span><span class="detail">컴퓨터의 개념 및 실습</span></div>
+        <div class="bd-row"><span class="area">지성의 열쇠</span><span class="cr">9</span><span class="detail">4개 영역 중 3개 영역 이상에서 9학점</span></div>
+        <div class="bd-row"><span class="area">베리타스</span><span class="cr">3</span><span class="detail">베리타스 강좌 1·2 또는 베리타스 실천</span></div>
+      </div>
+      <p class="foot-note" style="margin-top:12px;">* 수학 · 과학 · 컴퓨팅은 이수규정 표에서 하나의 영역(27학점)으로 묶여 있습니다.
+        글쓰기와 말하기 7 + 외국어 6 + 수학·과학·컴퓨팅 27 = 학문의 토대 40학점.</p>
+    </section>
+
+    <!-- 예정된 변경: 이론-실험 통합 -->
+    <section class="change-card">
+      <h2>수·과학 교양 이론–실험 통합<span class="when">2027학년도 1학기 시행 예정</span></h2>
+      <p class="lib-lead">2027학년도 1학기부터 아래 교과목의 <b>이론과목과 실험(연습)과목이 하나의 교과목으로 통합</b>될 예정입니다.
+        앞으로 수학·과학 영역을 이수할 계획이라면 통합 시점을 감안해 학기를 배치하세요.</p>
+      <div class="merge-ex">
+        <div class="row">
+          <span>수학 1 + 수학연습 1</span><span class="arrow" aria-hidden="true">→</span>
+          <span class="after">수학 및 연습 1</span><span class="cr">3학점</span>
+        </div>
+        <div class="row">
+          <span>물리학 1 + 물리학실험 1</span><span class="arrow" aria-hidden="true">→</span>
+          <span class="after">물리학 및 실험 1</span><span class="cr">4학점</span>
+        </div>
+      </div>
+      <div class="merge-table">
+        <div class="mt-row head"><span>개설 학과</span><span>통합 대상 교과목</span></div>
+        <div class="mt-row"><span class="dept">수리과학부</span><span class="subj">수학 1·2, 고급수학 1·2</span></div>
+        <div class="mt-row"><span class="dept">통계학과</span><span class="subj">통계학</span></div>
+        <div class="mt-row"><span class="dept">물리·천문학부</span><span class="subj">물리학, 물리학 1·2, 고급물리학 1·2, 물리의 기본 1·2</span></div>
+        <div class="mt-row"><span class="dept">화학부</span><span class="subj">화학, 화학 1·2, 고급화학</span></div>
+        <div class="mt-row"><span class="dept">생명과학부</span><span class="subj">생물학, 생물학 1·2</span></div>
+      </div>
+      <p class="foot-note" style="margin-bottom:20px;">* 자연대 안내 중 <b>산업공학과 이수 요건에 해당하는 교과목만</b> 추린 표입니다.
+        미적분학·생명과학을 위한 통계학·천문학·지구환경과학부 개설 과목 등도 통합 대상이지만, 산업공학과의 수학·과학 영역 요건에는 해당하지 않습니다.</p>
+      <div class="qa">
+        <div class="item">
+          <p class="q">'실험 교과목'만 이수한 학생이 통합 후 '이론 교과목'까지 이수한 것으로 인정받을 수 있나요?</p>
+          <p class="a"><b>아닙니다.</b> 기초교양 수강편람의 "강의과목과 실험과목이 단일과목으로 통합된 경우 두 과목 중 어느 한 과목의 이수로써
+            그 과목을 이수한 것으로 본다"는 문구는 <b>유사한 두 과목이 하나로 통합되었을 때</b>를 의미하는 것으로, 한쪽만 듣고 나머지를 면제받는다는 뜻이 아닙니다.
+            자연대 교학행정실은 오해의 소지가 있어 다음 연도 수강편람부터 문구를 명확하게 수정하겠다고 밝혔습니다.</p>
+        </div>
+        <div class="item">
+          <p class="q">재수강생이나 '실험' 또는 '이론' 중 하나만 수강한 학생을 위한 분반은 따로 개설되나요?</p>
+          <p class="a"><b>따로 개설할 계획이 있습니다.</b> 최소 약 <b>5년 정도의 유예기간</b>을 둘 예정이며, 해당 인원이 없어질 때까지 계속 개설한다는 방침입니다.
+            교과목 폐강 기준에 걸리더라도 <b>'계속강의'로 지정</b>해 수강신청 인원수와 관계없이 개설하겠다고 안내했습니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1. 글쓰기와 말하기 -->
+    <section class="lib-card">
+      <h2><span class="idx">1</span>글쓰기와 말하기<span class="cr-badge">7학점</span></h2>
+      <p class="lib-lead">대학 글쓰기 1(2학점) · 대학 글쓰기 2(2학점) · 말하기와 토론(3학점) 세 과목을 모두 이수합니다.</p>
+      <div class="seq">
+        <span class="node">대학 글쓰기 1 <span class="when">1-1 권장</span></span>
+        <span class="arrow" aria-hidden="true">→</span>
+        <span class="node">대학 글쓰기 2 <span class="when">1-2 권장</span></span>
+        <span class="arrow" aria-hidden="true">→</span>
+        <span class="node">말하기와 토론 <span class="when">3-2 권장</span></span>
+      </div>
+      <p class="tip">💡 대학 글쓰기는 <b>역수강과 동시수강이 금지</b>됩니다. 반드시 대학 글쓰기 1 → 대학 글쓰기 2 순서로 들어야 합니다.
+        (학기 표시는 권장 시기일 뿐, 순서 규칙 외에는 자유롭게 배치할 수 있습니다.)</p>
+      <p class="foot-note">* 대학 글쓰기 2는 인문학글쓰기 / 사회과학글쓰기 / 과학기술글쓰기 중 자유롭게 선택해 들어도 무방합니다.</p>
+    </section>
+
+    <!-- 2. 외국어 -->
+    <section class="lib-card">
+      <h2><span class="idx">2</span>외국어<span class="cr-badge">6학점</span></h2>
+      <p class="lib-lead">외국어 2개 교과목을 이수합니다. 입학 시 배치 시험(TEPS) 점수 구간에 따라 <b>어느 단계의 영어 과목부터 시작하는지</b>가 달라집니다.
+        아래에서 <b>굵게 표시된 과목</b>이 해당 구간의 권장 시작 과목이며, 반드시 첫 학기에 들어야 하는 것은 아닙니다.</p>
+      <div class="case-list">
+        <div class="case">
+          <span class="cond">1~267점</span>
+          <span class="plan"><b>기초영어</b> → 대학영어 1 → 대학영어 2 <span class="alt">또는</span> <b>기초영어</b> → 대학영어 1 → 제2외국어</span>
+        </div>
+        <div class="case">
+          <span class="cond">268~386점</span>
+          <span class="plan"><b>대학영어 1</b> → 대학영어 2 <span class="alt">또는</span> <b>대학영어 1</b> → 제2외국어</span>
+        </div>
+        <div class="case">
+          <span class="cond">387~452점</span>
+          <span class="plan"><b>대학영어 2</b> → 고급영어 <span class="alt">또는</span> <b>대학영어 2</b> → 제2외국어</span>
+        </div>
+        <div class="case">
+          <span class="cond">453~525점</span>
+          <span class="plan"><b>고급영어</b> → 고급영어 <span class="alt">또는</span> <b>고급영어</b> → 제2외국어</span>
+        </div>
+        <div class="case">
+          <span class="cond">526점 이상</span>
+          <span class="plan">고급영어 → 고급영어 <span class="alt">또는</span> 고급영어 → 제2외국어 <span class="alt">또는</span> <b>제2외국어</b> → 제2외국어</span>
+        </div>
+      </div>
+      <p class="tip">💡 본인의 영어 점수가 마음에 들지 않는다면, <b>영어 과목을 이수하지 않은 채로 TEPS 시험을 개인적으로 다시 응시해 영어 등급을 올리는 방법</b>도 있습니다.
+        단, 새로 취득한 성적을 서울대학교 포털 시스템에 등록한 후 수강신청을 진행해야 합니다.</p>
+      <p class="foot-note">* 입학 시 TEPS 900점(New TEPS 525점) 이하인 학생은 <b>영어 1과목이 필수</b>입니다.</p>
+      <p class="foot-note">** TEPS를 개인적으로 재응시하더라도 영어 과목 <b>이수 면제는 불가능</b>합니다. 시작 단계만 조정됩니다.</p>
+    </section>
+
+    <!-- 3. 수학 -->
+    <section class="lib-card">
+      <h2><span class="idx">3</span>수학<span class="cr-badge">16학점</span></h2>
+      <p class="lib-lead">수학 1·2(또는 고급수학 1·2)와 각 연습 과목, 통계학과 통계학실험, 공학수학 1·2를 이수합니다.
+        1학년 첫 수학 과목은 입학 시 수학 배치 시험 결과에 따라 정해집니다.</p>
+      <div class="case-list">
+        <div class="case">
+          <span class="cond">고급수학 수강 자격자</span>
+          <span class="plan"><b>고급수학 1</b> 또는 <b>수학 1</b> 중 선택</span>
+        </div>
+        <div class="case">
+          <span class="cond">정규반</span>
+          <span class="plan"><b>수학 1</b> 수강 <span class="alt">(희망 시 기초수학 1 동시 수강 가능)</span></span>
+        </div>
+        <div class="case">
+          <span class="cond">기초수학 이수 대상자</span>
+          <span class="plan"><b>기초수학 1 + 수학 1</b> 동시 수강을 강력히 권장</span>
+        </div>
+      </div>
+      <p class="tip">💡 <b>기초수학</b>은 학부생 튜터에게 주 1~2회 튜터링을 받는 형태로 진행되는 <b>1학점 S/U 수업</b>입니다.
+        신입생에 한하여 1학기에만 수강제한 학점을 초과해 수강신청할 수 있고, 반드시 정규반 <b>수학</b> 과목과 함께 수강해야 합니다.</p>
+      <p class="tip">💡 연습이 있는 교과목은 <b>연습 교과목을 같은 학기에 함께 수강</b>하는 것이 원칙입니다.
+        (수학 1 + 수학연습 1, 수학 2 + 수학연습 2, 고급수학 1 + 고급수학연습 1, 고급수학 2 + 고급수학연습 2)</p>
+      <p class="foot-note">* &lt;미적분학 1&gt;은 자연과학대학 소속 학부생이 듣는 수학 교과로, 산업공학과 학생은 수강이 불가합니다.</p>
+      <p class="foot-note">** <b>2027학년도 1학기부터</b> 수학 1·2, 고급수학 1·2, 통계학은 이론과 연습(실험)이 하나의 교과목으로 통합될 예정입니다.
+        (예: 수학 1 + 수학연습 1 → 수학 및 연습 1, 3학점) 자세한 내용은 위 <b>이론–실험 통합 안내</b>를 확인하세요.</p>
+    </section>
+
+    <!-- 4. 과학 -->
+    <section class="lib-card">
+      <h2><span class="idx">4</span>과학<span class="cr-badge">8학점</span></h2>
+      <p class="lib-lead"><b>(과학 과목 + 해당 실험 과목) × 2 = 8학점</b>을 이수해야 합니다. 이론 교과목과 해당 실험 교과목은 같은 학기에 함께 수강하는 것이 원칙입니다.</p>
+      <div class="combo-grid">
+        <div class="combo-card">
+          <h3>물리학</h3>
+          <ul>
+            <li>물리학 1 / 물리의 기본 1 / 고급물리학 1 + 물리학실험 1</li>
+            <li>물리학 2 / 물리의 기본 2 / 고급물리학 2 + 물리학실험 2</li>
+            <li>물리학 + 물리학실험</li>
+          </ul>
+        </div>
+        <div class="combo-card">
+          <h3>화학</h3>
+          <ul>
+            <li>화학 1 + 화학실험 1</li>
+            <li>화학 2 + 화학실험 2</li>
+            <li>화학 / 고급화학 + 화학실험</li>
+          </ul>
+        </div>
+        <div class="combo-card">
+          <h3>생물학</h3>
+          <ul>
+            <li>생물학 1 + 생물학실험 1</li>
+            <li>생물학 2 + 생물학실험 2</li>
+            <li>생물학 + 생물학실험</li>
+          </ul>
+        </div>
+        <div class="combo-card">
+          <h3>조합 규칙</h3>
+          <p class="foot-note" style="margin:0 0 10px;">같은 분야(물·화·생) 안에서 1·2로 나뉜 과목과 단학기 과목을 함께 조합할 수는 없습니다.</p>
+          <div class="ok-list">
+            <div class="ok"><span class="mark">O</span><span>생물학 1 + 물리학 2</span></div>
+            <div class="ok"><span class="mark">O</span><span>물리학 + 화학 2</span></div>
+            <div class="ok"><span class="mark">O</span><span>화학 + 생물학</span></div>
+            <div class="ok no"><span class="mark">X</span><span>물리학 + 물리학 2</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="tip">💡 한 분야에서 <b>1·2로 구성된 교과목 중 1에 해당하는 과목</b>과 <b>같은 분야의 1·2로 구분되지 않은 단학기 교과목</b>을 모두 수강하면,
+        [과학] 영역에서는 <b>한 과목만 인정</b>됩니다. 인정되지 않은 나머지 과목도 전체 교양 학점으로는 인정받을 수 있습니다.<br>
+        예) 화학 분야에서 (화학 1 + 화학실험 1) 4학점과 (화학 + 화학실험) 4학점을 모두 수강하면 → [과학] 영역 <b>4학점만 인정</b>, 전체 교양 교과목으로는 8학점 인정.</p>
+      <p class="foot-note">* 1, 2 과목은 수업 내용을 두 학기에 나누어 배우는 반면, 단학기 과목은 한 학기에 몰아서 배웁니다. (예: 화학(단화학))</p>
+      <p class="foot-note">** 고교 과정에서 <b>물리학 2(또는 동급 이상의 물리 과목)를 이수한 학생은 물리학 1·2</b>를, <b>이수하지 않은 학생은 물리의 기본 1·2</b>를 이수하는 것이 원칙입니다.
+        물리의 기본 1·2를 이수해야 하는 학생이 물리학 1·2를 수강하려면 <b>물리학성취도평가</b>에 응시해 일정 점수를 취득해야 합니다.</p>
+      <p class="foot-note">*** <b>2027학년도 1학기부터</b> 물리·화학·생물 이론 과목과 실험 과목이 하나의 교과목으로 통합될 예정입니다.
+        (예: 물리학 1 + 물리학실험 1 → 물리학 및 실험 1, 4학점) 이론과 실험 중 한쪽만 이수한 상태라면 위 <b>이론–실험 통합 안내</b>의 Q&amp;A를 확인하세요.</p>
+    </section>
+
+    <!-- 5. 컴퓨팅 -->
+    <section class="lib-card">
+      <h2><span class="idx">5</span>컴퓨팅<span class="cr-badge">3학점</span></h2>
+      <p class="lib-lead" style="margin-bottom:0;"><b>컴퓨터의 개념 및 실습</b> 1과목(3학점)을 이수합니다.</p>
+    </section>
+
+    <!-- 6. 지성의 열쇠 -->
+    <section class="lib-card">
+      <h2><span class="idx">6</span>지성의 열쇠<span class="cr-badge">9학점</span></h2>
+      <p class="lib-lead">아래 <b>4개 영역 중 3개 영역 이상</b>에 걸쳐 총 9학점을 이수해야 합니다. 한두 영역에 몰아서 듣는 것은 인정되지 않습니다.</p>
+      <div class="area-chips">
+        <span class="chip">문화 해석과 상상</span>
+        <span class="chip">역사적 탐구와 철학적 사유</span>
+        <span class="chip">인간의 이해와 사회 분석</span>
+        <span class="chip">과학적 사고와 응용</span>
+      </div>
+      <p class="tip">💡 각 과목이 어느 영역에 속하는지는 <b>수강신청 사이트와 시간표 사이트의 교양 분류 조회</b>에서 확인할 수 있습니다.
+        3개 영역 × 3학점으로 채우는 것이 가장 간단한 구성입니다.</p>
+    </section>
+
+    <!-- 7. 베리타스 -->
+    <section class="lib-card">
+      <h2><span class="idx">7</span>베리타스<span class="cr-badge">3학점</span></h2>
+      <p class="lib-lead">베리타스 영역에서 <b>3학점 이상(수업 1개 이상)</b>을 이수해야 합니다.
+        <b>베리타스 강좌 1</b>, <b>베리타스 강좌 2</b>, <b>베리타스 실천</b> 중 어느 것으로 채워도 됩니다.</p>
+      <div class="area-chips">
+        <span class="chip">베리타스 강좌 1 · V10.1xx</span>
+        <span class="chip">베리타스 강좌 2 · V20.1xx</span>
+        <span class="chip">베리타스 실천 · V30.1xx</span>
+      </div>
+      <p class="foot-note">* 베리타스 과목(강좌번호 V10.1xx, V20.1xx, V30.1xx)은 <b>S/U 평가 방식이 기본</b>이지만, A~F로 변경 가능한 강좌도 존재합니다.
+        수강신청 전 강좌별 평가 방식을 확인하세요.</p>
+    </section>
+
+    <div class="faq-cta">
+      <div class="faq-cta-copy">
+        <strong>어떤 교양을 더 들어야 졸업할 수 있는지 확인하려면?</strong>
+        <span>산업공학과 홈페이지 &gt; 학부 &gt; 이수규정 &gt; 교양필수과목에서 본인 학번의 교양 이수 요건 원문을 확인할 수 있습니다.</span>
+      </div>
+      <a class="faq-cta-btn" href="https://ie.snu.ac.kr/" target="_blank" rel="noreferrer">학과 홈페이지 이수규정 ↗</a>
+    </div>
+
+    <div class="notice" style="margin-top:24px;">
+      <span aria-hidden="true">⚠</span>
+      <span>이 페이지는 학업 계획을 돕기 위한 비공식 안내입니다. 실제 배치 기준, 개설 여부, 학점 인정 여부는 본인 학번 이수규정과 수강편람,
+        기초교육원 안내에서 반드시 확인하세요.</span>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <p>Unofficial SNU IE academic navigator.</p>
+  <a href="https://ie.snu.ac.kr/" target="_blank" rel="noreferrer">서울대학교 산업공학과 공식 홈페이지</a>
+</footer>
+</body>
+</html>

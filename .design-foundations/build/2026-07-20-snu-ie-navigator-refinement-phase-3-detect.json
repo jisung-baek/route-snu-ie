@@ -1,0 +1,569 @@
+{
+  "detector": "detect.mjs",
+  "version": 1,
+  "attribution": "Rule subset ported from Impeccable (pbakaus/impeccable), Apache-2.0, with modifications — see file header. Catalog: references/visual/ai-tells.md.",
+  "status": "ran",
+  "sources": [
+    "index.html",
+    "roadmap.html",
+    "rules.html",
+    "faq.html",
+    "courses.html",
+    "code-guide.html"
+  ],
+  "rules": 16,
+  "findings": [
+    {
+      "source": "index.html",
+      "rule": "numbered-section-markers",
+      "category": "copy",
+      "severity": "advisory",
+      "evidence": "decorative sequence: 01, 02, 03, 04, 07",
+      "line": null
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box foundation c1\"> is a card inside a card ancestor",
+      "line": 628
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box foundation c2\"> is a card inside a card ancestor",
+      "line": 629
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box foundation\"> is a card inside a card ancestor",
+      "line": 631
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box foundation\"> is a card inside a card ancestor",
+      "line": 632
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box foundation c4\"> is a card inside a card ancestor",
+      "line": 634
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box foundation c1\"> is a card inside a card ancestor",
+      "line": 639
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box highlight c2\"> is a card inside a card ancestor",
+      "line": 640
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box highlight\"> is a card inside a card ancestor",
+      "line": 642
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box\"> is a card inside a card ancestor",
+      "line": 643
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box c5\"> is a card inside a card ancestor",
+      "line": 645
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box c6\"> is a card inside a card ancestor",
+      "line": 646
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box c3\"> is a card inside a card ancestor",
+      "line": 651
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box c5 slot-top\"> is a card inside a card ancestor",
+      "line": 652
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box c6 slot-bottom\"> is a card inside a card ancestor",
+      "line": 653
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 654
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 655
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 656
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box highlight c5\"> is a card inside a card ancestor",
+      "line": 661
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box c7\"> is a card inside a card ancestor",
+      "line": 662
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 664
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 665
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 667
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box highlight c4\"> is a card inside a card ancestor",
+      "line": 672
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box c6\"> is a card inside a card ancestor",
+      "line": 673
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box c7\"> is a card inside a card ancestor",
+      "line": 674
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 676
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 677
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 680
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 681
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 682
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 683
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 685
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box highlight\"> is a card inside a card ancestor",
+      "line": 691
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box highlight\"> is a card inside a card ancestor",
+      "line": 692
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box c7\"> is a card inside a card ancestor",
+      "line": 694
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 696
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 697
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 699
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box highlight c4\"> is a card inside a card ancestor",
+      "line": 704
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box\"> is a card inside a card ancestor",
+      "line": 706
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box\"> is a card inside a card ancestor",
+      "line": 707
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box c8\"> is a card inside a card ancestor",
+      "line": 709
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 711
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 712
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 715
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 716
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box highlight\"> is a card inside a card ancestor",
+      "line": 723
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box highlight\"> is a card inside a card ancestor",
+      "line": 724
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box c6\"> is a card inside a card ancestor",
+      "line": 726
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box c7\"> is a card inside a card ancestor",
+      "line": 727
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 729
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 730
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 733
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 734
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 735
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 736
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box c6\"> is a card inside a card ancestor",
+      "line": 742
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box highlight c7\"> is a card inside a card ancestor",
+      "line": 743
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 745
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 746
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 749
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box graduate\"> is a card inside a card ancestor",
+      "line": 750
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box\"> is a card inside a card ancestor",
+      "line": 757
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<span class=\"course-box\"> is a card inside a card ancestor",
+      "line": 758
+    },
+    {
+      "source": "roadmap.html",
+      "rule": "em-dash-overuse",
+      "category": "copy",
+      "severity": "medium",
+      "evidence": "76 em-dashes in body copy",
+      "line": null
+    },
+    {
+      "source": "code-guide.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<div class=\"pos-card\"> is a card inside a card ancestor",
+      "line": 151
+    },
+    {
+      "source": "code-guide.html",
+      "rule": "nested-cards",
+      "category": "layout",
+      "severity": "high",
+      "evidence": "<div class=\"pos-card\"> is a card inside a card ancestor",
+      "line": 160
+    }
+  ],
+  "counts": {
+    "total": 68,
+    "byRule": {
+      "numbered-section-markers": 1,
+      "nested-cards": 66,
+      "em-dash-overuse": 1
+    }
+  }
+}
