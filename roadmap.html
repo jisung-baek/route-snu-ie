@@ -564,6 +564,126 @@
   font-weight: var(--weight-bold);
 }
 
+/* ---------- image download control ---------- */
+.dl-menu {
+  position: relative;
+}
+
+.dl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 46px;
+  padding: 0 22px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  background: var(--background);
+  color: var(--text);
+  font: inherit;
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  cursor: pointer;
+  transition: border-color var(--duration-fast) ease, color var(--duration-fast) ease;
+}
+
+.dl-btn:hover {
+  border-color: var(--accent-solid);
+  color: var(--accent-text);
+}
+
+.dl-btn:focus-visible {
+  outline: 3px solid var(--accent-6);
+  outline-offset: 2px;
+}
+
+.dl-btn .ico {
+  font-size: 15px;
+}
+
+.dl-btn .caret {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  transition: transform var(--duration-fast) ease;
+}
+
+.dl-btn[aria-expanded="true"] .caret {
+  transform: rotate(180deg);
+}
+
+.dl-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+  border-color: var(--border-subtle);
+  color: var(--text);
+}
+
+.dl-pop {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 30;
+  display: grid;
+  gap: 4px;
+  width: 268px;
+  padding: 6px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-panel);
+  background: var(--background);
+  box-shadow: 0 14px 34px rgba(20, 28, 44, 0.14);
+}
+
+.dl-pop[hidden] {
+  display: none;
+}
+
+.dl-opt {
+  display: grid;
+  gap: 2px;
+  padding: 11px 14px;
+  border: none;
+  border-radius: calc(var(--radius-panel) - 4px);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+
+.dl-opt:hover,
+.dl-opt:focus-visible {
+  background: var(--surface-hover);
+  outline: none;
+}
+
+.dl-opt b {
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  color: var(--text);
+}
+
+.dl-opt span {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+}
+
+/* export mode: strip interactive/sticky chrome so the captured image reads cleanly */
+.roadmap-grid.exporting .grad-edge-toggle {
+  display: none !important;
+}
+
+.roadmap-grid.exporting .area-header {
+  position: static !important;
+  left: auto !important;
+}
+
+/* collapse the (now hidden) toggle's column to a slim divider so exported images have no large empty gap */
+.roadmap-grid.exporting {
+  grid-template-columns: 96px repeat(8, minmax(112px, 1fr)) 32px;
+}
+
+.roadmap-grid.exporting.show-grad {
+  grid-template-columns: 96px repeat(8, minmax(102px, 1fr)) 32px repeat(8, minmax(116px, 1fr));
+}
+
 @media (max-width: 720px) {
   .actions {
     flex-direction: column;
@@ -575,6 +695,18 @@
     justify-content: center;
   }
 
+  .dl-menu {
+    width: 100%;
+  }
+
+  .dl-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .dl-pop {
+    width: 100%;
+  }
 }
 </style>
 </head>
@@ -588,6 +720,7 @@
     <a href="rules.html">이수규정</a>
     <a href="faq.html">자주 묻는 질문</a>
     <a href="courses.html">개설 과목 검색</a>
+    <a href="liberal-arts.html">교양 이수 가이드</a>
   </nav>
 </header>
 
@@ -603,6 +736,23 @@
           <span>신 교과목 코드 읽는 방법</span>
           <span class="arrow" aria-hidden="true">→</span>
         </a>
+        <div class="dl-menu">
+          <button class="dl-btn" id="dlBtn" type="button" aria-haspopup="menu" aria-expanded="false">
+            <span class="ico" aria-hidden="true">⬇</span>
+            <span class="dl-label">이미지 다운로드</span>
+            <span class="caret" aria-hidden="true">▾</span>
+          </button>
+          <div class="dl-pop" id="dlPop" role="menu" aria-label="로드맵 이미지 다운로드 옵션" hidden>
+            <button class="dl-opt" type="button" role="menuitem" data-grad="0">
+              <b>학부 로드맵</b>
+              <span>학부 전공 과목 로드맵</span>
+            </button>
+            <button class="dl-opt" type="button" role="menuitem" data-grad="1">
+              <b>대학원 과정 포함</b>
+              <span>학부 + 대학원 교과목까지</span>
+            </button>
+          </div>
+        </div>
       </div>
       <div class="legend" aria-label="범례">
         <ul>
@@ -955,9 +1105,120 @@ function drawConnectors(){
 function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);};}
 const dDraw=debounce(drawConnectors,80);
 
+/* ---------- roadmap image download ---------- */
+function initImageDownload(){
+  const menu=document.querySelector(".dl-menu");
+  const btn=document.getElementById("dlBtn");
+  const pop=document.getElementById("dlPop");
+  if(!menu||!btn||!pop)return;
+  const close=()=>{pop.hidden=true;btn.setAttribute("aria-expanded","false");};
+  const open=()=>{pop.hidden=false;btn.setAttribute("aria-expanded","true");};
+  btn.addEventListener("click",e=>{e.stopPropagation();pop.hidden?open():close();});
+  document.addEventListener("click",e=>{if(!menu.contains(e.target))close();});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")close();});
+  pop.querySelectorAll(".dl-opt").forEach(opt=>{
+    opt.addEventListener("click",()=>{close();exportRoadmap(opt.dataset.grad==="1");});
+  });
+}
+
+/* load html2canvas on demand (only when the user first downloads) — keeps page load light */
+function ensureHtml2canvas(){
+  if(typeof html2canvas==="function")return Promise.resolve(true);
+  if(!window.__h2cPromise){
+    window.__h2cPromise=new Promise((resolve,reject)=>{
+      const s=document.createElement("script");
+      s.src="js/html2canvas.min.js";
+      s.onload=()=>resolve();
+      s.onerror=()=>{window.__h2cPromise=null;reject(new Error("html2canvas load failed"));};
+      document.head.appendChild(s);
+    });
+  }
+  return window.__h2cPromise.then(()=>typeof html2canvas==="function").catch(()=>false);
+}
+
+async function exportRoadmap(includeGrad){
+  const btn=document.getElementById("dlBtn");
+  const label=btn&&btn.querySelector(".dl-label");
+  const wrapper=document.querySelector(".roadmap-wrapper");
+  const grid=document.getElementById("ugGrid");
+  if(!wrapper||!grid)return;
+  hideTip();
+  const prevLabel=label?label.textContent:"";
+  if(btn)btn.disabled=true;
+  if(label)label.textContent="이미지 생성 중…";
+
+  if(!(await ensureHtml2canvas())){
+    alert("이미지 생성 도구를 불러오지 못했습니다. 네트워크 연결을 확인한 뒤 다시 시도해 주세요.");
+    if(btn)btn.disabled=false;
+    if(label)label.textContent=prevLabel;
+    return;
+  }
+
+  /* remember live state */
+  const prevShowGrad=grid.classList.contains("show-grad");
+  const prevScrollL=wrapper.scrollLeft, prevScrollT=wrapper.scrollTop;
+  const hadInlineStyle=wrapper.hasAttribute("style");
+  const savedWrapStyle=wrapper.getAttribute("style")||"";
+
+  /* switch to a clean, fully-expanded export layout */
+  grid.classList.toggle("show-grad",includeGrad);
+  grid.classList.add("exporting");
+  wrapper.scrollLeft=0; wrapper.scrollTop=0;
+  const fullW=grid.scrollWidth, fullH=grid.scrollHeight;
+  wrapper.style.overflow="visible";
+  wrapper.style.width=fullW+"px";
+  wrapper.style.maxWidth="none";
+  drawConnectors();
+
+  /* undergrad-only image: trim the trailing empty column that held the (now hidden) toggle */
+  let captureW=fullW;
+  if(!includeGrad){
+    const gcs=getComputedStyle(grid);
+    const cols=(gcs.gridTemplateColumns||"").trim().split(/\s+/);
+    const lastCol=parseFloat(cols[cols.length-1])||0;
+    const colGap=parseFloat(gcs.columnGap||gcs.gap||"0")||0;
+    if(lastCol>0)captureW=Math.max(1,Math.round(fullW-(lastCol+colGap)));
+  }
+
+  const bg=getComputedStyle(wrapper).backgroundColor||"#ffffff";
+  try{
+    if(document.fonts&&document.fonts.ready){try{await document.fonts.ready;}catch(e){}}
+    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+    const canvas=await html2canvas(wrapper,{
+      backgroundColor:bg,
+      scale:2,
+      width:captureW,
+      height:fullH,
+      windowWidth:fullW+120,
+      windowHeight:fullH+120,
+      scrollX:0,
+      scrollY:0,
+      useCORS:true,
+      logging:false
+    });
+    const a=document.createElement("a");
+    a.download=includeGrad?"산업공학과_전공로드맵_대학원포함.png":"산업공학과_전공로드맵.png";
+    a.href=canvas.toDataURL("image/png");
+    a.click();
+  }catch(err){
+    alert("이미지를 생성하는 중 문제가 발생했습니다. 다시 시도해 주세요.");
+  }finally{
+    /* restore live state */
+    if(hadInlineStyle)wrapper.setAttribute("style",savedWrapStyle);
+    else wrapper.removeAttribute("style");
+    grid.classList.remove("exporting");
+    grid.classList.toggle("show-grad",prevShowGrad);
+    wrapper.scrollLeft=prevScrollL; wrapper.scrollTop=prevScrollT;
+    drawConnectors();
+    if(btn)btn.disabled=false;
+    if(label)label.textContent=prevLabel;
+  }
+}
+
 document.addEventListener("DOMContentLoaded",()=>{
   bindTips(document.getElementById("ugGrid"));
   initGradToggle();
+  initImageDownload();
   drawConnectors();
 });
 window.addEventListener("load",drawConnectors);
