@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>교양 이수 가이드 | Route SNU IE</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
 <link rel="stylesheet" href="css/base.css">
@@ -56,6 +57,8 @@
 .case .plan{font-size:13.5px;line-height:1.7;}
 .case .plan b{color:var(--text);}
 .case .plan .alt{color:var(--text-tertiary);font-weight:var(--weight-semibold);}
+.case .plan .plus{margin:0 2px;color:var(--text-tertiary);font-weight:var(--weight-semibold);}
+.case .plan .pre{margin:0 2px;color:var(--accent-text);font-weight:var(--weight-bold);}
 
 .seq{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:14px;}
 .seq .node{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border:1px solid var(--border-faint);
@@ -111,6 +114,8 @@
 .foot-note{margin:0;color:var(--text-tertiary);font-size:12.5px;line-height:1.7;}
 .foot-note + .foot-note{margin-top:6px;}
 .foot-note b{color:var(--text-secondary);}
+.foot-note a{color:var(--accent-text);font-weight:var(--weight-semibold);text-decoration:none;}
+.foot-note a:hover{text-decoration:underline;}
 
 @media (max-width:720px){
   .combo-grid{grid-template-columns:1fr;}
@@ -128,7 +133,7 @@
 </head>
 <body>
 <header class="topbar">
-  <a class="brand" href="index.html" aria-label="Route SNU IE 홈"><span class="brand-mark">IE</span><span>Route SNU IE</span></a>
+  <a class="brand" href="index.html" aria-label="Route SNU IE 홈"><span class="brand-mark"><svg width="18" viewBox="0 0 200 150" fill="none" aria-hidden="true" focusable="false"><path d="M18 104 L52 90 L86 140 L140 28 L182 28" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="182" cy="28" r="17" fill="currentColor"></circle><circle cx="182" cy="28" r="6.5" fill="var(--accent-solid)"></circle></svg></span><span>Route SNU IE</span></a>
   <nav class="nav" aria-label="주요 메뉴">
     <a href="roadmap.html">전공 로드맵</a><a href="rules.html">이수규정</a><a href="faq.html">자주 묻는 질문</a><a href="courses.html">개설 과목 검색</a><a class="active" href="liberal-arts.html">교양 이수 가이드</a>
   </nav>
@@ -141,7 +146,7 @@
       <p class="eyebrow">Liberal Arts Guide</p>
       <h1>교양 이수 가이드</h1>
       <p>산업공학과 교양 이수 요건인 <b>학문의 토대 · 지성의 열쇠 · 베리타스</b> 세 축을 영역별로 정리했습니다.
-        배치 결과에 따라 수강 과목이 달라지는 <b>수학 · 영어</b>와, 조합 규칙이 있는 <b>과학</b>을 특히 확인하세요.</p>
+        배치 결과에 따라 수강 과목이 달라지는 <b>수학 · 영어</b>와 조합 규칙이 있는 <b>과학</b>은 특히 꼼꼼히 확인하세요.</p>
     </div>
 
     <div class="notice" aria-label="적용 범위 안내">
@@ -168,7 +173,7 @@
         <div class="bd-row"><span class="area">글쓰기와 말하기</span><span class="cr">7</span><span class="detail">대학 글쓰기 1, 대학 글쓰기 2, 말하기와 토론</span></div>
         <div class="bd-row"><span class="area">외국어</span><span class="cr">6</span><span class="detail">외국어 2개 교과목</span></div>
         <div class="bd-row"><span class="area">수학 · 과학 · 컴퓨팅</span><span class="cr">27</span><span class="detail">아래 세 갈래를 합쳐 27학점</span></div>
-        <div class="bd-row sub"><span class="area">└ 수학</span><span class="cr">16</span><span class="detail">수학 1·2(또는 고급수학), 통계학과 통계학실험, 공학수학 1·2</span></div>
+        <div class="bd-row sub"><span class="area">└ 수학</span><span class="cr">16</span><span class="detail">수학 1·2, 통계학과 통계학실험, 공학수학 1·2</span></div>
         <div class="bd-row sub"><span class="area">└ 과학</span><span class="cr">8</span><span class="detail">물리학 · 화학 · 생물학 영역의 선택적 필수 과목</span></div>
         <div class="bd-row sub"><span class="area">└ 컴퓨팅</span><span class="cr">3</span><span class="detail">컴퓨터의 개념 및 실습</span></div>
         <div class="bd-row"><span class="area">지성의 열쇠</span><span class="cr">9</span><span class="detail">4개 영역 중 3개 영역 이상에서 9학점</span></div>
@@ -180,7 +185,7 @@
 
     <!-- 예정된 변경: 이론-실험 통합 -->
     <section class="change-card">
-      <h2>수·과학 교양 이론–실험 통합<span class="when">2027학년도 1학기 시행 예정</span></h2>
+      <h2>수·과학 교양 이론·실험 통합<span class="when">2027학년도 1학기 시행 예정</span></h2>
       <p class="lib-lead">2027학년도 1학기부터 아래 교과목의 <b>이론과목과 실험(연습)과목이 하나의 교과목으로 통합</b>될 예정입니다.
         앞으로 수학·과학 영역을 이수할 계획이라면 통합 시점을 감안해 학기를 배치하세요.</p>
       <div class="merge-ex">
@@ -207,7 +212,7 @@
         <div class="item">
           <p class="q">'실험 교과목'만 이수한 학생이 통합 후 '이론 교과목'까지 이수한 것으로 인정받을 수 있나요?</p>
           <p class="a"><b>아닙니다.</b> 기초교양 수강편람의 "강의과목과 실험과목이 단일과목으로 통합된 경우 두 과목 중 어느 한 과목의 이수로써
-            그 과목을 이수한 것으로 본다"는 문구는 <b>유사한 두 과목이 하나로 통합되었을 때</b>를 의미하는 것으로, 한쪽만 듣고 나머지를 면제받는다는 뜻이 아닙니다.
+            그 과목을 이수한 것으로 본다"는 문구는 <b>유사한 두 과목이 하나로 통합되었을 때</b>를 가리킵니다. 한쪽만 듣고 나머지를 면제받는다는 뜻이 아닙니다.
             자연대 교학행정실은 오해의 소지가 있어 다음 연도 수강편람부터 문구를 명확하게 수정하겠다고 밝혔습니다.</p>
         </div>
         <div class="item">
@@ -216,6 +221,7 @@
             교과목 폐강 기준에 걸리더라도 <b>'계속강의'로 지정</b>해 수강신청 인원수와 관계없이 개설하겠다고 안내했습니다.</p>
         </div>
       </div>
+      <p class="foot-note" style="margin-top:var(--space-4);">** 출처: <a href="https://www.instagram.com/p/DYwLP3hGP2o/?img_index=1" target="_blank" rel="noreferrer">이론·실험 통합 안내 카드뉴스 (Instagram) ↗</a></p>
     </section>
 
     <!-- 1. 글쓰기와 말하기 -->
@@ -229,7 +235,7 @@
         <span class="arrow" aria-hidden="true">→</span>
         <span class="node">말하기와 토론 <span class="when">3-2 권장</span></span>
       </div>
-      <p class="tip">💡 대학 글쓰기는 <b>역수강과 동시수강이 금지</b>됩니다. 반드시 대학 글쓰기 1 → 대학 글쓰기 2 순서로 들어야 합니다.
+      <p class="tip">대학 글쓰기는 <b>역수강과 동시수강이 금지</b>됩니다. 반드시 대학 글쓰기 1 → 대학 글쓰기 2 순서로 들어야 합니다.
         (학기 표시는 권장 시기일 뿐, 순서 규칙 외에는 자유롭게 배치할 수 있습니다.)</p>
       <p class="foot-note">* 대학 글쓰기 2는 인문학글쓰기 / 사회과학글쓰기 / 과학기술글쓰기 중 자유롭게 선택해 들어도 무방합니다.</p>
     </section>
@@ -242,29 +248,31 @@
       <div class="case-list">
         <div class="case">
           <span class="cond">1~267점</span>
-          <span class="plan"><b>기초영어</b> → 대학영어 1 → 대학영어 2 <span class="alt">또는</span> <b>기초영어</b> → 대학영어 1 → 제2외국어</span>
+          <span class="plan"><b>기초영어</b> <span class="pre" aria-label="선수과목">→</span> 대학영어 1 <span class="plus">+</span> 대학영어 2 <span class="alt">또는</span> <b>기초영어</b> <span class="pre" aria-label="선수과목">→</span> 대학영어 1 <span class="plus">+</span> 제2외국어</span>
         </div>
         <div class="case">
           <span class="cond">268~386점</span>
-          <span class="plan"><b>대학영어 1</b> → 대학영어 2 <span class="alt">또는</span> <b>대학영어 1</b> → 제2외국어</span>
+          <span class="plan"><b>대학영어 1</b> <span class="plus">+</span> 대학영어 2 <span class="alt">또는</span> <b>대학영어 1</b> <span class="plus">+</span> 제2외국어</span>
         </div>
         <div class="case">
           <span class="cond">387~452점</span>
-          <span class="plan"><b>대학영어 2</b> → 고급영어 <span class="alt">또는</span> <b>대학영어 2</b> → 제2외국어</span>
+          <span class="plan"><b>대학영어 2</b> <span class="plus">+</span> 고급영어 <span class="alt">또는</span> <b>대학영어 2</b> <span class="plus">+</span> 제2외국어</span>
         </div>
         <div class="case">
           <span class="cond">453~525점</span>
-          <span class="plan"><b>고급영어</b> → 고급영어 <span class="alt">또는</span> <b>고급영어</b> → 제2외국어</span>
+          <span class="plan"><b>고급영어</b> <span class="plus">+</span> 고급영어 <span class="alt">또는</span> <b>고급영어</b> <span class="plus">+</span> 제2외국어</span>
         </div>
         <div class="case">
           <span class="cond">526점 이상</span>
-          <span class="plan">고급영어 → 고급영어 <span class="alt">또는</span> 고급영어 → 제2외국어 <span class="alt">또는</span> <b>제2외국어</b> → 제2외국어</span>
+          <span class="plan">고급영어 <span class="plus">+</span> 고급영어 <span class="alt">또는</span> 고급영어 <span class="plus">+</span> 제2외국어 <span class="alt">또는</span> <b>제2외국어</b> <span class="plus">+</span> 제2외국어</span>
         </div>
       </div>
-      <p class="tip">💡 본인의 영어 점수가 마음에 들지 않는다면, <b>영어 과목을 이수하지 않은 채로 TEPS 시험을 개인적으로 다시 응시해 영어 등급을 올리는 방법</b>도 있습니다.
+      <p class="tip">본인의 영어 점수가 마음에 들지 않는다면, <b>영어 과목을 이수하지 않은 채로 TEPS 시험을 개인적으로 다시 응시해 영어 등급을 올리는 방법</b>도 있습니다.
         단, 새로 취득한 성적을 서울대학교 포털 시스템에 등록한 후 수강신청을 진행해야 합니다.</p>
       <p class="foot-note">* 입학 시 TEPS 900점(New TEPS 525점) 이하인 학생은 <b>영어 1과목이 필수</b>입니다.</p>
-      <p class="foot-note">** TEPS를 개인적으로 재응시하더라도 영어 과목 <b>이수 면제는 불가능</b>합니다. 시작 단계만 조정됩니다.</p>
+      <p class="foot-note">** TEPS를 개인적으로 재응시하더라도 영어 과목 <b>이수 면제는 불가능</b>합니다.</p>
+      <p class="foot-note">*** 표기에서 <b>+</b>는 두 과목을 함께 이수한다는 뜻이며, 수강 순서에는 제약이 없습니다.
+        선수관계가 있는 것은 <b>기초영어 → 대학영어 1</b> 하나뿐입니다.</p>
     </section>
 
     <!-- 3. 수학 -->
@@ -286,13 +294,13 @@
           <span class="plan"><b>기초수학 1 + 수학 1</b> 동시 수강을 강력히 권장</span>
         </div>
       </div>
-      <p class="tip">💡 <b>기초수학</b>은 학부생 튜터에게 주 1~2회 튜터링을 받는 형태로 진행되는 <b>1학점 S/U 수업</b>입니다.
+      <p class="tip"><b>기초수학</b>은 학부생 튜터에게 주 1~2회 튜터링을 받는 형태로 진행되는 <b>1학점 S/U 수업</b>입니다.
         신입생에 한하여 1학기에만 수강제한 학점을 초과해 수강신청할 수 있고, 반드시 정규반 <b>수학</b> 과목과 함께 수강해야 합니다.</p>
-      <p class="tip">💡 연습이 있는 교과목은 <b>연습 교과목을 같은 학기에 함께 수강</b>하는 것이 원칙입니다.
+      <p class="tip">연습이 있는 교과목은 <b>연습 교과목을 같은 학기에 함께 수강</b>하는 것이 원칙입니다.
         (수학 1 + 수학연습 1, 수학 2 + 수학연습 2, 고급수학 1 + 고급수학연습 1, 고급수학 2 + 고급수학연습 2)</p>
       <p class="foot-note">* &lt;미적분학 1&gt;은 자연과학대학 소속 학부생이 듣는 수학 교과로, 산업공학과 학생은 수강이 불가합니다.</p>
       <p class="foot-note">** <b>2027학년도 1학기부터</b> 수학 1·2, 고급수학 1·2, 통계학은 이론과 연습(실험)이 하나의 교과목으로 통합될 예정입니다.
-        (예: 수학 1 + 수학연습 1 → 수학 및 연습 1, 3학점) 자세한 내용은 위 <b>이론–실험 통합 안내</b>를 확인하세요.</p>
+        (예: 수학 1 + 수학연습 1 → 수학 및 연습 1, 3학점) 자세한 내용은 위 <b>이론·실험 통합 안내</b>를 확인하세요.</p>
     </section>
 
     <!-- 4. 과학 -->
@@ -335,14 +343,17 @@
           </div>
         </div>
       </div>
-      <p class="tip">💡 한 분야에서 <b>1·2로 구성된 교과목 중 1에 해당하는 과목</b>과 <b>같은 분야의 1·2로 구분되지 않은 단학기 교과목</b>을 모두 수강하면,
+      <p class="tip">한 분야에서 <b>1·2로 구성된 교과목 중 1에 해당하는 과목</b>과 <b>같은 분야의 1·2로 구분되지 않은 단학기 교과목</b>을 모두 수강하면,
         [과학] 영역에서는 <b>한 과목만 인정</b>됩니다. 인정되지 않은 나머지 과목도 전체 교양 학점으로는 인정받을 수 있습니다.<br>
         예) 화학 분야에서 (화학 1 + 화학실험 1) 4학점과 (화학 + 화학실험) 4학점을 모두 수강하면 → [과학] 영역 <b>4학점만 인정</b>, 전체 교양 교과목으로는 8학점 인정.</p>
       <p class="foot-note">* 1, 2 과목은 수업 내용을 두 학기에 나누어 배우는 반면, 단학기 과목은 한 학기에 몰아서 배웁니다. (예: 화학(단화학))</p>
       <p class="foot-note">** 고교 과정에서 <b>물리학 2(또는 동급 이상의 물리 과목)를 이수한 학생은 물리학 1·2</b>를, <b>이수하지 않은 학생은 물리의 기본 1·2</b>를 이수하는 것이 원칙입니다.
-        물리의 기본 1·2를 이수해야 하는 학생이 물리학 1·2를 수강하려면 <b>물리학성취도평가</b>에 응시해 일정 점수를 취득해야 합니다.</p>
+        물리의 기본 1·2를 이수해야 하는 학생이 물리학 1·2를 수강하려면 <b>신입생 특별시험(물리) — 물리학성취도 시험</b>에 응시해 상위권 성적을 취득해야 합니다.
+        (출처: <a href="https://eng.snu.ac.kr/snu/bbs/BMSR00004/view.do?boardId=5603&amp;menuNo=200176" target="_blank" rel="noreferrer">공과대학 교양 「물리학 1」·「물리의 기본 1」 (재)수강 안내 ↗</a>,
+        <a href="https://physics.snu.ac.kr/academics/undergraduate/resources" target="_blank" rel="noreferrer">물리천문학부 기출시험문제 ↗</a>)
+        반대로 <b>물리의 기본 1·2</b>를 수강하려는 경우에도 담당 교수에게 이메일로 <b>사전 수강 허가</b>를 받아야 합니다.</p>
       <p class="foot-note">*** <b>2027학년도 1학기부터</b> 물리·화학·생물 이론 과목과 실험 과목이 하나의 교과목으로 통합될 예정입니다.
-        (예: 물리학 1 + 물리학실험 1 → 물리학 및 실험 1, 4학점) 이론과 실험 중 한쪽만 이수한 상태라면 위 <b>이론–실험 통합 안내</b>의 Q&amp;A를 확인하세요.</p>
+        (예: 물리학 1 + 물리학실험 1 → 물리학 및 실험 1, 4학점) 이론과 실험 중 한쪽만 이수한 상태라면 위 <b>이론·실험 통합 안내</b>의 Q&amp;A를 확인하세요.</p>
     </section>
 
     <!-- 5. 컴퓨팅 -->
@@ -361,7 +372,7 @@
         <span class="chip">인간의 이해와 사회 분석</span>
         <span class="chip">과학적 사고와 응용</span>
       </div>
-      <p class="tip">💡 각 과목이 어느 영역에 속하는지는 <b>수강신청 사이트와 시간표 사이트의 교양 분류 조회</b>에서 확인할 수 있습니다.
+      <p class="tip">각 과목이 어느 영역에 속하는지는 <b>수강신청 사이트와 시간표 사이트의 교양 분류 조회</b>에서 확인할 수 있습니다.
         3개 영역 × 3학점으로 채우는 것이 가장 간단한 구성입니다.</p>
     </section>
 

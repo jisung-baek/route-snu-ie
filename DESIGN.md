@@ -245,12 +245,22 @@ Supplementary measured pairs (beyond the script's report — all PASS):
 
 ## Space, shape, depth
 
-- **Spacing scale** (4px base; governs tokens, new work, and Fix A — existing page-scale
-  literals migrate opportunistically, never at layout-regression risk):
+- **Spacing scale** (4px base; governs tokens, new work, and Fix A — untouched legacy literals
+  migrate opportunistically, never at layout-regression risk, but any block you edit migrates
+  in the same pass):
   `--space-1: 4px` · `--space-2: 8px` · `--space-3: 12px` · `--space-4: 16px` ·
   `--space-5: 20px` · `--space-6: 24px` · `--space-7: 28px` · `--space-8: 32px` ·
   `--space-10: 40px` · `--space-12: 48px` · `--space-16: 64px` · `--space-18: 72px` ·
   `--space-24: 96px` · page gutter: `--gutter: clamp(20px, 5vw, 48px)` (shipped, formalized).
+  Every margin, padding, and `gap` resolves to a token — an off-scale literal is a defect, not
+  a fine-tune.
+- **One owner per gap** — the vertical space between two blocks belongs to exactly one element,
+  never to a sum. A trailing `margin-bottom` plus a section `padding-bottom` plus the next
+  section's `padding-top` produces a number nobody chose (the home hero shipped 36+40+20=96px
+  that way, reading as a dead band). Prefer the *receiving* section's `padding-top` as the owner
+  and zero the others; inside a flex/grid container, `gap` owns it. Corollary: `margin-top: auto`
+  belongs on the element you actually want pinned to the bottom (the CTA), never mid-stack where
+  it inflates into a void on short content.
 - **Radius** (the signature move, tokenized):
   `--radius-micro: 4px` (sub-16px swatches only) · `--radius-panel: 8px` (all content panels) ·
   `--radius-pill: 999px` (all pressable/pickable) · `--radius-round: 50%` (feedback float).
@@ -268,7 +278,10 @@ Supplementary measured pairs (beyond the script's report — all PASS):
   (feedback float only — the system's largest shadow, one per page) ·
   `--shadow-float-hover: 0 16px 38px rgba(10, 95, 214, 0.34), 0 5px 12px rgba(44, 46, 49, 0.14)`
   (the float's hover lift) · `--shadow-node-hover: 0 8px 20px rgba(24, 33, 47, 0.18)`
-  (roadmap course-box hover — a data-node lift, deeper/neutral vs the brand-tinted float).
+  (roadmap course-box hover — a data-node lift, deeper/neutral vs the brand-tinted float) ·
+  `--shadow-mark: 0 2px 8px rgba(10, 95, 214, 0.24)` (the 28px topbar brand tile — the smallest
+  shadow in the system; a soft blue halo, not a lift. It is the *only* shadow allowed on a
+  non-interactive object, licensed because the mark is a brand asset rather than chrome).
 - **Overlay + focus** (added Phase 3 — the alpha layer the token set initially missed):
   `--overlay-hairline: rgba(255, 255, 255, 0.38)` (the float's translucent white rim) ·
   `--overlay-surface: rgba(255, 255, 255, 0.94)` (the floating label's near-opaque white fill).
@@ -344,6 +357,8 @@ Every `css/base.css` semantic var + roadmap.html's two extras. Δ names the visu
 - **No dark-mode improvisation.** Dark is a deferred, separate `palette.mjs` run + pin re-verify.
 - **No glassmorphism spread** — backdrop blur stays confined to the shipped topbar.
 - **No third radius** between panel and pill; no mixed-radius decoration (the signature is the law).
+- **No stacked gap ownership** — margin + padding + padding across a seam is always a bug, even
+  when the sum happens to land on a token.
 - **Blue never ambient** — no blue washes behind long prose, no blue section backgrounds.
 - **Don't re-vivid the functional colors** — the muted register is the system.
 - **No letterspaced 한글 body; no faux bold/italic** (Pretendard Variable has real weights).

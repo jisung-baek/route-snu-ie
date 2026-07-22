@@ -1,0 +1,40 @@
+{
+  "mcpServers": {
+    "code-review-graph": {
+      "command": "uvx",
+      "args": [
+        "code-review-graph",
+        "serve"
+      ],
+      "cwd": "C:\\Users\\jisungb\\Desktop\\SNU\\\ub3d9\uc544\ub9ac\\unit.ie\\06. \ud559\uc220\ubd80 \ub85c\ub4dc\ub9f5 \uc81c\uc791 \uc0ac\uc5c5\\route-snu-ie"
+    }
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .gemini/hooks/crg-session-start.sh",
+            "name": "code-review-graph status",
+            "timeout": 10000
+          }
+        ]
+      }
+    ],
+    "AfterTool": [
+      {
+        "matcher": "write_file|replace",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .gemini/hooks/crg-update.sh",
+            "name": "code-review-graph update",
+            "timeout": 30000
+          }
+        ]
+      }
+    ]
+  }
+}

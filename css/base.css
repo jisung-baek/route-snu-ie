@@ -131,6 +131,7 @@
   --shadow-float: 0 14px 34px rgba(10, 95, 214, 0.28), 0 4px 10px rgba(44, 46, 49, 0.12);
   --shadow-float-hover: 0 16px 38px rgba(10, 95, 214, 0.34), 0 5px 12px rgba(44, 46, 49, 0.14);
   --shadow-node-hover: 0 8px 20px rgba(24, 33, 47, 0.18);
+  --shadow-mark: 0 2px 8px rgba(10, 95, 214, 0.24);
 
   /* Overlay + focus - the floating object's translucent layer (DESIGN.md expressive moment)
      + the single focus indicator. Alpha is intentional here (layered over page content). */
@@ -158,6 +159,10 @@ body {
   font-family: inherit;
   letter-spacing: 0;
   -webkit-font-smoothing: antialiased;
+  /* 한글은 어절 단위로만 줄바꿈한다 — 음절 중간에서 끊기지 않도록.
+     길어서 한 줄에 못 들어가는 낱말만 break-word가 최후에 쪼갠다. */
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 ::selection {
@@ -193,7 +198,7 @@ p {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: var(--space-2);
   color: var(--text);
   font-size: var(--text-md);
   font-weight: var(--weight-semibold);
@@ -207,9 +212,13 @@ p {
   place-items: center;
   border-radius: var(--radius-panel);
   background: var(--accent-solid);
+  box-shadow: var(--shadow-mark);
   color: var(--accent-on-solid);
-  font-size: var(--text-xs);
-  font-weight: var(--weight-bold);
+}
+
+/* 마크는 currentColor를 타므로 타일의 color 하나가 획 색을 소유한다. */
+.brand-mark svg {
+  display: block;
 }
 
 .nav {
@@ -237,7 +246,7 @@ p {
 .home-hero {
   max-width: 1120px;
   margin: 0 auto;
-  padding: 92px var(--gutter) 40px;
+  padding: var(--space-24) var(--gutter) 0;
 }
 
 .home-copy {
@@ -245,7 +254,7 @@ p {
 }
 
 .eyebrow {
-  margin: 0 0 18px;
+  margin: 0 0 var(--space-4);
   color: var(--accent-text);
   font-size: var(--text-md);
   font-weight: var(--weight-semibold);
@@ -253,7 +262,7 @@ p {
 
 .home-copy h1,
 .section-head h1 {
-  margin: 0 0 22px;
+  margin: 0 0 var(--space-6);
   color: var(--text);
   font-weight: var(--weight-bold);
   line-height: var(--leading-display);
@@ -271,10 +280,15 @@ p {
 
 .home-copy p:not(.eyebrow),
 .section-head p:not(.eyebrow):not(.update-note) {
-  margin: 0 0 36px;
+  margin: 0 0 var(--space-8);
   color: var(--text-secondary);
   font-size: clamp(16px, 1.7vw, 20px);
   line-height: var(--leading-ui);
+}
+
+/* 히어로 아래 간격은 .portal-section의 padding-top이 단독으로 소유한다. */
+.home-copy p:not(.eyebrow):last-child {
+  margin-bottom: 0;
 }
 
 .filter,
@@ -291,13 +305,13 @@ p {
 .portal-section {
   max-width: 1120px;
   margin: 0 auto;
-  padding: 20px var(--gutter) 100px;
+  padding: var(--space-16) var(--gutter) var(--space-24);
 }
 
 .portal-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  gap: var(--space-6);
 }
 
 @media (max-width: 560px) {
@@ -308,9 +322,9 @@ p {
 
 .portal-card {
   display: flex;
-  min-height: 260px;
+  min-height: 220px;
   flex-direction: column;
-  padding: 30px;
+  padding: var(--space-8);
   border-radius: var(--radius-panel);
   background: var(--surface);
   color: var(--text);
@@ -324,6 +338,7 @@ p {
 }
 
 .portal-card .num {
+  margin-bottom: var(--space-6);
   color: var(--accent-text);
   font-size: var(--text-base);
   font-weight: var(--weight-bold);
@@ -331,8 +346,8 @@ p {
 }
 
 .portal-card h2 {
-  margin: auto 0 10px;
-  font-size: 26px;
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-2xl);
   font-weight: var(--weight-bold);
 }
 
@@ -340,11 +355,13 @@ p {
   margin: 0;
   color: var(--text-secondary);
   font-size: var(--text-md);
-  line-height: 1.55;
+  line-height: var(--leading-body);
 }
 
+/* CTA만 카드 바닥에 고정 — 본문은 위에서부터 자연스럽게 흐른다. */
 .portal-card .more {
-  margin-top: 16px;
+  margin-top: auto;
+  padding-top: var(--space-4);
   color: var(--accent-text);
   font-size: var(--text-md);
   font-weight: var(--weight-semibold);
@@ -505,9 +522,14 @@ p {
   font-weight: var(--weight-semibold);
 }
 
+/* optical alignment: hang the pill left by exactly its own inset so the label's
+   text edge lines up with the h3 text below it. The pill box intentionally
+   breaks the card's content edge — the chips row below stays put, so only one
+   element hangs rather than the whole left side going ragged. */
 .course-code {
-  margin-bottom: 8px;
-  padding: 3px 10px;
+  margin-bottom: var(--space-2);
+  margin-left: calc(var(--space-2) * -1);
+  padding: var(--space-1) var(--space-2);
   background: var(--accent-bg-subtle);
   color: var(--accent-text);
   font-size: var(--text-xs);
@@ -515,7 +537,7 @@ p {
 
 .badge {
   flex-shrink: 0;
-  padding: 3px 10px;
+  padding: var(--space-1) var(--space-2);
   background: var(--accent-bg-subtle);
   color: var(--accent-text);
   font-size: var(--text-xs);
@@ -529,16 +551,17 @@ p {
 .offering-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-top: auto;
-  padding-top: 18px;
+  gap: var(--space-2);
+  /* no margin-top:auto — grid stretches cards to the tallest in the row, and
+     pinning the chips to the bottom inflates that slack into a mid-card void */
+  padding-top: var(--space-5);
 }
 
 .offering-list span {
   display: inline-flex;
   align-items: center;
   min-height: 28px;
-  padding: 0 11px;
+  padding: 0 var(--space-3);
   border-radius: var(--radius-pill);
   background: var(--surface);
   color: var(--text-secondary);
@@ -1228,6 +1251,11 @@ p {
   .home-hero,
   .section {
     padding-top: var(--space-12);
+  }
+
+  .portal-section {
+    padding-top: var(--space-10);
+    padding-bottom: var(--space-16);
   }
 
   .credit-row,
