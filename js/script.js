@@ -836,7 +836,7 @@ function initFeedbackButton() {
   button.href = "https://forms.gle/vGcq96qUARLFE2fM7";
   button.target = "_blank";
   button.rel = "noreferrer";
-  button.setAttribute("aria-label", "SNU IE Navigator 문의 및 제보 폼 열기");
+  button.setAttribute("aria-label", "Route SNU IE 문의 및 제보 폼 열기");
   button.title = "문의 및 제보";
   button.innerHTML = `
     <svg class="feedback-float-icon" viewBox="0 0 24 24" aria-hidden="true">

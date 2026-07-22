@@ -1,6 +1,6 @@
 # JOURNEY.md
 
-<!-- The structural and temporal design spec for SNU IE Navigator. Pairs with DESIGN.md (visual
+<!-- The structural and temporal design spec for Route SNU IE. Pairs with DESIGN.md (visual
 tokens) once Phase 2 of .design-foundations/plans/2026-07-20-snu-ie-navigator-refinement.md locks
 it — DESIGN.md does not exist yet. For visual tokens, see DESIGN.md when it lands.
 
@@ -131,7 +131,7 @@ department notice pages and the SNU academic-curriculum page (inline citations i
 answers), and per-학번 requirement PDFs + a 2024 공과대학 공통교과목 PDF (`docs/requirements/*.pdf`,
 `docs/college_common_courses_2024.pdf`, linked from `rules.html`/`faq.html`).
 
-**Global navigation labels:** Brand mark ("IE" + "SNU IE Navigator", `aria-label="SNU IE Navigator
+**Global navigation labels:** Brand mark ("IE" + "Route SNU IE", `aria-label="Route SNU IE
 홈"`) functions as the Home link on every page, including `index.html` itself. Beside it, an
 identical 4-item nav appears on all 6 pages, same order, same labels, verified verbatim:
 "전공 로드맵" → `roadmap.html`, "이수규정" → `rules.html`, "자주 묻는 질문" → `faq.html`, "개설 과목 검색" →
@@ -178,7 +178,7 @@ brand mark reaches it).
 
 **Content blocks (in order):**
 1. Topbar — brand mark/home link + 4-item global nav (no item marked active).
-2. Home hero — eyebrow "서울대학교 산업공학과 학업 가이드", H1 "SNU IE Navigator", one short paragraph
+2. Home hero — eyebrow "서울대학교 산업공학과 학업 가이드", H1 "Route SNU IE", one short paragraph
    naming the site's 4 areas and its promise ("필요한 정보를 빠르게 찾아 학업 계획을 세워보세요").
 3. Portal grid — 4 numbered cards (01–04), one per section: 전공 로드맵 / 이수규정 / 자주 묻는 질문 /
    개설 과목 검색, each with a title, one-sentence description, and a "자세히 보기 →" affordance, in
