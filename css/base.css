@@ -373,6 +373,21 @@ p {
   padding: 72px var(--gutter) 100px;
 }
 
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+  color: var(--accent-text);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
 .section.narrow {
   max-width: 860px;
 }
