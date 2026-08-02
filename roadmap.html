@@ -190,16 +190,16 @@
 .roadmap-grid {
   position: relative;
   display: grid;
-  grid-template-columns: 96px repeat(8, minmax(112px, 1fr)) 144px;
+  grid-template-columns: 96px repeat(8, minmax(108px, 1fr)) 144px;
   grid-template-rows: 40px minmax(64px, auto) minmax(64px, auto) minmax(108px, auto) repeat(7, minmax(64px, auto));
-  gap: 12px 10px;
-  min-width: 1240px;
+  gap: 16px 34px;
+  min-width: 1440px;
   padding: 14px;
 }
 
 .roadmap-grid.show-grad {
-  grid-template-columns: 96px repeat(8, minmax(102px, 1fr)) 144px repeat(8, minmax(116px, 1fr));
-  min-width: 2300px;
+  grid-template-columns: 96px repeat(8, minmax(108px, 1fr)) 144px repeat(8, minmax(116px, 1fr));
+  min-width: 2620px;
 }
 
 .connector-svg {
@@ -565,6 +565,61 @@
   font-weight: var(--weight-bold);
 }
 
+/* ---------- 연결선 hover ---------- */
+.connector-svg .edge-hit {
+  pointer-events: stroke;
+  cursor: pointer;
+}
+
+.connector-svg.dim .edge:not(.hl) .edge-vis {
+  opacity: 0.18;
+  transition: opacity var(--duration-fast) ease;
+}
+
+.connector-svg .edge.hl .edge-vis {
+  stroke-width: 3.4;
+}
+
+.edge-tip .et-body {
+  padding: 11px 14px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.edge-tip .et-body b {
+  font-weight: var(--weight-bold);
+}
+
+.edge-tip .et-arrow {
+  margin: 0 7px;
+  color: var(--accent-7);
+}
+
+.edge-tip .et-tag {
+  display: block;
+  width: fit-content;
+  margin-top: 9px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 11.5px;
+  font-weight: var(--weight-bold);
+}
+
+.edge-tip .et-req {
+  background: var(--accent-solid);
+  color: #fff;
+}
+
+.edge-tip .et-rec {
+  background: rgba(255, 255, 255, 0.18);
+  color: var(--accent-7);
+}
+
+.edge-tip .et-solid {
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--accent-7);
+}
+
 /* ---------- image download control ---------- */
 .dl-menu {
   position: relative;
@@ -651,6 +706,8 @@
   text-align: left;
   cursor: pointer;
   font: inherit;
+  text-decoration: none;
+  color: inherit;
 }
 
 .dl-opt:hover,
@@ -749,14 +806,14 @@
             <svg class="caret" aria-hidden="true" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4.75 6 7.75 9 4.75"/></svg>
           </button>
           <div class="dl-pop" id="dlPop" role="menu" aria-label="로드맵 이미지 다운로드 옵션" hidden>
-            <button class="dl-opt" type="button" role="menuitem" data-grad="0">
+            <a class="dl-opt" role="menuitem" href="img/roadmap-undergrad.png" download="산업공학과_전공로드맵.png">
               <b>학부 로드맵</b>
               <span>학부 전공 과목 로드맵</span>
-            </button>
-            <button class="dl-opt" type="button" role="menuitem" data-grad="1">
+            </a>
+            <a class="dl-opt" role="menuitem" href="img/roadmap-grad.png" download="산업공학과_전공로드맵_대학원포함.png">
               <b>대학원 과정 포함</b>
               <span>학부 + 대학원 교과목까지</span>
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -768,9 +825,6 @@
           <li><span class="swatch boxf"></span>교양필수</li>
           <li><span class="swatch boxg"></span>대학원</li>
         </ul>
-      </div>
-      <div class="prereq-notes">
-        <p><span class="tag">추가 권장 선수과목</span><b>경영과학2</b>는 공학수학2를, <b>산업공학통계</b>는 공학수학2·통계학을, <b>데이터마이닝</b>은 산업컴퓨팅개론을, <b>생산관리·물류관리</b>는 경영과학1·2를 먼저 이수하는 것을 권장합니다.</p>
       </div>
     </div>
 
@@ -834,7 +888,7 @@
         <!-- 시스템운영 -->
         <div class="lane-bg alt" style="grid-row:5;"></div>
         <div class="area-header ca" style="grid-row:5;">시스템<br>운영</div>
-        <span id="prod" class="course-box highlight c5" style="grid-row:5;" data-name="생산관리" data-old="406.310" data-new="IE.3210" data-desc="">생산관리</span>
+        <span id="prod" class="course-box highlight c6" style="grid-row:5;" data-name="생산관리" data-old="406.310" data-new="IE.3210" data-desc="">생산관리</span>
         <span id="logi" class="course-box c7" style="grid-row:5;" data-name="물류관리" data-old="406.325" data-new="IE.3251" data-desc="">물류관리</span>
         <div class="g-cell grad-col" style="grid-row:5;grid-column:11/13;">
           <span id="g_prodplan" class="course-box graduate" data-name="생산계획 및 통제" data-old="406.552" data-new="IE.G210" data-desc="">생산계획 및 통제</span>
@@ -941,6 +995,7 @@
 </main>
 
 <div id="courseTip" class="course-tip" role="tooltip" aria-hidden="true"></div>
+<div id="edgeTip" class="course-tip edge-tip" role="tooltip" aria-hidden="true"></div>
 <a class="feedback-float" href="https://forms.gle/vGcq96qUARLFE2fM7" target="_blank" rel="noreferrer" aria-label="Route SNU IE 문의 및 제보 폼 열기" title="문의 및 제보">
   <svg class="feedback-float-icon" viewBox="0 0 24 24" aria-hidden="true">
     <path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9H13a8 8 0 0 1 8 8v.5Z"></path>
@@ -1009,31 +1064,51 @@ function initGradToggle(){
 /* ---------- connectors ---------- */
 const REQ="#0a5fd6", REC="#b9c0cc", SOLID="#c9cdd6";
 const specs=[
+  /* 교양 수학·통계 기초 체인 (연회색) */
   {k:"link",from:"math1",to:"math2",t:"solid"},
   {k:"link",from:"math2",to:"stat",t:"solid"},
   {k:"link",from:"math2",to:"emath1",t:"solid"},
   {k:"link",from:"emath1",to:"emath2",t:"solid"},
+
+  /* 필수 선수과목 (파랑) */
   {k:"link",from:"emath1",to:"or1",t:"req"},
+  {k:"link",from:"emath1",to:"imrm",t:"req"},
   {k:"link",from:"emath2",to:"imrm",t:"req"},
   {k:"link",from:"comp",to:"dma",t:"req",mid:"src"},
+  {k:"link",from:"stat",to:"iestat",t:"req",mid:"src"},
+  {k:"link",from:"stat",to:"ergo",t:"req",mid:"src"},
   {k:"link",from:"ipd",to:"pqd",t:"req"},
-  {k:"link",from:"ipd",to:"svc",t:"req"},
   {k:"link",from:"prod",to:"logi",t:"req"},
   {k:"link",from:"or1",to:"optm",t:"req"},
   {k:"link",from:"optm",to:"opta",t:"req"},
+  {k:"link",from:"or1",to:"opta",t:"req",route:"under"},
   {k:"merge",from:["or2","iestat"],to:"sim",t:"req"},
   {k:"merge",from:["dma","iestat"],to:"dmine",t:"req"},
   {k:"vertical",from:"dmine",to:"bigdata",t:"req"},
   {k:"link",from:"dmine",to:"textan",t:"req"},
   {k:"link",from:"iestat",to:"textan",t:"req",enter:"top"},
+
+  /* 권장 선수과목 (회색) */
   {k:"link",from:"scimgmt",to:"creative",t:"rec"},
-  {k:"link",from:"icomp",to:"imrm",t:"rec"},
   {k:"link",from:"or1",to:"or2",t:"rec"},
   {k:"vertical",from:"ergo",to:"ergolab",t:"rec"},
   {k:"link",from:"ergo",to:"ergodes",t:"rec"},
   {k:"link",from:"ergodes",to:"hid",t:"rec"},
   {k:"link",from:"techm",to:"econ",t:"rec"},
-  {k:"branch",from:"econ",to:["finintro","fintech"],t:"rec"}
+  {k:"branch",from:"econ",to:["finintro","fintech"],t:"rec"},
+  {k:"link",from:"emath2",to:"or2",t:"rec"},
+  {k:"link",from:"emath2",to:"iestat",t:"rec"},
+  {k:"link",from:"icomp",to:"dma",t:"rec"},
+  {k:"link",from:"icomp",to:"dmine",t:"rec"},
+  {k:"link",from:"comp",to:"imrm",t:"rec",route:"under"},
+  {k:"link",from:"comp",to:"optm",t:"rec",route:"under"},
+  {k:"link",from:"comp",to:"opta",t:"rec",route:"under"},
+  {k:"link",from:"ipd",to:"svc",t:"rec"},
+  {k:"branch",from:"or1",to:["svc","prod","logi"],t:"rec"},
+  {k:"branch",from:"or2",to:["svc","prod","logi"],t:"rec"},
+
+  /* 산업공학의 이해 → 각 영역 첫 과목 (회색, 교수 피드백) */
+  {k:"branch",from:"ieintro",to:["scimgmt","or1","or2","iestat","dma","ergo","techm","econ"],t:"rec"}
 ];
 const SVG_NS="http://www.w3.org/2000/svg", OFF=16;
 
@@ -1056,8 +1131,13 @@ function drawConnectors(){
     const left=r.left-wb.left+sx,right=r.right-wb.left+sx,top=r.top-wb.top+sy,bottom=r.bottom-wb.top+sy;
     return{left,right,top,bottom,cx:left+r.width/2,cy:top+r.height/2};};
   const col=t=>t==="req"?REQ:(t==="rec"?REC:SOLID);
-  const add=(d,t)=>{const p=document.createElementNS(SVG_NS,"path");p.setAttribute("d",d);p.setAttribute("fill","none");
-    p.setAttribute("stroke",col(t));p.setAttribute("stroke-width",t==="req"?"2.2":"1.6");
+  const W=t=>t==="req"?"1.9":"1.4";  /* 선 두께 (살짝 얇게) */
+  /* add()는 현재 그리는 간선(edge)의 path 조각을 버퍼에 모은다 — 이후 hover 가능한 그룹으로 묶기 위함 */
+  let edgeSegs=null;
+  const add=(d,t)=>{
+    if(edgeSegs){edgeSegs.push(d);return;}
+    const p=document.createElementNS(SVG_NS,"path");p.setAttribute("d",d);p.setAttribute("fill","none");
+    p.setAttribute("stroke",col(t));p.setAttribute("stroke-width",W(t));
     p.setAttribute("stroke-linecap","round");p.setAttribute("stroke-linejoin","round");svg.appendChild(p);};
   const arrow=(x,y,dir,t)=>{const s=5;let d;
     if(dir==="d")d=`M ${x-s} ${y-s} L ${x} ${y} L ${x+s} ${y-s}`;
@@ -1080,6 +1160,24 @@ function drawConnectors(){
   const exY=(id,idx,p)=>{const f=exitF[idx+"|"+id]; return f==null?p.cy:p.top+(p.bottom-p.top)*f;};
   const enY=(id,idx,p)=>{const f=entryF[idx+"|"+id]; return f==null?p.cy:p.top+(p.bottom-p.top)*f;};
 
+  /* 세로선 레인 분리 — 같은 세로 통로에 겹치는 link 세로구간을 도달 위치 순으로 좌우로 벌려 구별되게 한다 */
+  const LANE_GAP=8, laneMidX={}, vbuckets={};
+  specs.forEach((sp,idx)=>{
+    if(sp.k!=="link"||sp.enter==="top"||sp.route==="under")return;
+    const s=P(sp.from),e=P(sp.to);if(!s||!e)return;
+    const base=(e.left>s.right)?((sp.mid==="src")?s.right+OFF:e.left-OFF):(s.right+OFF);
+    const y2=Math.max(exY(sp.from,idx,s),enY(sp.to,idx,e));
+    const key=Math.round(base/16);
+    (vbuckets[key]=vbuckets[key]||[]).push({idx,base,y2});
+  });
+  Object.keys(vbuckets).forEach(k=>{
+    const L=vbuckets[k];
+    if(L.length<2){laneMidX[L[0].idx]=L[0].base;return;}
+    L.sort((a,b)=>a.y2-b.y2);
+    const n=L.length;
+    L.forEach((it,i)=>{laneMidX[it.idx]=it.base+(i-(n-1)/2)*LANE_GAP;});
+  });
+
   const link=(idx,a,b,t,opt)=>{opt=opt||{};const s=P(a),e=P(b);if(!s||!e)return;
     const sy=exY(a,idx,s),ey=enY(b,idx,e);
     if(opt.enter==="top"){const tx=e.cx;
@@ -1087,7 +1185,8 @@ function drawConnectors(){
     if(opt.route==="under"){const tx=s.right+OFF, uy=e.bottom+7;
       add(`M ${s.right} ${sy} H ${tx} V ${uy} H ${e.cx} V ${e.bottom}`,t);arrow(e.cx,e.bottom,"u",t);return;}
     let midX;
-    if(e.left>s.right){ midX = (opt.mid==="src") ? s.right+OFF : e.left-OFF; }
+    if(laneMidX[idx]!=null){ midX=laneMidX[idx]; }
+    else if(e.left>s.right){ midX = (opt.mid==="src") ? s.right+OFF : e.left-OFF; }
     else { midX = s.right+OFF; }
     add(`M ${s.right} ${sy} H ${midX} V ${ey} H ${e.left}`,t);arrow(e.left,ey,"r",t);};
   const branch=(idx,a,bs,t)=>{const s=P(a);if(!s)return;const es=bs.map(P);if(es.some(x=>!x))return;
@@ -1101,11 +1200,33 @@ function drawConnectors(){
   const vertical=(idx,a,b,t)=>{const s=P(a),e=P(b);if(!s||!e)return;
     const x=s.cx,y1=s.cy<=e.cy?s.bottom:s.top,y2=s.cy<=e.cy?e.top:e.bottom;add(`M ${x} ${y1} V ${y2}`,t);arrow(x,y2,"d",t);};
 
-  specs.forEach((sp,idx)=>{
+  // 그리기 순서: 연회색 → 회색(권장) → 파랑(필수) 순으로, 겹쳐도 파랑이 항상 위에 보이도록
+  const zrank=t=>t==="req"?2:(t==="rec"?1:0);
+  const drawOrder=[...specs.keys()].sort((a,b)=>zrank(specs[a].t)-zrank(specs[b].t));
+  const nameOf=id=>{const b=document.getElementById(id);return b?(b.dataset.name||b.textContent.trim()):id;};
+  drawOrder.forEach(idx=>{
+    const sp=specs[idx];
+    edgeSegs=[];
     if(sp.k==="link")link(idx,sp.from,sp.to,sp.t,sp);
     else if(sp.k==="branch")branch(idx,sp.from,sp.to,sp.t);
     else if(sp.k==="merge")merge(idx,sp.from,sp.to,sp.t);
     else if(sp.k==="vertical")vertical(idx,sp.from,sp.to,sp.t);
+    const segs=edgeSegs; edgeSegs=null;
+    if(!segs||!segs.length)return;
+    /* hover 가능한 간선 그룹: 넓은 투명 hit path + 실제 보이는 path들 */
+    const g=document.createElementNS(SVG_NS,"g");
+    g.setAttribute("class","edge");
+    g.dataset.from=(sp.k==="merge"?sp.from:[sp.from]).map(nameOf).join(", ");
+    g.dataset.to=(sp.k==="branch"?sp.to:[sp.to]).map(nameOf).join(", ");
+    g.dataset.type=sp.t;
+    const hit=document.createElementNS(SVG_NS,"path");
+    hit.setAttribute("class","edge-hit");hit.setAttribute("d",segs.join(" "));
+    hit.setAttribute("fill","none");hit.setAttribute("stroke","transparent");hit.setAttribute("stroke-width","13");
+    g.appendChild(hit);
+    segs.forEach(d=>{const p=document.createElementNS(SVG_NS,"path");p.setAttribute("class","edge-vis");
+      p.setAttribute("d",d);p.setAttribute("fill","none");p.setAttribute("stroke",col(sp.t));p.setAttribute("stroke-width",W(sp.t));
+      p.setAttribute("stroke-linecap","round");p.setAttribute("stroke-linejoin","round");g.appendChild(p);});
+    svg.appendChild(g);
   });
 }
 function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);};}
@@ -1122,109 +1243,34 @@ function initImageDownload(){
   btn.addEventListener("click",e=>{e.stopPropagation();pop.hidden?open():close();});
   document.addEventListener("click",e=>{if(!menu.contains(e.target))close();});
   document.addEventListener("keydown",e=>{if(e.key==="Escape")close();});
-  pop.querySelectorAll(".dl-opt").forEach(opt=>{
-    opt.addEventListener("click",()=>{close();exportRoadmap(opt.dataset.grad==="1");});
-  });
+  /* 옵션은 미리 만들어 둔 정적 이미지를 바로 내려받는 <a download> 링크 — 클릭 시 메뉴만 닫는다 */
+  pop.querySelectorAll(".dl-opt").forEach(opt=>opt.addEventListener("click",close));
 }
 
-/* load html2canvas on demand (only when the user first downloads) — keeps page load light */
-function ensureHtml2canvas(){
-  if(typeof html2canvas==="function")return Promise.resolve(true);
-  if(!window.__h2cPromise){
-    window.__h2cPromise=new Promise((resolve,reject)=>{
-      const s=document.createElement("script");
-      s.src="js/html2canvas.min.js";
-      s.onload=()=>resolve();
-      s.onerror=()=>{window.__h2cPromise=null;reject(new Error("html2canvas load failed"));};
-      document.head.appendChild(s);
-    });
-  }
-  return window.__h2cPromise.then(()=>typeof html2canvas==="function").catch(()=>false);
-}
-
-async function exportRoadmap(includeGrad){
-  const btn=document.getElementById("dlBtn");
-  const label=btn&&btn.querySelector(".dl-label");
-  const wrapper=document.querySelector(".roadmap-wrapper");
-  const grid=document.getElementById("ugGrid");
-  if(!wrapper||!grid)return;
-  hideTip();
-  const prevLabel=label?label.textContent:"";
-  if(btn)btn.disabled=true;
-  if(label)label.textContent="이미지 생성 중…";
-
-  if(!(await ensureHtml2canvas())){
-    alert("이미지 생성 도구를 불러오지 못했습니다. 네트워크 연결을 확인한 뒤 다시 시도해 주세요.");
-    if(btn)btn.disabled=false;
-    if(label)label.textContent=prevLabel;
-    return;
-  }
-
-  /* remember live state */
-  const prevShowGrad=grid.classList.contains("show-grad");
-  const prevScrollL=wrapper.scrollLeft, prevScrollT=wrapper.scrollTop;
-  const hadInlineStyle=wrapper.hasAttribute("style");
-  const savedWrapStyle=wrapper.getAttribute("style")||"";
-
-  /* switch to a clean, fully-expanded export layout */
-  grid.classList.toggle("show-grad",includeGrad);
-  grid.classList.add("exporting");
-  wrapper.scrollLeft=0; wrapper.scrollTop=0;
-  const fullW=grid.scrollWidth, fullH=grid.scrollHeight;
-  wrapper.style.overflow="visible";
-  wrapper.style.width=fullW+"px";
-  wrapper.style.maxWidth="none";
-  drawConnectors();
-
-  /* undergrad-only image: trim the trailing empty column that held the (now hidden) toggle */
-  let captureW=fullW;
-  if(!includeGrad){
-    const gcs=getComputedStyle(grid);
-    const cols=(gcs.gridTemplateColumns||"").trim().split(/\s+/);
-    const lastCol=parseFloat(cols[cols.length-1])||0;
-    const colGap=parseFloat(gcs.columnGap||gcs.gap||"0")||0;
-    if(lastCol>0)captureW=Math.max(1,Math.round(fullW-(lastCol+colGap)));
-  }
-
-  const bg=getComputedStyle(wrapper).backgroundColor||"#ffffff";
-  try{
-    if(document.fonts&&document.fonts.ready){try{await document.fonts.ready;}catch(e){}}
-    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-    const canvas=await html2canvas(wrapper,{
-      backgroundColor:bg,
-      scale:2,
-      width:captureW,
-      height:fullH,
-      windowWidth:fullW+120,
-      windowHeight:fullH+120,
-      scrollX:0,
-      scrollY:0,
-      useCORS:true,
-      logging:false
-    });
-    const a=document.createElement("a");
-    a.download=includeGrad?"산업공학과_전공로드맵_대학원포함.png":"산업공학과_전공로드맵.png";
-    a.href=canvas.toDataURL("image/png");
-    a.click();
-  }catch(err){
-    alert("이미지를 생성하는 중 문제가 발생했습니다. 다시 시도해 주세요.");
-  }finally{
-    /* restore live state */
-    if(hadInlineStyle)wrapper.setAttribute("style",savedWrapStyle);
-    else wrapper.removeAttribute("style");
-    grid.classList.remove("exporting");
-    grid.classList.toggle("show-grad",prevShowGrad);
-    wrapper.scrollLeft=prevScrollL; wrapper.scrollTop=prevScrollT;
-    drawConnectors();
-    if(btn)btn.disabled=false;
-    if(label)label.textContent=prevLabel;
-  }
+/* ---------- 연결선 hover: 어디→어디, 필수/권장 툴팁 + 하이라이트 ---------- */
+function initEdgeHover(){
+  const svg=document.querySelector(".connector-svg");
+  const tipEl=document.getElementById("edgeTip");
+  if(!svg||!tipEl)return;
+  const label=t=>t==="rec"?"권장 선수과목":(t==="req"?"필수 선수과목":"기초 연계");
+  const move=evt=>{const pad=14;let x=evt.clientX+16,y=evt.clientY+18;const tw=tipEl.offsetWidth,th=tipEl.offsetHeight;
+    if(x+tw+pad>window.innerWidth)x=window.innerWidth-tw-pad;
+    if(y+th+pad>window.innerHeight)y=evt.clientY-th-18;
+    if(x<pad)x=pad;if(y<pad)y=pad;tipEl.style.left=x+"px";tipEl.style.top=y+"px";};
+  const show=(g,evt)=>{const t=g.dataset.type;
+    tipEl.innerHTML='<div class="et-body"><b>'+esc(g.dataset.from)+'</b><span class="et-arrow">→</span><b>'+esc(g.dataset.to)+'</b><span class="et-tag et-'+t+'">'+label(t)+'</span></div>';
+    tipEl.classList.add("show");tipEl.setAttribute("aria-hidden","false");move(evt);};
+  const hide=()=>{tipEl.classList.remove("show");tipEl.setAttribute("aria-hidden","true");};
+  svg.addEventListener("mouseover",e=>{const g=e.target.closest(".edge");if(!g)return;hideTip();svg.classList.add("dim");g.classList.add("hl");show(g,e);});
+  svg.addEventListener("mousemove",e=>{if(tipEl.classList.contains("show"))move(e);});
+  svg.addEventListener("mouseout",e=>{const g=e.target.closest(".edge");if(!g)return;g.classList.remove("hl");svg.classList.remove("dim");hide();});
 }
 
 document.addEventListener("DOMContentLoaded",()=>{
   bindTips(document.getElementById("ugGrid"));
   initGradToggle();
   initImageDownload();
+  initEdgeHover();
   drawConnectors();
 });
 window.addEventListener("load",drawConnectors);
