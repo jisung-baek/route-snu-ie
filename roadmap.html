@@ -1139,7 +1139,7 @@ function drawConnectors(){
     const p=document.createElementNS(SVG_NS,"path");p.setAttribute("d",d);p.setAttribute("fill","none");
     p.setAttribute("stroke",col(t));p.setAttribute("stroke-width",W(t));
     p.setAttribute("stroke-linecap","round");p.setAttribute("stroke-linejoin","round");svg.appendChild(p);};
-  const arrow=(x,y,dir,t)=>{const s=5;let d;
+  const arrow=(x,y,dir,t)=>{const s=3.4;let d;
     if(dir==="d")d=`M ${x-s} ${y-s} L ${x} ${y} L ${x+s} ${y-s}`;
     else if(dir==="u")d=`M ${x-s} ${y+s} L ${x} ${y} L ${x+s} ${y+s}`;
     else d=`M ${x-s} ${y-s} L ${x} ${y} L ${x-s} ${y+s}`;
@@ -1160,22 +1160,29 @@ function drawConnectors(){
   const exY=(id,idx,p)=>{const f=exitF[idx+"|"+id]; return f==null?p.cy:p.top+(p.bottom-p.top)*f;};
   const enY=(id,idx,p)=>{const f=entryF[idx+"|"+id]; return f==null?p.cy:p.top+(p.bottom-p.top)*f;};
 
-  /* 세로선 레인 분리 — 같은 세로 통로에 겹치는 link 세로구간을 도달 위치 순으로 좌우로 벌려 구별되게 한다 */
+  /* 세로선 레인 분리 — 같은 세로 통로에서 y구간이 '실제로 겹치는' link 세로구간만 좌우로 벌린다.
+     (같은 열의 다른 행처럼 안 겹치는 선은 벌리지 않아, 화살표가 박스 경계까지 밀리지 않는다) */
   const LANE_GAP=8, laneMidX={}, vbuckets={};
   specs.forEach((sp,idx)=>{
     if(sp.k!=="link"||sp.enter==="top"||sp.route==="under")return;
     const s=P(sp.from),e=P(sp.to);if(!s||!e)return;
     const base=(e.left>s.right)?((sp.mid==="src")?s.right+OFF:e.left-OFF):(s.right+OFF);
-    const y2=Math.max(exY(sp.from,idx,s),enY(sp.to,idx,e));
+    const a=exY(sp.from,idx,s),b=enY(sp.to,idx,e);
     const key=Math.round(base/16);
-    (vbuckets[key]=vbuckets[key]||[]).push({idx,base,y2});
+    (vbuckets[key]=vbuckets[key]||[]).push({idx,base,y1:Math.min(a,b),y2:Math.max(a,b)});
   });
   Object.keys(vbuckets).forEach(k=>{
     const L=vbuckets[k];
     if(L.length<2){laneMidX[L[0].idx]=L[0].base;return;}
-    L.sort((a,b)=>a.y2-b.y2);
-    const n=L.length;
-    L.forEach((it,i)=>{laneMidX[it.idx]=it.base+(i-(n-1)/2)*LANE_GAP;});
+    /* 구간 그래프 레인 배정: y구간이 겹치면 다른 레인, 안 겹치면 레인 재사용 */
+    L.sort((a,b)=>a.y1-b.y1);
+    const laneEnd=[];
+    L.forEach(it=>{let lane=-1;
+      for(let j=0;j<laneEnd.length;j++){if(laneEnd[j]<=it.y1){lane=j;break;}}
+      if(lane<0)lane=laneEnd.length;
+      laneEnd[lane]=it.y2; it.lane=lane;});
+    const nL=laneEnd.length;
+    L.forEach(it=>{laneMidX[it.idx]=it.base+(it.lane-(nL-1)/2)*LANE_GAP;});
   });
 
   const link=(idx,a,b,t,opt)=>{opt=opt||{};const s=P(a),e=P(b);if(!s||!e)return;
@@ -1188,6 +1195,8 @@ function drawConnectors(){
     if(laneMidX[idx]!=null){ midX=laneMidX[idx]; }
     else if(e.left>s.right){ midX = (opt.mid==="src") ? s.right+OFF : e.left-OFF; }
     else { midX = s.right+OFF; }
+    /* 오른쪽으로 가는 선은 화살표 앞에 최소 가로 여백을 남긴다 (세로선이 화살촉에 바로 붙지 않게) */
+    if(e.left>s.right) midX=Math.max(s.right+6,Math.min(midX,e.left-10));
     add(`M ${s.right} ${sy} H ${midX} V ${ey} H ${e.left}`,t);arrow(e.left,ey,"r",t);};
   const branch=(idx,a,bs,t)=>{const s=P(a);if(!s)return;const es=bs.map(P);if(es.some(x=>!x))return;
     const sy=exY(a,idx,s),tx=s.right+OFF;const eys=bs.map((b,i)=>enY(b,idx,es[i]));
