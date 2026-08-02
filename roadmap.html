@@ -286,12 +286,26 @@
   min-width: 0;
 }
 
+/* 스택 내부 간격은 세로 연결선이 그려지는 유일한 공간이다.
+   8px에서는 화살표가 거의 보이지 않고 hover 타겟도 8px뿐이라 사실상 잡을 수 없어 16px로 넓힌다. */
 .course-stack {
   display: grid;
   width: 100%;
-  gap: 8px;
+  gap: var(--space-4);
   align-content: center;
   justify-items: center;
+}
+
+/* 셀/스택 래퍼는 커넥터 SVG(z-index 2)보다 위에 그려지므로, 그대로 두면
+   스택 내부 간격(8px)을 지나는 세로 연결선의 hover를 가로챈다.
+   래퍼는 포인터를 통과시키고 실제 박스만 이벤트를 받는다. */
+.course-cell,
+.course-stack {
+  pointer-events: none;
+}
+
+.course-box {
+  pointer-events: auto;
 }
 
 .course-box {
@@ -569,6 +583,10 @@
 .connector-svg .edge-hit {
   pointer-events: stroke;
   cursor: pointer;
+}
+
+.connector-svg .edge-vis {
+  pointer-events: none;
 }
 
 .connector-svg.dim .edge:not(.hl) .edge-vis {
@@ -1132,10 +1150,11 @@ function drawConnectors(){
     return{left,right,top,bottom,cx:left+r.width/2,cy:top+r.height/2};};
   const col=t=>t==="req"?REQ:(t==="rec"?REC:SOLID);
   const W=t=>t==="req"?"1.9":"1.4";  /* 선 두께 (살짝 얇게) */
+  const HIT_W=18, VERTICAL_HIT_W=56, VERTICAL_HIT_EXT=6;
   /* add()는 현재 그리는 간선(edge)의 path 조각을 버퍼에 모은다 — 이후 hover 가능한 그룹으로 묶기 위함 */
-  let edgeSegs=null;
-  const add=(d,t)=>{
-    if(edgeSegs){edgeSegs.push(d);return;}
+  let edgeSegs=null, edgeHitSegs=null;
+  const add=(d,t,hitD)=>{
+    if(edgeSegs){edgeSegs.push(d);edgeHitSegs.push(hitD||d);return;}
     const p=document.createElementNS(SVG_NS,"path");p.setAttribute("d",d);p.setAttribute("fill","none");
     p.setAttribute("stroke",col(t));p.setAttribute("stroke-width",W(t));
     p.setAttribute("stroke-linecap","round");p.setAttribute("stroke-linejoin","round");svg.appendChild(p);};
@@ -1156,20 +1175,71 @@ function drawConnectors(){
   });
   const exitF={},entryF={};
   for(const k in outMap){const L=outMap[k];L.forEach((key,i)=>exitF[key]=(i+1)/(L.length+1));}
-  for(const k in inMap){const L=inMap[k];L.forEach((key,i)=>entryF[key]=(i+1)/(L.length+1));}
+  /* 진입점이 홀수 개면 가운데 하나가 정확히 박스 중앙(cy)에 놓인다. 같은 행 박스의 출구선도
+     대부분 중앙에서 나오므로 그 가로선과 정확히 겹친다 — 진입 묶음 전체를 살짝 비대칭으로 민다.
+     (진입이 1개뿐이면 직선을 유지해야 하므로 그대로 둔다) */
+  const ENTRY_SKEW=0.12;
+  for(const k in inMap){const L=inMap[k];
+    const skew=(L.length>1&&L.length%2===1)?ENTRY_SKEW:0;
+    L.forEach((key,i)=>entryF[key]=(i+1)/(L.length+1)+skew);}
   const exY=(id,idx,p)=>{const f=exitF[idx+"|"+id]; return f==null?p.cy:p.top+(p.bottom-p.top)*f;};
   const enY=(id,idx,p)=>{const f=entryF[idx+"|"+id]; return f==null?p.cy:p.top+(p.bottom-p.top)*f;};
+
+  /* under 라우트 레인 분리 — 박스 아래로 우회하는 선들은 모두 같은 통로(e.bottom+7)와
+     같은 진입점(e.cx)을 써서 서로 완전히 겹쳐 그려졌다. 통로 y와 도착 진입 x를 나눠 준다. */
+  const UNDER_BASE=6, UNDER_STEP=7, underY={}, underEnterX={};
+  {
+    const items=[];
+    specs.forEach((sp,idx)=>{
+      if(sp.k!=="link"||sp.route!=="under")return;
+      const s=P(sp.from),e=P(sp.to);if(!s||!e)return;
+      items.push({idx,to:sp.to,bottom:e.bottom,run:Math.abs(e.cx-(s.right+OFF))});
+    });
+    /* 도착 박스 아랫변이 같은(=같은 행) 것끼리 통로를 나눈다 — 긴 선일수록 바깥(아래) 통로로 */
+    const rows={};
+    items.forEach(it=>{const k=Math.round(it.bottom/8);(rows[k]=rows[k]||[]).push(it);});
+    Object.keys(rows).forEach(k=>{
+      const L=rows[k];L.sort((a,b)=>b.run-a.run);
+      L.forEach((it,i)=>{it.lane=L.length-1-i;   /* lane 0 = 박스에 가장 가까운 통로 */
+        underY[it.idx]=it.bottom+UNDER_BASE+it.lane*UNDER_STEP;});
+    });
+    /* 같은 박스 아래로 진입하는 화살표는 x를 분산 — 안쪽 통로일수록 왼쪽에서 올라온다
+       (바깥 통로가 안쪽 통로의 가로 구간을 가로지르지 않는다) */
+    const byTarget={};
+    items.forEach(it=>{(byTarget[it.to]=byTarget[it.to]||[]).push(it);});
+    Object.keys(byTarget).forEach(id=>{
+      const L=byTarget[id],e=P(id);if(!e)return;
+      if(L.length<2){underEnterX[L[0].idx]=e.cx;return;}
+      L.sort((a,b)=>a.lane-b.lane);
+      L.forEach((it,i)=>{underEnterX[it.idx]=e.left+(e.right-e.left)*(i+1)/(L.length+1);});
+    });
+  }
 
   /* 세로선 레인 분리 — 같은 세로 통로에서 y구간이 '실제로 겹치는' link 세로구간만 좌우로 벌린다.
      (같은 열의 다른 행처럼 안 겹치는 선은 벌리지 않아, 화살표가 박스 경계까지 밀리지 않는다) */
   const LANE_GAP=8, laneMidX={}, vbuckets={};
-  specs.forEach((sp,idx)=>{
-    if(sp.k!=="link"||sp.enter==="top"||sp.route==="under")return;
-    const s=P(sp.from),e=P(sp.to);if(!s||!e)return;
-    const base=(e.left>s.right)?((sp.mid==="src")?s.right+OFF:e.left-OFF):(s.right+OFF);
-    const a=exY(sp.from,idx,s),b=enY(sp.to,idx,e);
+  const pushLane=(idx,base,ys)=>{
     const key=Math.round(base/16);
-    (vbuckets[key]=vbuckets[key]||[]).push({idx,base,y1:Math.min(a,b),y2:Math.max(a,b)});
+    (vbuckets[key]=vbuckets[key]||[]).push({idx,base,y1:Math.min(...ys),y2:Math.max(...ys)});
+  };
+  specs.forEach((sp,idx)=>{
+    if(sp.enter==="top")return;
+    if(sp.k==="link"){
+      const s=P(sp.from),e=P(sp.to);if(!s||!e)return;
+      /* under 라우트도 같은 통로를 쓰므로 함께 벌린다 (내려가는 세로구간이 겹쳤다) */
+      const base=(sp.route==="under")?s.right+OFF
+        :((e.left>s.right)?((sp.mid==="src")?s.right+OFF:e.left-OFF):(s.right+OFF));
+      const b=(sp.route==="under")?underY[idx]:enY(sp.to,idx,e);
+      if(b==null)return;
+      pushLane(idx,base,[exY(sp.from,idx,s),b]);
+    }else if(sp.k==="branch"){
+      /* 분기 줄기(세로 trunk)도 같은 통로를 쓴다 — link/under 세로선과 겹쳤다 */
+      const s=P(sp.from);if(!s)return;const es=sp.to.map(P);if(es.some(x=>!x))return;
+      pushLane(idx,s.right+OFF,[exY(sp.from,idx,s),...sp.to.map((b,i)=>enY(b,idx,es[i]))]);
+    }else if(sp.k==="merge"){
+      const e=P(sp.to);if(!e)return;const ss=sp.from.map(P);if(ss.some(x=>!x))return;
+      pushLane(idx,e.left-OFF,[enY(sp.to,idx,e),...sp.from.map((a,i)=>exY(a,idx,ss[i]))]);
+    }
   });
   Object.keys(vbuckets).forEach(k=>{
     const L=vbuckets[k];
@@ -1189,8 +1259,11 @@ function drawConnectors(){
     const sy=exY(a,idx,s),ey=enY(b,idx,e);
     if(opt.enter==="top"){const tx=e.cx;
       add(`M ${s.right} ${sy} H ${tx} V ${e.top}`,t);arrow(tx,e.top,"d",t);return;}
-    if(opt.route==="under"){const tx=s.right+OFF, uy=e.bottom+7;
-      add(`M ${s.right} ${sy} H ${tx} V ${uy} H ${e.cx} V ${e.bottom}`,t);arrow(e.cx,e.bottom,"u",t);return;}
+    if(opt.route==="under"){
+      const tx=laneMidX[idx]!=null?laneMidX[idx]:s.right+OFF;
+      const uy=underY[idx]!=null?underY[idx]:e.bottom+7;
+      const ex=underEnterX[idx]!=null?underEnterX[idx]:e.cx;
+      add(`M ${s.right} ${sy} H ${tx} V ${uy} H ${ex} V ${e.bottom}`,t);arrow(ex,e.bottom,"u",t);return;}
     let midX;
     if(laneMidX[idx]!=null){ midX=laneMidX[idx]; }
     else if(e.left>s.right){ midX = (opt.mid==="src") ? s.right+OFF : e.left-OFF; }
@@ -1199,15 +1272,19 @@ function drawConnectors(){
     if(e.left>s.right) midX=Math.max(s.right+6,Math.min(midX,e.left-10));
     add(`M ${s.right} ${sy} H ${midX} V ${ey} H ${e.left}`,t);arrow(e.left,ey,"r",t);};
   const branch=(idx,a,bs,t)=>{const s=P(a);if(!s)return;const es=bs.map(P);if(es.some(x=>!x))return;
-    const sy=exY(a,idx,s),tx=s.right+OFF;const eys=bs.map((b,i)=>enY(b,idx,es[i]));
+    const sy=exY(a,idx,s),tx=laneMidX[idx]!=null?laneMidX[idx]:s.right+OFF;const eys=bs.map((b,i)=>enY(b,idx,es[i]));
     add(`M ${s.right} ${sy} H ${tx}`,t);add(`M ${tx} ${Math.min(sy,...eys)} V ${Math.max(sy,...eys)}`,t);
     bs.forEach((b,i)=>{add(`M ${tx} ${eys[i]} H ${es[i].left}`,t);arrow(es[i].left,eys[i],"r",t);});};
   const merge=(idx,as,b,t)=>{const e=P(b);if(!e)return;const ss=as.map(P);if(ss.some(x=>!x))return;
-    const ey=enY(b,idx,e),tx=e.left-OFF;const sys=as.map((a,i)=>exY(a,idx,ss[i]));
+    const ey=enY(b,idx,e),tx=laneMidX[idx]!=null?laneMidX[idx]:e.left-OFF;const sys=as.map((a,i)=>exY(a,idx,ss[i]));
     as.forEach((a,i)=>add(`M ${ss[i].right} ${sys[i]} H ${tx}`,t));
     add(`M ${tx} ${Math.min(ey,...sys)} V ${Math.max(ey,...sys)} M ${tx} ${ey} H ${e.left}`,t);arrow(e.left,ey,"r",t);};
   const vertical=(idx,a,b,t)=>{const s=P(a),e=P(b);if(!s||!e)return;
-    const x=s.cx,y1=s.cy<=e.cy?s.bottom:s.top,y2=s.cy<=e.cy?e.top:e.bottom;add(`M ${x} ${y1} V ${y2}`,t);arrow(x,y2,"d",t);};
+    const x=s.cx,y1=s.cy<=e.cy?s.bottom:s.top,y2=s.cy<=e.cy?e.top:e.bottom;
+    /* 스택 내부 세로선은 길이가 8px뿐이라 hit 영역을 양쪽 박스 안으로 조금 넓힌다.
+       박스가 SVG 위에 그려지므로 박스 위 hover는 그대로 박스 툴팁이 이긴다. */
+    const dir=y2>=y1?1:-1, ext=VERTICAL_HIT_EXT*dir;
+    add(`M ${x} ${y1} V ${y2}`,t,`M ${x} ${y1-ext} V ${y2+ext}`);arrow(x,y2,"d",t);};
 
   // 그리기 순서: 연회색 → 회색(권장) → 파랑(필수) 순으로, 겹쳐도 파랑이 항상 위에 보이도록
   const zrank=t=>t==="req"?2:(t==="rec"?1:0);
@@ -1215,12 +1292,12 @@ function drawConnectors(){
   const nameOf=id=>{const b=document.getElementById(id);return b?(b.dataset.name||b.textContent.trim()):id;};
   drawOrder.forEach(idx=>{
     const sp=specs[idx];
-    edgeSegs=[];
+    edgeSegs=[];edgeHitSegs=[];
     if(sp.k==="link")link(idx,sp.from,sp.to,sp.t,sp);
     else if(sp.k==="branch")branch(idx,sp.from,sp.to,sp.t);
     else if(sp.k==="merge")merge(idx,sp.from,sp.to,sp.t);
     else if(sp.k==="vertical")vertical(idx,sp.from,sp.to,sp.t);
-    const segs=edgeSegs; edgeSegs=null;
+    const segs=edgeSegs, hitSegs=edgeHitSegs; edgeSegs=null;edgeHitSegs=null;
     if(!segs||!segs.length)return;
     /* hover 가능한 간선 그룹: 넓은 투명 hit path + 실제 보이는 path들 */
     const g=document.createElementNS(SVG_NS,"g");
@@ -1229,8 +1306,9 @@ function drawConnectors(){
     g.dataset.to=(sp.k==="branch"?sp.to:[sp.to]).map(nameOf).join(", ");
     g.dataset.type=sp.t;
     const hit=document.createElementNS(SVG_NS,"path");
-    hit.setAttribute("class","edge-hit");hit.setAttribute("d",segs.join(" "));
-    hit.setAttribute("fill","none");hit.setAttribute("stroke","transparent");hit.setAttribute("stroke-width","13");
+    hit.setAttribute("class","edge-hit");hit.setAttribute("d",hitSegs.join(" "));
+    hit.setAttribute("fill","none");hit.setAttribute("stroke","transparent");
+    hit.setAttribute("stroke-width",sp.k==="vertical"?VERTICAL_HIT_W:HIT_W);
     g.appendChild(hit);
     segs.forEach(d=>{const p=document.createElementNS(SVG_NS,"path");p.setAttribute("class","edge-vis");
       p.setAttribute("d",d);p.setAttribute("fill","none");p.setAttribute("stroke",col(sp.t));p.setAttribute("stroke-width",W(sp.t));

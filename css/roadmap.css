@@ -120,12 +120,26 @@
   min-width: 0;
 }
 
+/* 스택 내부 간격은 세로 연결선이 그려지는 유일한 공간이다.
+   8px에서는 화살표가 거의 보이지 않고 hover 타겟도 8px뿐이라 사실상 잡을 수 없어 16px로 넓힌다. */
 .course-stack {
   display: grid;
   width: 100%;
-  gap: 8px;
+  gap: 16px;
   align-content: center;
   justify-items: center;
+}
+
+/* 셀/스택 래퍼는 커넥터 SVG(z-index 2)보다 위에 그려지므로, 그대로 두면
+   스택 내부 간격(8px)을 지나는 세로 연결선의 hover를 가로챈다.
+   래퍼는 포인터를 통과시키고 실제 박스만 이벤트를 받는다. */
+.course-cell,
+.course-stack {
+  pointer-events: none;
+}
+
+.course-box {
+  pointer-events: auto;
 }
 
 .course-box {
