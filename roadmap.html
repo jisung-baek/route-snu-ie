@@ -1095,10 +1095,10 @@ const specs=[
   {k:"link",from:"comp",to:"dma",t:"req",mid:"src"},
   {k:"link",from:"stat",to:"iestat",t:"req",mid:"src"},
   {k:"link",from:"stat",to:"ergo",t:"req",mid:"src"},
-  {k:"link",from:"ipd",to:"pqd",t:"req"},
+  {k:"link",from:"ipd",to:"pqd",t:"rec"},
   {k:"link",from:"prod",to:"logi",t:"req"},
   {k:"link",from:"or1",to:"optm",t:"req"},
-  {k:"link",from:"optm",to:"opta",t:"req"},
+  {k:"link",from:"optm",to:"opta",t:"rec"},
   {k:"link",from:"or1",to:"opta",t:"req",route:"under"},
   {k:"merge",from:["or2","iestat"],to:"sim",t:"req"},
   {k:"merge",from:["dma","iestat"],to:"dmine",t:"req"},
@@ -1121,12 +1121,11 @@ const specs=[
   {k:"link",from:"comp",to:"imrm",t:"rec",route:"under"},
   {k:"link",from:"comp",to:"optm",t:"rec",route:"under"},
   {k:"link",from:"comp",to:"opta",t:"rec",route:"under"},
-  {k:"link",from:"ipd",to:"svc",t:"rec"},
   {k:"branch",from:"or1",to:["svc","prod","logi"],t:"rec"},
   {k:"branch",from:"or2",to:["svc","prod","logi"],t:"rec"},
 
-  /* 산업공학의 이해 → 각 영역 첫 과목 (회색, 교수 피드백) */
-  {k:"branch",from:"ieintro",to:["scimgmt","or1","or2","iestat","dma","ergo","techm","econ"],t:"rec"}
+  /* 산업공학의 이해 → 각 영역 첫 과목 (필수, 파랑) */
+  {k:"branch",from:"ieintro",to:["scimgmt","or1","or2","iestat","dma","ergo","techm","econ"],t:"req"}
 ];
 const SVG_NS="http://www.w3.org/2000/svg", OFF=16;
 
