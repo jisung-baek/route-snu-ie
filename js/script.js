@@ -357,9 +357,9 @@ const majorCreditViz = `
         <p class="cv-note">산공과 개설 전공선택 과목 <b>21학점 이상</b> (그 이상 들어도 무방)</p>
       </div>
     </div>
-    <p class="cv-more">자유전공학부 심화전공(단일 주전공)과 <b>부전공·연계전공·학생설계전공</b> 병행 학생도 이 59학점 기준을 적용받습니다.</p>
-    <div class="cv-row">
-      <div class="cv-label"><b>복수전공·연합전공 병행</b><br>산업공학과 주전공생 대상<br><b>전공 49학점</b></div>
+    <p class="cv-more" style="margin-top:-8px">자유전공학부 심화전공(단일 주전공)과 <b>부전공·연계전공·학생설계전공</b> 병행 학생도 이 59학점 기준을 적용받습니다.</p>
+    <div class="cv-row" style="margin-top:10px">
+      <div class="cv-label"><b>복수전공·연합전공 병행</b>산업공학과 주전공생 대상<br><b>전공 49학점</b></div>
       <div class="cv-main">
         <div class="cv-bar" style="width:83.05%">
           <span class="seg s1" style="flex:28">전공필수<em>28학점</em></span>
@@ -368,7 +368,7 @@ const majorCreditViz = `
         <p class="cv-note">반드시 산공과 개설 전공선택 과목으로만 <b>21학점 충족</b></p>
       </div>
     </div>
-    <p class="cv-more"><b>복수전공·연합전공</b>(자유전공학부는 2개 이상 주전공) 병행 시 적용됩니다.</p>
+    <p class="cv-more" style="margin-top:-8px">자유전공학생 중 <b>2전공 이상의</b> 산업공학과 주전공생은 여기에 포함됩니다.</p>
     <p class="cv-more">자세한 사항은 <a href="faq.html">자주 묻는 질문</a>에서 확인하세요.</p>
   </div>`;
 
