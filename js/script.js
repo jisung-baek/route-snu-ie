@@ -589,6 +589,8 @@ const courseSearch = document.querySelector("#courseSearch");
 const courseCount = document.querySelector("#courseCount");
 const filterButtons = document.querySelectorAll(".filter");
 let activeFilter = "all";
+let selectedRulesYear = 2025;
+let lastTrackedSearchSignature = "";
 
 function debounce(fn, ms) {
   let timer;
@@ -596,7 +598,7 @@ function debounce(fn, ms) {
 }
 
 function renderCourses() {
-  if (!courseGrid || !courseSearch) return;
+  if (!courseGrid || !courseSearch) return 0;
 
   const query = courseSearch.value.trim().toLowerCase();
   const filtered = upcomingCourses.filter((course) => {
@@ -636,6 +638,8 @@ function renderCourses() {
     </article>
   `;
   }).join("");
+
+  return filtered.length;
 }
 
 function initFaqs() {
@@ -643,8 +647,8 @@ function initFaqs() {
   if (!faqList) return;
 
   faqList.innerHTML = faqs.map((item, index) => `
-    <article class="faq-item ${index === 0 ? "open" : ""}">
-      <button type="button" aria-expanded="${index === 0 ? "true" : "false"}">
+    <article class="faq-item ${index === 0 ? "open" : ""}" data-faq-index="${index + 1}">
+      <button class="ph-no-autocapture" type="button" aria-expanded="${index === 0 ? "true" : "false"}">
         <span>${item.q}</span>
         <span class="faq-icon" aria-hidden="true">+</span>
       </button>
@@ -658,6 +662,17 @@ function initFaqs() {
     const item = button.closest(".faq-item");
     const open = item.classList.toggle("open");
     button.setAttribute("aria-expanded", open ? "true" : "false");
+
+    if (open) {
+      const faqIndex = Number(item.dataset.faqIndex);
+      const faq = faqs[faqIndex - 1];
+      if (faq) {
+        window.trackEvent?.("faq_opened", {
+          faq_index: faqIndex,
+          faq_question: faq.q
+        });
+      }
+    }
   });
 }
 
@@ -744,6 +759,7 @@ function initRulesPage() {
       return;
     }
 
+    selectedRulesYear = year;
     if (yearInput) yearInput.value = year;
     yearChips.forEach((chip) => chip.classList.toggle("active", Number(chip.dataset.year) === year));
     if (selectedPdfLink) {
@@ -810,13 +826,29 @@ function initRulesPage() {
 
   if (yearInput) {
     yearInput.addEventListener("input", () => {
-      renderRules(Number(yearInput.value));
+      const year = Number(yearInput.value);
+      const previousYear = selectedRulesYear;
+      renderRules(year);
+      if (ruleData[year] && year !== previousYear) {
+        window.trackEvent?.("rules_year_selected", {
+          year_group: ruleData[year].label,
+          selection_method: "input"
+        });
+      }
     });
   }
 
   yearChips.forEach((chip) => {
     chip.addEventListener("click", () => {
-      renderRules(Number(chip.dataset.year));
+      const year = Number(chip.dataset.year);
+      const previousYear = selectedRulesYear;
+      renderRules(year);
+      if (ruleData[year] && year !== previousYear) {
+        window.trackEvent?.("rules_year_selected", {
+          year_group: ruleData[year].label,
+          selection_method: "chip"
+        });
+      }
     });
   });
 
@@ -841,7 +873,7 @@ function initRulesPage() {
     });
   }
 
-  renderRules(2025);
+  renderRules(selectedRulesYear);
 }
 
 function initFeedbackButton() {
@@ -868,14 +900,44 @@ function initFeedbackButton() {
 
 Array.from(filterButtons).forEach((button) => {
   button.addEventListener("click", () => {
+    const previousFilter = activeFilter;
     activeFilter = button.dataset.filter;
     Array.from(filterButtons).forEach((target) => target.classList.toggle("active", target === button));
-    renderCourses();
+    const visibleResultsCount = renderCourses();
+
+    if (activeFilter !== previousFilter) {
+      window.trackEvent?.("course_filter_selected", {
+        filter_value: activeFilter,
+        visible_results_count: visibleResultsCount
+      });
+    }
   });
 });
 
 if (courseSearch) {
-  courseSearch.addEventListener("input", debounce(renderCourses, 150));
+  const debouncedRenderCourses = debounce(renderCourses, 150);
+  const debouncedTrackCourseSearch = debounce(() => {
+    const searchTerm = courseSearch.value.trim();
+    if (!searchTerm) {
+      lastTrackedSearchSignature = "";
+      return;
+    }
+
+    const searchSignature = `${searchTerm}\u0000${activeFilter}`;
+    if (searchSignature === lastTrackedSearchSignature) return;
+
+    window.trackEvent?.("course_searched", {
+      search_term: searchTerm,
+      results_count: courseGrid?.querySelectorAll(".course-card").length || 0
+    });
+    lastTrackedSearchSignature = searchSignature;
+  }, 600);
+
+  courseSearch.addEventListener("input", () => {
+    if (!courseSearch.value.trim()) lastTrackedSearchSignature = "";
+    debouncedRenderCourses();
+    debouncedTrackCourseSearch();
+  });
 }
 
 initFaqs();
