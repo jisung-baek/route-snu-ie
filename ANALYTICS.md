@@ -6,6 +6,12 @@ Measure how students arrive at the site, find academic information, and respond 
 
 PostHog is initialized in `js/analytics.js` with the US host, normal pageview/autocapture support, and session replay input masking. The SDK preserves its default landing URL, referrer, and UTM attribution properties; this site does not replace them.
 
+## Configuration
+
+Connection settings live in `js/analytics-config.js`, loaded immediately before `js/analytics.js` on every page; `js/analytics.js` holds only event logic. If the config file is missing or `posthogKey` is blank, analytics stays inert and the site behaves normally — which is also how you disable collection for a local copy.
+
+The `phc_` project token in that file is PostHog's public ingest key, not a secret: it ships to the browser in any setup, so keeping it out of the repository would protect nothing. The actual control is the authorized-domain allowlist in PostHog project settings (see *Verify in PostHog*, step 1) — without it, the token can be reused from another site and pollute the data.
+
 ## Event taxonomy
 
 | Event | When it is captured | Properties |

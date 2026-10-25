@@ -3,12 +3,16 @@
  *
  * Custom product events live behind trackEvent() so a failed analytics request
  * can never interrupt the site's normal interactions.
+ *
+ * Connection settings come from js/analytics-config.js, which must load first.
+ * Without it the module stays inert rather than guessing a project token.
  */
 (function () {
   "use strict";
 
-  const POSTHOG_KEY = "phc_nwmdJJVi7TSoxXRputpDyLUicQv6QzXtrZar2tSepFpz";
-  const POSTHOG_HOST = "https://us.i.posthog.com";
+  const CONFIG = window.ROUTE_SNU_IE_ANALYTICS || {};
+  const POSTHOG_KEY = CONFIG.posthogKey || "";
+  const POSTHOG_HOST = CONFIG.posthogHost || "https://us.i.posthog.com";
   const GUIDE_NAMES = {
     "roadmap.html": "roadmap",
     "rules.html": "rules",
@@ -31,6 +35,9 @@
   window.trackEvent = trackEvent;
 
   function initializePostHog() {
+    // No config file, or a blank key: leave analytics off instead of failing noisily.
+    if (!POSTHOG_KEY) return;
+
     try {
       (function (documentRef, posthog) {
         if (posthog.__SV) return;
