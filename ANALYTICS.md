@@ -10,7 +10,9 @@ PostHog is initialized in `js/analytics.js` with the US host, normal pageview/au
 
 Connection settings live in `js/analytics-config.js`, loaded immediately before `js/analytics.js` on every page; `js/analytics.js` holds only event logic. If the config file is missing or `posthogKey` is blank, analytics stays inert and the site behaves normally — which is also how you disable collection for a local copy.
 
-The `phc_` project token in that file is PostHog's public ingest key, not a secret: it ships to the browser in any setup, so keeping it out of the repository would protect nothing. The actual control is the authorized-domain allowlist in PostHog project settings (see *Verify in PostHog*, step 1) — without it, the token can be reused from another site and pollute the data.
+The `phc_` project token in that file is not a secret. PostHog documents it as safe to expose: it is write-only, cannot read collected data, and ships to the browser in any setup. Splitting it out is code organization, not a security measure. The key that must stay private is a personal API key (`phx_`), which this site does not use.
+
+Anyone holding the project token can send events from another site, and PostHog has no domain setting that prevents this — the authorized-URL list governs toolbar launch and web analytics filters, not ingestion. The exposure costs data pollution, not disclosure; the remedy is to rotate the token, and queries can filter on `$host` to confirm traffic came from the real site.
 
 ## Event taxonomy
 
