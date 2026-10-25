@@ -464,6 +464,7 @@
   gap: 8px;
 }
 
+/* 범례 스와치는 연결선과 같은 토큰을 쓴다 — .edge-req / .edge-rec 참고 */
 .swatch {
   width: 22px;
   height: 0;
@@ -471,8 +472,6 @@
 }
 
 .swatch.rec {
-  /* matches the out-of-scope inline <script>'s REC="#b9c0cc" connector-line constant
-     within 1-2 hex units per channel (imperceptible at this line weight) */
   border-top: 2px solid var(--neutral-7);
 }
 
@@ -589,6 +588,22 @@
 
 .connector-svg .edge-vis {
   pointer-events: none;
+}
+
+/* 연결선 색 — 단일 출처.
+   JS는 간선 종류(req/rec/solid)에 맞는 class만 붙이고, 색은 여기서만 정한다.
+   아래 범례 스와치(.swatch / .swatch.rec)도 같은 토큰을 쓰므로
+   둘이 어긋날 수 없다. 값은 전부 DESIGN.md 램프 스텝이다. */
+.connector-svg .edge-req {
+  stroke: var(--accent-solid);
+}
+
+.connector-svg .edge-rec {
+  stroke: var(--neutral-7);
+}
+
+.connector-svg .edge-solid {
+  stroke: var(--neutral-6);
 }
 
 .connector-svg.dim .edge:not(.hl) .edge-vis {
@@ -1082,7 +1097,9 @@ function initGradToggle(){
 }
 
 /* ---------- connectors ---------- */
-const REQ="#0a5fd6", REC="#b9c0cc", SOLID="#c9cdd6";
+/* 선 색은 여기서 정하지 않는다 — path 에 edge-<종류> class 만 붙이고
+   실제 색은 위 <style> 의 .connector-svg .edge-req / .edge-rec / .edge-solid 가 쥔다.
+   범례 스와치와 색이 어긋나지 않게 하려는 것. */
 const specs=[
   /* 교양 수학·통계 기초 체인 (연회색) */
   {k:"link",from:"math1",to:"math2",t:"solid"},
@@ -1149,7 +1166,6 @@ function drawConnectors(){
     const r=b.getBoundingClientRect();
     const left=r.left-wb.left+sx,right=r.right-wb.left+sx,top=r.top-wb.top+sy,bottom=r.bottom-wb.top+sy;
     return{left,right,top,bottom,cx:left+r.width/2,cy:top+r.height/2};};
-  const col=t=>t==="req"?REQ:(t==="rec"?REC:SOLID);
   const W=t=>t==="req"?"1.9":"1.4";  /* 선 두께 (살짝 얇게) */
   const HIT_W=18, VERTICAL_HIT_W=56, VERTICAL_HIT_EXT=6;
   /* add()는 현재 그리는 간선(edge)의 path 조각을 버퍼에 모은다 — 이후 hover 가능한 그룹으로 묶기 위함 */
@@ -1157,7 +1173,7 @@ function drawConnectors(){
   const add=(d,t,hitD)=>{
     if(edgeSegs){edgeSegs.push(d);edgeHitSegs.push(hitD||d);return;}
     const p=document.createElementNS(SVG_NS,"path");p.setAttribute("d",d);p.setAttribute("fill","none");
-    p.setAttribute("stroke",col(t));p.setAttribute("stroke-width",W(t));
+    p.setAttribute("class","edge-"+t);p.setAttribute("stroke-width",W(t));
     p.setAttribute("stroke-linecap","round");p.setAttribute("stroke-linejoin","round");svg.appendChild(p);};
   const arrow=(x,y,dir,t)=>{const s=3.4;let d;
     if(dir==="d")d=`M ${x-s} ${y-s} L ${x} ${y} L ${x+s} ${y-s}`;
@@ -1311,8 +1327,8 @@ function drawConnectors(){
     hit.setAttribute("fill","none");hit.setAttribute("stroke","transparent");
     hit.setAttribute("stroke-width",sp.k==="vertical"?VERTICAL_HIT_W:HIT_W);
     g.appendChild(hit);
-    segs.forEach(d=>{const p=document.createElementNS(SVG_NS,"path");p.setAttribute("class","edge-vis");
-      p.setAttribute("d",d);p.setAttribute("fill","none");p.setAttribute("stroke",col(sp.t));p.setAttribute("stroke-width",W(sp.t));
+    segs.forEach(d=>{const p=document.createElementNS(SVG_NS,"path");p.setAttribute("class","edge-vis edge-"+sp.t);
+      p.setAttribute("d",d);p.setAttribute("fill","none");p.setAttribute("stroke-width",W(sp.t));
       p.setAttribute("stroke-linecap","round");p.setAttribute("stroke-linejoin","round");g.appendChild(p);});
     svg.appendChild(g);
   });
