@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Route SNU IE — 시안 v5 (전공 로드맵)</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" href="../../../css/base.css">
+<link rel="stylesheet" href="../../../css/roadmap-page.css">
+<link rel="stylesheet" href="v5.css">
+<link rel="stylesheet" href="roadmap-v5.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="home.html">
+      <span class="brand-mark"><svg width="22" viewBox="0 0 200 150" fill="none" aria-hidden="true"><path d="M18 104 L52 90 L86 140 L140 28 L182 28" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><circle cx="182" cy="28" r="17" fill="currentColor"/><circle cx="182" cy="28" r="6.5" fill="#2B5F9E"/></svg></span>
+      <span><span class="brand-name">Route SNU IE</span><span class="brand-sub">서울대학교 산업공학과 학업 가이드</span></span>
+    </a>
+    <nav class="nav" aria-label="주요 메뉴">
+      <a class="active" href="roadmap.html">전공 로드맵</a><a href="rules.html">이수규정</a><a href="#">자주 묻는 질문</a><a href="#">개설 과목 검색</a><a href="#">교양 이수 가이드</a>
+    </nav>
+    <a class="contact" href="#"><svg class="svg-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5Z"/></svg><span>문의·제보</span></a>
+  </div>
+</header>
+
+<main>
+  <section class="hero page" aria-labelledby="roadmapTitle">
+    <svg class="hero-marks" aria-hidden="true"></svg>
+    <div>
+      <h1 id="roadmapTitle">산업공학과 전공 로드맵</h1>
+      <p>학부 전공 과목의 흐름과 선수 관계를 학기별로 확인합니다. 대학원 교과목은 학부 로드맵 오른쪽으로 이어 펼쳐볼 수 있습니다.</p>
+    </div>
+    <div class="hero-row">
+      <div class="hero-actions">
+        <a class="hero-btn" href="#"><svg class="svg-i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M10.8 12.2 20 3M17 6l2 2M15 8l2 2"/></svg>신 교과목 코드 읽는 방법 →</a>
+        <div class="dl-menu">
+          <button class="dl-btn" id="dlBtn" type="button" aria-haspopup="menu" aria-expanded="false">
+            <svg class="ico" aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8"/><path d="M4.5 7 8 10.5 11.5 7"/><path d="M2.5 13.5h11"/></svg>
+            <span class="dl-label">이미지 다운로드</span>
+            <svg class="caret" aria-hidden="true" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4.75 6 7.75 9 4.75"/></svg>
+          </button>
+          <div class="dl-pop" id="dlPop" role="menu" aria-label="로드맵 이미지 다운로드 옵션" hidden>
+            <a class="dl-opt" role="menuitem" href="../../../img/roadmap-undergrad.png" download="산업공학과_전공로드맵.png">
+              <b>학부 로드맵</b>
+              <span>학부 전공 과목 로드맵</span>
+            </a>
+            <a class="dl-opt" role="menuitem" href="../../../img/roadmap-grad.png" download="산업공학과_전공로드맵_대학원포함.png">
+              <b>대학원 과정 포함</b>
+              <span>학부 + 대학원 교과목까지</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="map-card" aria-label="산업공학과 전공 로드맵">
+    <div class="map-bar">
+      <div class="legend" aria-label="범례">
+        <ul>
+          <li><span class="swatch"></span>필수 선수과목</li>
+          <li><span class="swatch rec"></span>권장 선수과목</li>
+          <li><span class="swatch box"></span>전공필수</li>
+          <li><span class="swatch boxf"></span>교양필수</li>
+          <li><span class="swatch boxg"></span>대학원</li>
+        </ul>
+      </div>
+      <span class="hint">과목에 마우스를 올리면 그 과목의 선수·후수 경로만 남습니다</span>
+    </div>
+    <div class="roadmap-wrapper" aria-label="산업공학과 전공 로드맵">
+      <div class="roadmap-grid" id="ugGrid">
+        <div class="area-header corner ca" style="grid-row:1;">전공영역</div>
+        <div class="term-header c1" style="grid-row:1;">1학년<br>1학기</div>
+        <div class="term-header c2" style="grid-row:1;">1학년<br>2학기</div>
+        <div class="term-header c3" style="grid-row:1;">2학년<br>1학기</div>
+        <div class="term-header c4" style="grid-row:1;">2학년<br>2학기</div>
+        <div class="term-header c5" style="grid-row:1;">3학년<br>1학기</div>
+        <div class="term-header c6" style="grid-row:1;">3학년<br>2학기</div>
+        <div class="term-header c7" style="grid-row:1;">4학년<br>1학기</div>
+        <div class="term-header c8" style="grid-row:1;">4학년<br>2학기</div>
+        <button class="grad-edge-toggle" id="gradEdgeToggle" type="button" aria-expanded="false" aria-controls="ugGrid">
+          <span class="grad-edge-kicker label-closed">학부 로드맵 다음</span>
+          <span class="grad-edge-kicker label-open">학부 로드맵으로</span>
+          <span class="grad-edge-label label-closed">대학원 교과목<br>이어보기</span>
+          <span class="grad-edge-label label-open">대학원 교과목<br>접기</span>
+          <span class="grad-edge-arrow" aria-hidden="true">→</span>
+        </button>
+        <div class="grad-sep grad-col" style="grid-column:13;"></div>
+        <div class="grad-sep grad-col" style="grid-column:17;"></div>
+        <div class="term-header ghead grad-col" style="grid-column:11/13;">기초</div>
+        <div class="term-header ghead grad-col" style="grid-column:13/17;">심화</div>
+        <div class="term-header ghead grad-col" style="grid-column:17/19;">응용</div>
+
+        <!-- 교양필수 -->
+        <div class="lane-bg" style="grid-row:2;"></div>
+        <div class="area-header ca" style="grid-row:2;">교양필수</div>
+        <span id="math1" class="course-box foundation c1" style="grid-row:2;" data-notip="1">수학1 및 연습</span>
+        <span id="math2" class="course-box foundation c2" style="grid-row:2;" data-notip="1">수학2 및 연습</span>
+        <div class="course-cell c3" style="grid-row:2;"><div class="course-stack">
+          <span id="stat" class="course-box foundation" data-notip="1">통계학 및 실험</span>
+          <span id="emath1" class="course-box foundation" data-notip="1">공학수학1</span>
+        </div></div>
+        <span id="emath2" class="course-box foundation c4" style="grid-row:2;" data-notip="1">공학수학2</span>
+
+        <!-- 공통 -->
+        <div class="lane-bg alt" style="grid-row:3;"></div>
+        <div class="area-header ca" style="grid-row:3;">공통</div>
+        <span id="comp" class="course-box foundation c1" style="grid-row:3;" data-notip="1">컴퓨터의 개념 및 실습</span>
+        <span id="ieintro" class="course-box highlight c2" style="grid-row:3;" data-name="산업공학의 이해" data-old="406.434" data-new="IE.1010" data-desc="">산업공학의 이해</span>
+        <div class="course-cell c3" style="grid-row:3;"><div class="course-stack">
+          <span id="scimgmt" class="course-box highlight" data-name="과학적 관리" data-old="406.211" data-new="IE.2020" data-desc="">과학적 관리</span>
+          <span id="icomp" class="course-box" data-name="산업컴퓨팅개론" data-old="406.212" data-new="IE.2030" data-desc="">산업컴퓨팅개론</span>
+        </div></div>
+        <span id="creative" class="course-box c5" style="grid-row:3;" data-name="공학도를 위한 창의적 사고" data-old="406.324A" data-new="IE.3051" data-desc="">공학도를 위한 창의적 사고</span>
+        <span id="imrm" class="course-box c6" style="grid-row:3;" data-name="산업경영 수리기법" data-old="406.327" data-new="IE.3061" data-desc="">산업경영 수리기법</span>
+
+        <!-- 시스템설계 -->
+        <div class="lane-bg" style="grid-row:4;"></div>
+        <div class="area-header ca" style="grid-row:4;">시스템<br>설계</div>
+        <span id="ipd" class="course-box c3" style="grid-row:4;" data-name="산업공정설계" data-old="406.436" data-new="IE.2110" data-desc="">산업공정설계</span>
+        <span id="pqd" class="course-box c5 slot-top" style="grid-row:4;" data-name="제품개발 및 품질설계" data-old="M1505.001500" data-new="IE.3151" data-desc="">제품개발 및 품질설계</span>
+        <span id="svc" class="course-box c6 slot-bottom" style="grid-row:4;" data-name="서비스공학" data-old="406.322" data-new="IE.3161" data-desc="">서비스공학</span>
+        <div class="g-cell grad-col" style="grid-row:4;grid-column:11/13;"><span id="g_pengr" class="course-box graduate" data-name="제품공학" data-old="406.547" data-new="IE.G150" data-desc="">제품공학</span></div>
+        <div class="g-cell grad-col" style="grid-row:4;grid-column:13/17;"><span id="g_health" class="course-box graduate" data-name="헬스케어 서비스 혁신" data-old="M1505.002600" data-new="IE.G161" data-desc="">헬스케어 서비스 혁신</span></div>
+        <div class="g-cell grad-col" style="grid-row:4;grid-column:17/19;"><span id="g_collab" class="course-box graduate" data-name="협업설계 및 공학응용" data-old="M1505.000900" data-new="IE.G182" data-desc="">협업설계 및 공학응용</span></div>
+
+        <!-- 시스템운영 -->
+        <div class="lane-bg alt" style="grid-row:5;"></div>
+        <div class="area-header ca" style="grid-row:5;">시스템<br>운영</div>
+        <span id="prod" class="course-box highlight c6" style="grid-row:5;" data-name="생산관리" data-old="406.310" data-new="IE.3210" data-desc="">생산관리</span>
+        <span id="logi" class="course-box c7" style="grid-row:5;" data-name="물류관리" data-old="406.325" data-new="IE.3251" data-desc="">물류관리</span>
+        <div class="g-cell grad-col" style="grid-row:5;grid-column:11/13;">
+          <span id="g_prodplan" class="course-box graduate" data-name="생산계획 및 통제" data-old="406.552" data-new="IE.G210" data-desc="">생산계획 및 통제</span>
+          <span id="g_inventory" class="course-box graduate" data-name="재고관리" data-old="M1505.000100" data-new="IE.G270" data-desc="">재고관리</span>
+        </div>
+        <div class="g-cell grad-col" style="grid-row:5;grid-column:13/17;"><span id="g_strategy" class="course-box graduate" data-name="전략기획 및 통제" data-old="406.660" data-new="IE.G221" data-desc="">전략기획 및 통제</span></div>
+
+        <!-- 최적화 -->
+        <div class="lane-bg" style="grid-row:6;"></div>
+        <div class="area-header ca" style="grid-row:6;">최적화</div>
+        <span id="or1" class="course-box highlight c4" style="grid-row:6;" data-name="경영과학1" data-old="406.315" data-new="IE.2310" data-desc="">경영과학1</span>
+        <span id="optm" class="course-box c6" style="grid-row:6;" data-name="최적화모형 및 응용" data-old="406.321" data-new="IE.3351" data-desc="">최적화모형 및 응용</span>
+        <span id="opta" class="course-box c7" style="grid-row:6;" data-name="최적화 알고리즘" data-old="M1505.002000" data-new="IE.4362" data-desc="">최적화 알고리즘</span>
+        <div class="g-cell grad-col" style="grid-row:6;grid-column:11/13;">
+          <span id="g_linopt" class="course-box graduate" data-name="선형최적화" data-old="M1505.002200" data-new="IE.G310" data-desc="">선형최적화</span>
+          <span id="g_convex" class="course-box graduate" data-name="볼록최적화" data-old="M1505.003100" data-new="IE.G320" data-desc="">볼록최적화</span>
+        </div>
+        <div class="g-cell grad-col" style="grid-row:6;grid-column:13/17;">
+          <span id="g_intopt" class="course-box graduate" data-name="정수최적화" data-old="406.667" data-new="IE.G331" data-desc="">정수최적화</span>
+          <span id="g_combopt" class="course-box graduate" data-name="조합최적화" data-old="406.652" data-new="IE.G341" data-desc="">조합최적화</span>
+          <span id="g_dynopt" class="course-box graduate" data-name="동적최적화" data-old="M1505.002500" data-new="IE.G351" data-desc="">동적최적화</span>
+          <span id="g_numopt" class="course-box graduate" data-name="수치최적화" data-old="M1505.002300" data-new="IE.G361" data-desc="">수치최적화</span>
+        </div>
+        <div class="g-cell grad-col" style="grid-row:6;grid-column:17/19;"><span id="g_sched" class="course-box graduate" data-name="스케줄링 이론 및 응용" data-old="M1505.002400" data-new="IE.G372" data-desc="">스케줄링 이론 및 응용</span></div>
+
+        <!-- 확률모형 -->
+        <div class="lane-bg alt" style="grid-row:7;"></div>
+        <div class="area-header ca" style="grid-row:7;">확률모형</div>
+        <div class="course-cell c5" style="grid-row:7;"><div class="course-stack">
+          <span id="or2" class="course-box highlight" data-name="경영과학2" data-old="406.317" data-new="IE.3410" data-desc="">경영과학2</span>
+          <span id="iestat" class="course-box highlight" data-name="산업공학통계" data-old="406.432" data-new="IE.3420" data-desc="">산업공학통계</span>
+        </div></div>
+        <span id="sim" class="course-box c7" style="grid-row:7;" data-name="시뮬레이션" data-old="406.311" data-new="IE.4451" data-desc="">시뮬레이션</span>
+        <div class="g-cell grad-col" style="grid-row:7;grid-column:11/13;">
+          <span id="g_stoch" class="course-box graduate" data-name="추계학" data-old="406.544" data-new="IE.G410" data-desc="">추계학</span>
+          <span id="g_multivar" class="course-box graduate" data-name="응용 다변량 통계분석" data-old="406.659" data-new="IE.G420" data-desc="">응용 다변량 통계분석</span>
+        </div>
+        <div class="g-cell grad-col" style="grid-row:7;grid-column:13/17;"><span id="g_probmodel" class="course-box graduate" data-name="확률모형특론" data-old="406.568" data-new="IE.G431" data-desc="">확률모형특론</span></div>
+
+        <!-- 데이터과학 -->
+        <div class="lane-bg" style="grid-row:8;"></div>
+        <div class="area-header ca" style="grid-row:8;">데이터<br>과학</div>
+        <span id="dma" class="course-box highlight c4" style="grid-row:8;" data-name="데이터관리와 분석" data-old="406.426B" data-new="IE.2510" data-desc="">데이터관리와 분석</span>
+        <div class="course-cell c7" style="grid-row:8;"><div class="course-stack">
+          <span id="dmine" class="course-box" data-name="데이터마이닝" data-old="406.429" data-new="IE.4520" data-desc="">데이터마이닝</span>
+          <span id="bigdata" class="course-box" data-name="빅데이터 산업응용" data-old="M0000.026700" data-new="IE.4561" data-desc="">빅데이터 산업응용</span>
+        </div></div>
+        <span id="textan" class="course-box c8" style="grid-row:8;" data-name="산업 텍스트 애널리틱스" data-old="M1505.002100" data-new="IE.4551" data-desc="">산업 텍스트 애널리틱스</span>
+        <div class="g-cell grad-col" style="grid-row:8;grid-column:11/13;">
+          <span id="g_datalearn" class="course-box graduate" data-name="데이터기반학습" data-old="406.561" data-new="IE.G510" data-desc="">데이터기반학습</span>
+          <span id="g_dmmethod" class="course-box graduate" data-name="데이터마이닝기법" data-old="406.546" data-new="IE.G520" data-desc="">데이터마이닝기법</span>
+        </div>
+        <div class="g-cell grad-col" style="grid-row:8;grid-column:13/17;">
+          <span id="g_statlearn" class="course-box graduate" data-name="통계학습 고등논제" data-old="406.550" data-new="IE.G531" data-desc="">통계학습 고등논제</span>
+          <span id="g_mlind" class="course-box graduate" data-name="기계학습 산업응용" data-old="M1505.001300" data-new="IE.G561" data-desc="">기계학습 산업응용</span>
+        </div>
+
+        <!-- 인간공학 -->
+        <div class="lane-bg alt" style="grid-row:9;"></div>
+        <div class="area-header ca" style="grid-row:9;">인간공학</div>
+        <div class="course-cell c4" style="grid-row:9;"><div class="course-stack">
+          <span id="ergo" class="course-box highlight" data-name="인간공학" data-old="406.304" data-new="IE.2610" data-desc="">인간공학</span>
+          <span id="ergolab" class="course-box highlight" data-name="인간공학 실험" data-old="406.305A" data-new="IE.2620" data-desc="">인간공학 실험</span>
+        </div></div>
+        <span id="ergodes" class="course-box c6" style="grid-row:9;" data-name="인간공학 설계" data-old="406.326" data-new="IE.3661" data-desc="">인간공학 설계</span>
+        <span id="hid" class="course-box c7" style="grid-row:9;" data-name="휴먼인터페이스 디자인" data-old="406.427A" data-new="IE.4651" data-desc="">휴먼인터페이스 디자인</span>
+        <div class="g-cell grad-col" style="grid-row:9;grid-column:11/13;">
+          <span id="g_humanperf" class="course-box graduate" data-name="인간성능" data-old="406.554" data-new="IE.G610" data-desc="">인간성능</span>
+          <span id="g_biomech" class="course-box graduate" data-name="작업생체역학" data-old="406.565" data-new="IE.G620" data-desc="">작업생체역학</span>
+        </div>
+        <div class="g-cell grad-col" style="grid-row:9;grid-column:13/17;">
+          <span id="g_hmi" class="course-box graduate" data-name="인간-기계 인터페이스 설계 및 평가" data-old="406.548" data-new="IE.G651" data-desc="">인간-기계 인터페이스 설계 및 평가</span>
+          <span id="g_ucpd" class="course-box graduate" data-name="사용자중심 제품설계개발론" data-old="406.557" data-new="IE.G661" data-desc="">사용자중심 제품설계개발론</span>
+          <span id="g_smartsys" class="course-box graduate" data-name="스마트시스템 인간공학" data-old="M1505.001700" data-new="IE.G671" data-desc="">스마트시스템 인간공학</span>
+          <span id="g_autoergo" class="course-box graduate" data-name="자동차 인간공학" data-old="406.752" data-new="IE.G681" data-desc="">자동차 인간공학</span>
+        </div>
+
+        <!-- 기술경영 -->
+        <div class="lane-bg" style="grid-row:10;"></div>
+        <div class="area-header ca" style="grid-row:10;">기술경영</div>
+        <span id="techm" class="course-box c6" style="grid-row:10;" data-name="기술경영" data-old="406.319" data-new="IE.3710" data-desc="">기술경영</span>
+        <span id="econ" class="course-box highlight c7" style="grid-row:10;" data-name="경제성공학" data-old="406.314" data-new="IE.4720" data-desc="">경제성공학</span>
+        <div class="g-cell grad-col" style="grid-row:10;grid-column:11/13;">
+          <span id="g_techinnov" class="course-box graduate" data-name="기술혁신이론 및 연구방법론" data-old="406.545" data-new="IE.G710" data-desc="">기술혁신이론 및 연구방법론</span>
+          <span id="g_indecon" class="course-box graduate" data-name="공업경제분석" data-old="406.556" data-new="IE.G720" data-desc="">공업경제분석</span>
+        </div>
+        <div class="g-cell grad-col" style="grid-row:10;grid-column:13/17;">
+          <span id="g_techforecast" class="course-box graduate" data-name="기술예측과 인텔리전스" data-old="M1505.001800" data-new="IE.G731" data-desc="">기술예측과 인텔리전스</span>
+          <span id="g_compsys" class="course-box graduate" data-name="경쟁시스템분석" data-old="M1505.001200" data-new="IE.G741" data-desc="">경쟁시스템분석</span>
+        </div>
+
+        <!-- 금융공학 -->
+        <div class="lane-bg alt" style="grid-row:11;"></div>
+        <div class="area-header ca" style="grid-row:11;">금융공학</div>
+        <div class="course-cell c8" style="grid-row:11;"><div class="course-stack">
+          <span id="finintro" class="course-box" data-name="금융공학개론" data-old="406.433" data-new="IE.4820" data-desc="">금융공학개론</span>
+          <span id="fintech" class="course-box" data-name="핀테크 개론" data-old="M1505.001900" data-new="IE.4810" data-desc="">핀테크 개론</span>
+        </div></div>
+      </div>
+      <svg class="connector-svg" aria-hidden="true"></svg>
+    </div>
+
+  </section>
+</main>
+
+<footer class="footer">
+  <p style="margin:0">학생이 정리한 비공식 안내입니다. 최종 기준은 학과 공식 자료를 따릅니다. (자료 확인 2026-07-29)</p>
+  <a href="https://ie.snu.ac.kr/">서울대학교 산업공학과 공식 홈페이지 ↗</a>
+</footer>
+
+<div id="courseTip" class="course-tip" role="tooltip" aria-hidden="true"></div>
+<div id="edgeTip" class="course-tip edge-tip" role="tooltip" aria-hidden="true"></div>
+
+<script src="../../../js/roadmap-page.js"></script>
+<script src="v5.js"></script>
+<script src="trace.js"></script>
+</body>
+</html>

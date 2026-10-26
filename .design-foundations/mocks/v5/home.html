@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Route SNU IE — 시안 v5 (홈)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="v5.css">
+<style>
+/* v5 홈 — 윗줄 두 카드를 가로형으로 눌러 높이를 줄인다(왼쪽 글, 오른쪽 미리보기). */
+.card.wide { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 24px; padding: 22px 24px 22px 28px; }
+.card.wide .card-text { display: flex; flex-direction: column; }
+.card.wide .card-top { margin-bottom: 4px; }
+.card.wide .go { position: absolute; top: 22px; right: 24px; }
+.card.wide h2 { margin-top: 6px; }
+.card.wide .meta { padding-top: 12px; }
+.card.wide .side { align-self: end; margin-top: 52px; }
+
+/* 로드맵: 실제 로드맵 이미지의 1~2학년 구간만 잘라 보여준다 */
+.crop { height: 150px; overflow: hidden; border: 1px solid var(--edge); border-radius: 8px; background: var(--panel); }
+.crop img { display: block; width: 175%; max-width: none; height: auto; transform: translate(-1%, 0); }
+
+/* 이수규정: 25학번 숫자 5개를 한 줄씩 */
+.mini { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--edge); }
+.mini li { display: flex; justify-content: space-between; align-items: baseline; padding: 6px 2px; border-bottom: 1px solid var(--edge); font-size: 14px; font-weight: 600; color: var(--ink-2); }
+.mini b { font-size: 20px; font-weight: 800; color: var(--ink); font-variant-numeric: tabular-nums; }
+.mini b small { margin-left: 2px; font-size: 12px; font-weight: 600; color: var(--ink-2); }
+.mini .is-req b { color: var(--blue); }
+.mini-h { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 600; color: var(--ink-2); }
+
+@media (max-width: 1100px) {
+  .card.wide { grid-template-columns: 1fr; gap: 14px; }
+  .card.wide .side { margin-top: 0; align-self: stretch; }
+}
+@media (max-width: 560px) {
+  .card.wide { padding: 20px; }
+  .card.wide .go { top: 20px; right: 20px; }
+  .crop { height: 120px; }
+  .card.wide .side.stats-side { display: none; }
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="home.html">
+      <span class="brand-mark"><svg width="22" viewBox="0 0 200 150" fill="none" aria-hidden="true"><path d="M18 104 L52 90 L86 140 L140 28 L182 28" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><circle cx="182" cy="28" r="17" fill="currentColor"/><circle cx="182" cy="28" r="6.5" fill="#2B5F9E"/></svg></span>
+      <span><span class="brand-name">Route SNU IE</span><span class="brand-sub">서울대학교 산업공학과 학업 가이드</span></span>
+    </a>
+    <nav class="nav" aria-label="주요 메뉴">
+      <a href="roadmap.html">전공 로드맵</a><a href="rules.html">이수규정</a><a href="#">자주 묻는 질문</a><a href="#">개설 과목 검색</a><a href="#">교양 이수 가이드</a>
+    </nav>
+    <a class="contact" href="#"><svg class="svg-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5Z"/></svg><span>문의·제보</span></a>
+  </div>
+</header>
+
+<main>
+  <section class="hero" aria-labelledby="t">
+    <svg class="hero-marks" aria-hidden="true"></svg>
+    <div>
+      <h1 id="t">Route SNU IE</h1>
+      <p>전공 로드맵부터 이수 규정, 자주 묻는 질문, 개설 과목 정보까지 한곳에 모았습니다. 필요한 정보를 빠르게 찾아 학업 계획을 세워보세요.</p>
+    </div>
+    <nav aria-label="입학 학번별 이수규정 바로가기">
+      <span class="years-label">입학 학번별 이수규정</span>
+      <div class="years">
+        <a class="year" href="rules.html">20학번</a><a class="year" href="rules.html">21학번</a><a class="year" href="rules.html">22학번</a><a class="year" href="rules.html">23학번</a><a class="year" href="rules.html">24학번</a><a class="year" href="rules.html">25학번</a><a class="year" href="rules.html">26학번</a>
+      </div>
+    </nav>
+  </section>
+
+  <nav class="row-2" aria-label="주요 페이지">
+    <a class="card wide" href="roadmap.html">
+      <div class="card-text">
+        <div class="card-top"><span class="num">01</span></div>
+        <h2>전공 로드맵</h2>
+        <p class="desc">학부 전공 과목의 흐름과 대학원 연계 과목을 단계별로 확인합니다.</p>
+        <p class="meta">학부 8학기 · 대학원 기초·심화·응용</p>
+      </div>
+      <div class="side"><div class="crop"><img src="../../../img/roadmap-undergrad.png" alt="" width="2748" height="2270"></div></div>
+      <span class="go"><svg class="svg-i" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+    </a>
+    <a class="card wide" href="rules.html">
+      <div class="card-text">
+        <div class="card-top"><span class="num">02</span></div>
+        <h2>이수규정</h2>
+        <p class="desc">학번별 이수학점, 전선 인정 과목, 복수전공·부전공·자유전공 기준을 정리했습니다.</p>
+        <p class="meta">20~26학번 · 학번별 원문 PDF 포함</p>
+      </div>
+      <div class="side stats-side">
+        <span class="mini-h">25학번 · 단일 주전공</span>
+        <ul class="mini">
+          <li><span>졸업</span><b>130<small>학점</small></b></li>
+          <li><span>교양</span><b>52<small>학점</small></b></li>
+          <li><span>주전공</span><b>59<small>학점</small></b></li>
+          <li class="is-req"><span>전공필수</span><b>28<small>학점</small></b></li>
+          <li><span>학과 전공선택</span><b>21<small>학점+</small></b></li>
+        </ul>
+      </div>
+      <span class="go"><svg class="svg-i" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+    </a>
+  </nav>
+
+  <nav class="row-3" aria-label="기타 페이지">
+    <a class="card" href="#">
+      <div class="card-top"><span class="num">03</span><span class="go"><svg class="svg-i" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg></span></div>
+      <h2>개설 과목 검색</h2>
+      <p class="desc">개설 과목을 검색하고 필수 과목, 데이터 관련 과목 등을 쉽게 찾아봅니다.</p>
+      <p class="meta">64개 과목 · 2028-1학기까지</p>
+    </a>
+    <a class="card" href="#">
+      <div class="card-top"><span class="num">04</span><span class="go"><svg class="svg-i" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg></span></div>
+      <h2>자주 묻는 질문</h2>
+      <p class="desc">수강신청, 이수규정 등 학생들이 자주 찾는 질문을 모았습니다.</p>
+      <p class="meta">질문 16개</p>
+    </a>
+    <a class="card" href="#">
+      <div class="card-top"><span class="num">05</span><span class="go"><svg class="svg-i" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg></span></div>
+      <h2>교양 이수 가이드</h2>
+      <p class="desc">학문의 토대·지성의 열쇠·베리타스 52학점 구성과 영역별 이수 규칙을 정리했습니다.</p>
+      <p class="meta">교양 52학점 · 25학번 이후</p>
+    </a>
+  </nav>
+</main>
+
+<footer class="footer">
+  <p style="margin:0">학생이 정리한 비공식 안내입니다. 최종 기준은 학과 공식 자료를 따릅니다. (자료 확인 2026-07-29)</p>
+  <a href="https://ie.snu.ac.kr/">서울대학교 산업공학과 공식 홈페이지 ↗</a>
+</footer>
+<script src="v5.js"></script>
+</body>
+</html>

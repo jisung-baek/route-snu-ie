@@ -873,7 +873,30 @@ function initRulesPage() {
     });
   }
 
+  // 홈의 학번 바로가기(rules.html?year=2025)로 들어오면 그 학번으로 연다.
+  const requestedYear = Number(new URLSearchParams(location.search).get("year"));
+  if (ruleData[requestedYear]) selectedRulesYear = requestedYear;
+
   renderRules(selectedRulesYear);
+}
+
+// 홈 카드의 메타 줄을 실제 데이터에서 계산해 데이터가 바뀌어도 숫자가 어긋나지 않게 한다.
+function initHomeStats() {
+  const stat = (key) => document.querySelector(`[data-home-stat="${key}"]`);
+  if (!stat("rules")) return;
+
+  const years = Object.keys(ruleData).map(Number);
+  const totals = new Set(years.map((year) => ruleData[year].totalCredits));
+  const totalText = totals.size === 1 ? ` · 졸업 ${[...totals][0]}` : "";
+  stat("rules").textContent = `${Math.min(...years) % 100}~${Math.max(...years) % 100}학번${totalText}`;
+
+  const lastTerm = upcomingCourses
+    .flatMap((course) => course.offerings.map(([term]) => term))
+    .sort()
+    .at(-1);
+  stat("courses").textContent = `${upcomingCourses.length}개 과목 · ${lastTerm}학기까지`;
+
+  stat("faq").textContent = `질문 ${faqs.length}개`;
 }
 
 function initFeedbackButton() {
@@ -943,4 +966,5 @@ if (courseSearch) {
 initFaqs();
 renderCourses();
 initRulesPage();
+initHomeStats();
 initFeedbackButton();

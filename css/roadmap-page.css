@@ -68,6 +68,13 @@
   color: var(--accent-text);
 }
 
+.code-guide-btn .ico {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  color: var(--accent-text);
+}
+
 .code-guide-btn .arrow {
   transition: transform var(--duration-fast) ease;
 }
@@ -93,7 +100,7 @@
   justify-content: center;
   gap: 13px;
   border: 1px solid var(--accent-6);
-  border-radius: calc(var(--radius-panel) + 4px);
+  border-radius: var(--radius-panel);
   background: var(--background);
   color: var(--text-secondary);
   box-shadow: none;
@@ -112,7 +119,7 @@
 }
 
 .grad-edge-toggle:focus-visible {
-  outline: 3px solid var(--accent-6);
+  outline: 3px solid var(--focus-ring);
   outline-offset: 3px;
 }
 
@@ -182,15 +189,17 @@
 .roadmap-grid {
   position: relative;
   display: grid;
-  grid-template-columns: 96px repeat(8, minmax(108px, 1fr)) 144px;
+  /* 접힌 상태의 최소 폭(1264px)은 1366px 노트북에서도 '대학원 이어보기' 토글이
+     잘리지 않도록 맞춘 값 — 열·간격을 늘리면 토글이 다시 화면 밖으로 밀린다. */
+  grid-template-columns: 96px repeat(8, minmax(96px, 1fr)) 120px;
   grid-template-rows: 40px minmax(64px, auto) minmax(64px, auto) minmax(108px, auto) repeat(7, minmax(64px, auto));
-  gap: 16px 34px;
-  min-width: 1440px;
+  gap: var(--space-4) var(--space-7);
+  min-width: 1264px;
   padding: 14px;
 }
 
 .roadmap-grid.show-grad {
-  grid-template-columns: 96px repeat(8, minmax(108px, 1fr)) 144px repeat(8, minmax(116px, 1fr));
+  grid-template-columns: 96px repeat(8, minmax(96px, 1fr)) 120px repeat(8, minmax(116px, 1fr));
   min-width: 2620px;
 }
 
@@ -673,7 +682,7 @@
 }
 
 .dl-btn:focus-visible {
-  outline: 3px solid var(--accent-6);
+  outline: 3px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
