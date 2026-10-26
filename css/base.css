@@ -152,7 +152,12 @@ html {
   scroll-behavior: smooth;
 }
 
+/* 내용이 짧은 페이지에서도 footer가 화면 바닥에 붙도록 main이 남는 높이를 가져간다. */
 body {
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
+  flex-direction: column;
   margin: 0;
   background: var(--background);
   color: var(--text);
@@ -170,8 +175,19 @@ body {
   color: var(--accent-on-solid);
 }
 
+main {
+  flex: 1 0 auto;
+}
+
 a {
   color: inherit;
+}
+
+/* 단일 포커스 표시(DESIGN.md --focus-ring). 키보드 탐색에서만 보이고, 컴포넌트가
+   자체 포커스 스타일을 두면 그쪽이 이긴다(:where는 특이도 0). */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 h1,
@@ -223,12 +239,13 @@ p {
 
 .nav {
   display: flex;
-  gap: 2px;
+  gap: var(--space-1);
 }
 
+/* 누르는 요소는 pill — DESIGN.md pill-or-panel 규칙 */
 .nav a {
-  padding: 7px 14px;
-  border-radius: var(--radius-panel);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
   color: var(--text);
   font-size: var(--text-base);
   font-weight: var(--weight-medium);
@@ -284,6 +301,7 @@ p {
   color: var(--text-secondary);
   font-size: clamp(16px, 1.7vw, 20px);
   line-height: var(--leading-ui);
+  text-wrap: pretty;
 }
 
 /* 히어로 아래 간격은 .portal-section의 padding-top이 단독으로 소유한다. */
@@ -455,6 +473,12 @@ p {
   background: var(--surface);
   color: var(--text-tertiary);
   font-size: var(--text-lg);
+}
+
+/* input 자체는 outline을 끄므로 포커스 링은 감싸는 label이 소유한다. */
+.search:focus-within {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 .search input {
@@ -1157,8 +1181,10 @@ p {
   line-height: var(--leading-body);
 }
 
+/* body가 flex column이라 margin:auto 항목은 내용 폭으로 줄어든다 — width로 다시 펼친다. */
 .footer {
   display: flex;
+  width: 100%;
   max-width: 1120px;
   flex-wrap: wrap;
   justify-content: space-between;
