@@ -67,6 +67,85 @@ const upcomingCourses = [
   { category: "대학원", name: "헬스케어서비스혁신", type: "", offerings: [["2026-2", "O"]] }
 ];
 
+// ─── 개설 과목 어댑터 ──────────────────────────────────────────────────────────
+// 실제 데이터는 js/courses-data.js(window.COURSE_SOURCE, GitHub Actions가 학과 엑셀로 자동 생성)에서 옵니다.
+// 그 파일이 없거나 깨졌으면 위의 upcomingCourses(마지막 수동 스냅샷)를 그대로 씁니다.
+// 원천 형식을 아는 곳은 normalizeCourses() 하나뿐이고, 화면은 getVisibleCourses()만 읽습니다.
+const PAST_TERMS_SHOWN = 3; // 현재 학기 앞으로 몇 학기까지 보여줄지 (2026-2 기준 3이면 2025-1부터)
+const TERM_PATTERN = /^\d{4}-[12]$/;
+
+function normalizeCourses(raw) {
+  const fallback = { courses: upcomingCourses, sourceDate: null };
+  if (!raw || typeof raw !== "object" || !Array.isArray(raw.courses)) {
+    console.warn("[courses] courses-data.js가 없거나 형식이 달라 내장 데이터를 씁니다.");
+    return fallback;
+  }
+
+  const problems = [];
+  const courses = raw.courses.map((item, index) => {
+    const course = item && typeof item === "object" ? item : {};
+    const name = typeof course.name === "string" ? course.name.trim() : "";
+    if (!name) problems.push(`${index}번 과목에 이름이 없습니다`);
+    const offerings = (Array.isArray(course.offerings) ? course.offerings : [])
+      .map((pair) => (Array.isArray(pair) ? pair : [pair, "O"]))
+      .filter(([term]) => {
+        const ok = typeof term === "string" && TERM_PATTERN.test(term);
+        if (!ok) problems.push(`${name || index}: 학기 "${term}"를 읽을 수 없습니다`);
+        return ok;
+      })
+      .map(([term, note]) => [term, typeof note === "string" && note ? note : "O"]);
+    return {
+      category: typeof course.category === "string" ? course.category : "",
+      name: name || "(이름 없음)",
+      type: typeof course.type === "string" ? course.type : "",
+      offerings
+    };
+  }).filter((course) => course.name !== "(이름 없음)" || course.offerings.length);
+
+  if (courses.length === 0) {
+    console.warn("[courses] courses-data.js에 과목이 없어 내장 데이터를 씁니다.");
+    return fallback;
+  }
+  if (problems.length) console.warn(`[courses] 일부 값을 기본값으로 채웠습니다:\n- ${problems.join("\n- ")}`);
+
+  const sourceDate = typeof raw.sourceDate === "string" && !Number.isNaN(Date.parse(raw.sourceDate)) ? raw.sourceDate : null;
+  return { courses, sourceDate };
+}
+
+// 1~6월은 그 해 1학기, 7~12월은 2학기로 본다.
+function currentTerm(date = new Date()) {
+  return `${date.getFullYear()}-${date.getMonth() < 6 ? 1 : 2}`;
+}
+
+function shiftTerm(term, delta) {
+  const [year, half] = term.split("-").map(Number);
+  const index = year * 2 + (half - 1) + delta;
+  return `${Math.floor(index / 2)}-${(index % 2) + 1}`;
+}
+
+// courses-data.js를 싣는 페이지(index, courses)에서만 처음 쓸 때 변환한다. 다른 페이지에서 경고가 뜨지 않게 지연시킨다.
+let courseSourceCache = null;
+function getCourseSource() {
+  if (!courseSourceCache) courseSourceCache = normalizeCourses(window.COURSE_SOURCE);
+  return courseSourceCache;
+}
+
+// 화면이 쓰는 과목 목록: 현재 학기와 그 이전 PAST_TERMS_SHOWN학기부터의 개설만 남기고, 그 안에 개설이 없는 과목은 뺀다.
+function getVisibleCourses() {
+  const firstTerm = shiftTerm(currentTerm(), -PAST_TERMS_SHOWN);
+  return getCourseSource().courses
+    .map((course) => ({ ...course, offerings: course.offerings.filter(([term]) => term >= firstTerm) }))
+    .filter((course) => course.offerings.length > 0);
+}
+
+function getVisibleTerms() {
+  return [...new Set(getVisibleCourses().flatMap((course) => course.offerings.map(([term]) => term)))].sort();
+}
+
+function escapeHtml(text) {
+  return String(text).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+}
+
 // ─── FAQ 데이터 (faq.html) ────────────────────────────────────────────────────
 const faqs = [
   {
@@ -587,7 +666,7 @@ const majorCreditRows = [
 const courseGrid = document.querySelector("#courseGrid");
 const courseSearch = document.querySelector("#courseSearch");
 const courseCount = document.querySelector("#courseCount");
-const filterButtons = document.querySelectorAll(".filter");
+const courseFilters = document.querySelector("#courseFilters");
 let activeFilter = "all";
 let selectedRulesYear = 2025;
 let lastTrackedSearchSignature = "";
@@ -601,7 +680,7 @@ function renderCourses() {
   if (!courseGrid || !courseSearch) return 0;
 
   const query = courseSearch.value.trim().toLowerCase();
-  const filtered = upcomingCourses.filter((course) => {
+  const filtered = getVisibleCourses().filter((course) => {
     const offeringText = course.offerings.map(([term, note]) => `${term} ${note}`).join(" ");
     const haystack = `${course.category} ${course.name} ${course.type} ${offeringText}`.toLowerCase();
     const matchesQuery = haystack.includes(query);
@@ -624,15 +703,15 @@ function renderCourses() {
     <article class="course-card">
       <header>
         <div>
-          <span class="course-code">${course.category}</span>
-          <h3>${course.name}</h3>
+          <span class="course-code">${escapeHtml(course.category)}</span>
+          <h3>${escapeHtml(course.name)}</h3>
         </div>
-        ${isGraduate ? "" : (course.type ? `<span class="badge ${course.type === "전필" ? "required" : ""}">${course.type}</span>` : '<span class="badge">교과목</span>')}
+        ${isGraduate ? "" : (course.type ? `<span class="badge ${course.type === "전필" ? "required" : ""}">${escapeHtml(course.type)}</span>` : '<span class="badge">교과목</span>')}
       </header>
       <div class="offering-list">
         ${course.offerings.map(([term, note]) => {
           const detail = note === "O" ? "" : note.replace(/^O/, "").trim();
-          return `<span>${term}${detail ? ` · ${detail}` : ""}</span>`;
+          return `<span>${escapeHtml(term)}${detail ? ` · ${escapeHtml(detail)}` : ""}</span>`;
         }).join("")}
       </div>
     </article>
@@ -890,13 +969,56 @@ function initHomeStats() {
   const totalText = totals.size === 1 ? ` · 졸업 ${[...totals][0]}` : "";
   stat("rules").textContent = `${Math.min(...years) % 100}~${Math.max(...years) % 100}학번${totalText}`;
 
-  const lastTerm = upcomingCourses
-    .flatMap((course) => course.offerings.map(([term]) => term))
-    .sort()
-    .at(-1);
-  stat("courses").textContent = `${upcomingCourses.length}개 과목 · ${lastTerm}학기까지`;
+  // courses.html에 실제로 보이는 과목 수와 같은 기준으로 센다.
+  const visibleCourses = getVisibleCourses();
+  const lastTerm = getVisibleTerms().at(-1);
+  stat("courses").textContent = `${visibleCourses.length}개 과목 · ${lastTerm}학기까지`;
 
   stat("faq").textContent = `질문 ${faqs.length}개`;
+}
+
+// 데이터의 자료 날짜를 문구에 넣는다. 날짜가 없으면 HTML에 적힌 기존 문구를 그대로 둔다.
+function initSourceDate() {
+  const nodes = document.querySelectorAll("[data-source-date]");
+  if (!nodes.length) return;
+  const { sourceDate } = getCourseSource();
+  if (!sourceDate) return;
+  const [year, month, day] = sourceDate.split("-").map(Number);
+  const formats = { iso: sourceDate, long: `${year}년 ${month}월 ${day}일` };
+  nodes.forEach((node) => {
+    node.textContent = formats[node.dataset.sourceDate] || formats.iso;
+  });
+}
+
+// 필터 버튼: 전체/전공필수/전공선택/대학원은 HTML에 있고, 학기 버튼은 데이터의 학기 목록에서 만든다.
+function initCourseFilters() {
+  if (!courseFilters) return;
+
+  getVisibleTerms().forEach((term) => {
+    const button = document.createElement("button");
+    button.className = "filter";
+    button.type = "button";
+    button.dataset.filter = term;
+    button.textContent = term;
+    courseFilters.appendChild(button);
+  });
+
+  const filterButtons = Array.from(courseFilters.querySelectorAll(".filter"));
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const previousFilter = activeFilter;
+      activeFilter = button.dataset.filter;
+      filterButtons.forEach((target) => target.classList.toggle("active", target === button));
+      const visibleResultsCount = renderCourses();
+
+      if (activeFilter !== previousFilter) {
+        window.trackEvent?.("course_filter_selected", {
+          filter_value: activeFilter,
+          visible_results_count: visibleResultsCount
+        });
+      }
+    });
+  });
 }
 
 function initFeedbackButton() {
@@ -920,22 +1042,6 @@ function initFeedbackButton() {
 
   document.body.appendChild(button);
 }
-
-Array.from(filterButtons).forEach((button) => {
-  button.addEventListener("click", () => {
-    const previousFilter = activeFilter;
-    activeFilter = button.dataset.filter;
-    Array.from(filterButtons).forEach((target) => target.classList.toggle("active", target === button));
-    const visibleResultsCount = renderCourses();
-
-    if (activeFilter !== previousFilter) {
-      window.trackEvent?.("course_filter_selected", {
-        filter_value: activeFilter,
-        visible_results_count: visibleResultsCount
-      });
-    }
-  });
-});
 
 if (courseSearch) {
   const debouncedRenderCourses = debounce(renderCourses, 150);
@@ -964,7 +1070,9 @@ if (courseSearch) {
 }
 
 initFaqs();
+initCourseFilters();
 renderCourses();
 initRulesPage();
 initHomeStats();
+initSourceDate();
 initFeedbackButton();

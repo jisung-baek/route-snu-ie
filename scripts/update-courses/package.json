@@ -1,0 +1,14 @@
+{
+  "name": "update-courses",
+  "private": true,
+  "description": "학과 게시물의 엑셀로 js/courses-data.js를 다시 만드는 스크립트 (GitHub Actions에서 매일 실행)",
+  "type": "commonjs",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node --test",
+    "run": "node bin/run.js"
+  },
+  "dependencies": {
+    "exceljs": "4.4.0"
+  }
+}
