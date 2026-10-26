@@ -1,0 +1,127 @@
+# 개설 과목 자동 업데이트 — 매일 학과 게시물을 확인하고, 엑셀이 바뀌었으면 PR을 연다.
+# 사람이 PR을 머지해야 사이트에 반영된다. 운영 방법: docs/개설과목-자동업데이트-운영.md
+name: Update courses
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # 매일 09:00 KST
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "게시물이 바뀌지 않았어도 데이터를 다시 만든다"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  actions: write # 스케줄 자동 비활성화 방지(keepalive)에 필요
+
+concurrency:
+  group: update-courses
+  cancel-in-progress: false
+
+env:
+  LABEL: courses-update
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: scripts/update-courses
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: scripts/update-courses/package-lock.json
+
+      - run: npm ci
+      - run: npm test
+
+      # GitHub은 레포에 60일간 커밋이 없으면 schedule 워크플로를 자동으로 끈다. 매 실행마다 다시 켜서 타이머를 되돌린다.
+      - name: Keep the schedule alive
+        run: gh workflow enable update-courses.yml
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Check the department post and rebuild the data file
+        id: run
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          node bin/run.js ${{ inputs.force == true && '--force' || '' }} || true
+          echo "status=$(cat out/status)" >> "$GITHUB_OUTPUT"
+          echo "date=$(node -e "console.log(require('./out/report.json').sourceDate || 'unknown')")" >> "$GITHUB_OUTPUT"
+
+      - name: Save the downloaded file and report
+        if: always() && steps.run.outcome != 'skipped'
+        uses: actions/upload-artifact@v4
+        with:
+          name: update-courses-${{ github.run_id }}
+          path: scripts/update-courses/out/
+          if-no-files-found: ignore
+          retention-days: 30
+
+      # 알림 대상은 .github/CODEOWNERS 한 곳에서 관리한다. 사람 계정은 리뷰어·담당자로, 팀(@org/team)은 리뷰어로만 지정할 수 있다.
+      - name: Read maintainers from CODEOWNERS
+        id: owners
+        working-directory: .
+        run: |
+          handles=$(grep -v '^\s*#' .github/CODEOWNERS | grep -oE '@[A-Za-z0-9_./-]+' | tr -d '@' | sort -u)
+          users=$(echo "$handles" | grep -v '/' | paste -sd, -)
+          echo "reviewers=$(echo "$handles" | paste -sd, -)" >> "$GITHUB_OUTPUT"
+          echo "assignees=$users" >> "$GITHUB_OUTPUT"
+
+      - name: Open or refresh the pull request
+        if: steps.run.outputs.status == 'changed'
+        working-directory: .
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DATE: ${{ steps.run.outputs.date }}
+          BASE: ${{ github.event.repository.default_branch }}
+          REVIEWERS: ${{ steps.owners.outputs.reviewers }}
+          ASSIGNEES: ${{ steps.owners.outputs.assignees }}
+        run: |
+          branch="auto/courses-$DATE"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$branch"
+          git add js/courses-data.js
+          git commit -m "Update course data from the department post ($DATE)"
+          git push --force origin "$branch"
+
+          gh label create "$LABEL" --description "개설 과목 자동 업데이트" --color 0a5fd6 --force
+          existing=$(gh pr list --head "$branch" --base "$BASE" --state open --json number --jq '.[0].number')
+          if [ -z "$existing" ]; then
+            gh pr create --base "$BASE" --head "$branch" \
+              --title "개설 과목 데이터 업데이트 ($DATE)" \
+              --body-file scripts/update-courses/out/pr-body.md \
+              --label "$LABEL" \
+              ${REVIEWERS:+--reviewer "$REVIEWERS"} ${ASSIGNEES:+--assignee "$ASSIGNEES"}
+          else
+            gh pr edit "$existing" --body-file scripts/update-courses/out/pr-body.md
+            gh pr comment "$existing" --body "같은 날짜의 데이터가 다시 생성돼 브랜치를 갱신했습니다. 본문을 다시 확인해 주세요."
+          fi
+
+      - name: Open or update the failure issue
+        if: steps.run.outputs.status == 'failed'
+        working-directory: .
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ASSIGNEES: ${{ steps.owners.outputs.assignees }}
+        run: |
+          gh label create "$LABEL" --description "개설 과목 자동 업데이트" --color 0a5fd6 --force
+          existing=$(gh issue list --label "$LABEL" --state open --search "자동 업데이트 실패 in:title" --json number --jq '.[0].number')
+          if [ -z "$existing" ]; then
+            gh issue create --title "개설 과목 자동 업데이트 실패 ($(date +%Y-%m-%d))" \
+              --body-file scripts/update-courses/out/issue-body.md \
+              --label "$LABEL" ${ASSIGNEES:+--assignee "$ASSIGNEES"}
+          else
+            gh issue comment "$existing" --body "오늘도 같은 이유로 실패했습니다. 최신 원인은 실행 로그를 확인하세요: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          fi
+          exit 1
