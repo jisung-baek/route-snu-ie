@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Route SNU IE — 시안 v5 (이수규정)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="v5.css">
+<style>
+/* 이수규정 전용 — 공통 틀은 v5.css */
+.notice { display: flex; gap: 10px; align-items: flex-start; margin-top: 20px; padding: 14px 16px; border-radius: var(--r-chip); background: var(--blue-wash); font-size: 14px; line-height: 1.6; color: var(--ink-2); }
+.notice b { color: var(--ink); }
+.notice svg { flex: none; width: 18px; height: 18px; margin-top: 2px; color: var(--blue); }
+
+.sec .stats b { font-size: 40px; }
+.sec .stats span { font-size: 14px; }
+
+.table { border-top: 2px solid var(--ink); }
+.trow { display: grid; grid-template-columns: 190px 90px minmax(0, 1fr); gap: 16px; padding: 16px 4px; border-bottom: 1px solid var(--edge); }
+.trow .area { font-size: 16px; font-weight: 700; }
+.trow .cr { font-size: 22px; font-weight: 800; color: var(--blue); font-variant-numeric: tabular-nums; line-height: 1.15; }
+.trow .cr small { margin-left: 2px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.trow ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 14px; line-height: 1.6; color: var(--ink-2); }
+.trow li { padding-left: 14px; position: relative; }
+.trow li::before { content: ""; position: absolute; left: 0; top: 0.75em; width: 6px; height: 1px; background: var(--ink-2); }
+
+.bar { display: flex; height: 68px; border: 1px solid var(--blue); border-radius: var(--r-chip); overflow: hidden; }
+.bar > div { display: flex; flex-direction: column; justify-content: center; padding: 0 16px; font-size: 13px; font-weight: 600; border-right: 1px solid var(--blue); }
+.bar > div:last-child { border-right: 0; }
+.bar b { font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.bar .s-req { flex: 28; background: var(--blue); color: var(--on-blue); }
+.bar .s-el { flex: 21; background: var(--blue-soft); color: var(--ink); }
+.bar .s-etc { flex: 10; color: var(--ink);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M-2 2l4-4M0 8l8-8M6 10l4-4' stroke='%23bcd4f9'/%3E%3C/svg%3E"); }
+.scale { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; font-weight: 600; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.legend-line { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 16px; font-size: 14px; line-height: 1.6; color: var(--ink-2); }
+.cases { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+.case { padding: 16px 18px; border: 1px solid var(--edge); border-radius: var(--r-chip); }
+.case b { display: block; font-size: 15px; margin-bottom: 4px; }
+.case .big { font-size: 28px; font-weight: 800; color: var(--blue); font-variant-numeric: tabular-nums; }
+.case p { margin: 6px 0 0; font-size: 14px; line-height: 1.6; color: var(--ink-2); }
+
+.codes { display: grid; grid-template-columns: 1fr 1fr; column-gap: 28px; border-top: 1px solid var(--edge); }
+.codes div { display: grid; grid-template-columns: 82px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 4px; border-bottom: 1px solid var(--edge); }
+.codes .new { font-size: 14px; font-weight: 800; color: var(--blue); font-variant-numeric: tabular-nums; }
+.codes .nm { font-size: 15px; font-weight: 600; }
+.codes .old { font-size: 12px; font-weight: 500; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+
+details.sec { padding: 0; }
+details.sec > summary { list-style: none; cursor: pointer; padding: 22px 30px; }
+details.sec > summary::-webkit-details-marker { display: none; }
+details.sec > summary .sec-head { margin: 0; }
+details.sec > summary .plus { margin-left: 16px; display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--blue-line); border-radius: var(--r-chip); color: var(--blue); font-size: 20px; font-weight: 500; transition: transform 200ms ease; }
+details.sec > summary h2 + .plus { margin-left: auto; }
+details.sec > summary .plus::before { content: "+"; }
+details.sec[open] > summary .plus::before { content: "−"; }
+details.sec > summary:hover .plus { background: var(--blue); color: var(--on-blue); border-color: var(--blue); }
+details.sec > .body { padding: 0 30px 28px; }
+.depts { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; }
+.depts span { display: flex; justify-content: space-between; padding: 12px 14px; border: 1px solid var(--edge); border-radius: var(--r-chip); font-size: 14px; font-weight: 600; }
+.depts span i { font-style: normal; color: var(--blue); font-variant-numeric: tabular-nums; }
+.plain { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.plain li { padding: 12px 14px; border-left: 2px solid var(--blue-line); font-size: 14px; line-height: 1.6; color: var(--ink-2); background: var(--bg); border-radius: 0 var(--r-chip) var(--r-chip) 0; }
+.plain li b { color: var(--ink); }
+
+/* v5: 과목 목록을 블록으로 (8px). 전공필수는 이미 섹션·학년으로 나뉘어 있으므로 진한 채움 대신
+   연파랑 면(--blue-soft)으로만 살짝 구분하고, 전공선택은 흰 바탕 + 회색 테두리. */
+.blk-groups { display: grid; gap: 10px; }
+.blk-row { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 12px; align-items: start; }
+.blk-y { padding-top: 14px; font-size: 13px; font-weight: 700; color: var(--ink-2); }
+.blocks { display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 8px; }
+.blk { display: flex; flex-direction: column; justify-content: center; gap: 4px; min-height: 64px; padding: 12px 14px; border-radius: 8px; }
+.blk b { font-size: 15px; font-weight: 700; line-height: 1.3; }
+.blk span { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.blk i { margin-left: 6px; font-style: normal; font-weight: 500; }
+.blk.req { border: 1px solid var(--blue-soft); background: var(--blue-soft); color: var(--ink); }
+.blk.req span { color: var(--blue); }
+.blk.req i { color: var(--ink-2-on-soft); }
+.blk.el { border: 1px solid var(--edge-strong); background: var(--panel); color: var(--ink); }
+.blk.el span { color: var(--blue); }
+.blk.el i { color: var(--ink-2); }
+@media (max-width: 560px) {
+  .blk-row { grid-template-columns: 1fr; gap: 6px; }
+  .blk-y { padding-top: 0; }
+  .blocks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 860px) {
+  .trow { grid-template-columns: 1fr auto; }
+  .trow ul { grid-column: 1 / -1; }
+  .codes, .cases { grid-template-columns: 1fr; }
+  .sec .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 14px; }
+  .sec .stats div:nth-child(4) { padding-left: 0; border-left: 0; }
+}
+@media (max-width: 560px) {
+  .sec .stats b { font-size: 30px; }
+  details.sec > summary { padding: 18px 20px; }
+  details.sec > .body { padding: 0 20px 20px; }
+  .bar > div { padding: 0 10px; }
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="home.html">
+      <span class="brand-mark"><svg width="22" viewBox="0 0 200 150" fill="none" aria-hidden="true"><path d="M18 104 L52 90 L86 140 L140 28 L182 28" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><circle cx="182" cy="28" r="17" fill="currentColor"/><circle cx="182" cy="28" r="6.5" fill="#2B5F9E"/></svg></span>
+      <span><span class="brand-name">Route SNU IE</span><span class="brand-sub">서울대학교 산업공학과 학업 가이드</span></span>
+    </a>
+    <nav class="nav" aria-label="주요 메뉴">
+      <a href="roadmap.html">전공 로드맵</a><a class="active" href="rules.html">이수규정</a><a href="#">자주 묻는 질문</a><a href="#">개설 과목 검색</a><a href="#">교양 이수 가이드</a>
+    </nav>
+    <a class="contact" href="#"><svg class="svg-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5Z"/></svg><span>문의·제보</span></a>
+  </div>
+</header>
+
+<main>
+  <section class="hero page" aria-labelledby="t">
+    <svg class="hero-marks" aria-hidden="true"></svg>
+    <div>
+      <h1 id="t">학번별 이수규정</h1>
+      <p>입학 학번을 선택하면 단전공생 이수학점, 교양 영역별 학점, 전선 인정 과목, 복수전공·부전공·자유전공 기준을 보여줍니다. 자유전공학부에서 산업공학과로 주전공 진입한 학생도 같은 기준을 적용받습니다.</p>
+    </div>
+    <div class="hero-row">
+      <nav aria-label="입학 학번 선택">
+        <span class="years-label">입학 학번</span>
+        <div class="years"><a class="year">20학번</a><a class="year">21학번</a><a class="year">22학번</a><a class="year">23학번</a><a class="year">24학번</a><a class="year on" aria-current="true">25학번</a><a class="year">26학번</a></div>
+      </nav>
+      <div class="hero-actions">
+        <button class="hero-btn" type="button"><svg class="svg-i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>25학번 원문 PDF 미리보기</button>
+        <a class="hero-btn" href="#">새 탭에서 열기 ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="with-toc">
+    <nav class="toc" aria-label="이 페이지 목차">
+      <ol>
+        <li><a class="on" href="#s1"><b>01</b>졸업 요약</a></li>
+        <li><a href="#s2"><b>02</b>교양 이수학점</a></li>
+        <li><a href="#s3"><b>03</b>전공 이수학점</a></li>
+        <li><a href="#s4"><b>04</b>전공필수 과목</a></li>
+        <li><a href="#s5"><b>05</b>학과 전공선택</a></li>
+        <li><a href="#s6"><b>06</b>타과 전선 인정</a></li>
+        <li><a href="#s7"><b>07</b>복수전공·부전공</a></li>
+        <li><a href="#s8"><b>08</b>추가 이수 요건</a></li>
+      </ol>
+    </nav>
+
+    <div class="stack">
+      <section class="sec" id="s1">
+        <div class="sec-head"><span class="num">01</span><h2>졸업 요약</h2><span class="sub">25학번 · 단일 주전공</span></div>
+        <div class="stats">
+          <div><b>130<small>학점</small></b><span>졸업학점</span></div>
+          <div><b>52<small>학점</small></b><span>교양</span></div>
+          <div><b>59<small>학점</small></b><span>주전공</span></div>
+          <div><b>28<small>학점</small></b><span>전공필수</span></div>
+          <div><b>21<small>학점+</small></b><span>학과 전공선택</span></div>
+        </div>
+        <div class="notice"><svg class="svg-i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5h.01"/></svg><span><b>학번별 이수규정 PDF를 정리한 비공식 안내입니다.</b> 최종 졸업 판정, 교과목 인정, 예외 처리는 본인 학번 PDF와 학과 행정실 기준으로 확인하세요.</span></div>
+      </section>
+
+      <section class="sec" id="s2">
+        <div class="sec-head"><span class="num">02</span><h2>교양 이수학점</h2><span class="sub">25학번 · 총 52학점</span></div>
+        <div class="table">
+          <div class="trow"><span class="area">사고의 표현</span><span class="cr">7<small>학점</small></span><ul><li>대학 글쓰기 1</li><li>대학글쓰기2: 인문학글쓰기/사회과학글쓰기/과학기술글쓰기 중 택 1</li><li>말하기와 토론</li></ul></div>
+          <div class="trow"><span class="area">외국어</span><span class="cr">6<small>학점</small></span><ul><li>외국어 2개 교과목</li><li>입학 시 TEPS 900점(New TEPS 525점) 이하인 학생은 영어 1과목 필수</li></ul></div>
+          <div class="trow"><span class="area">수학·과학·컴퓨팅</span><span class="cr">27<small>학점</small></span><ul><li>수학 1·2, 통계학과 통계학실험, 공학수학 1·2 — 합계 16학점</li><li>물리학·화학·생물학 영역 중 선택적 필수 과목 8학점</li><li>컴퓨터의 개념 및 실습 3학점</li></ul></div>
+          <div class="trow"><span class="area">지성의 열쇠</span><span class="cr">9<small>학점</small></span><ul><li>문화 해석과 상상 · 역사적 탐구와 철학적 사유 · 인간의 이해와 사회 분석 · 과학적 사고와 응용 중 3개 영역 이상</li></ul></div>
+          <div class="trow"><span class="area">베리타스</span><span class="cr">3<small>학점</small></span><ul><li>베리타스 강좌 1/2 또는 베리타스 실천</li></ul></div>
+        </div>
+      </section>
+
+      <section class="sec" id="s3">
+        <div class="sec-head"><span class="num">03</span><h2>전공 이수학점</h2><span class="sub">주전공 59학점</span></div>
+        <div class="bar">
+          <div class="s-req">전공필수<b>28</b></div>
+          <div class="s-el">학과 전공선택<b>21</b></div>
+          <div class="s-etc">기타<b>10</b></div>
+        </div>
+        <div class="scale"><span>0</span><span>28</span><span>49</span><span>59학점</span></div>
+        <div class="cases">
+          <div class="case"><b>단일 주전공</b><span class="big">59학점</span><p>나머지 10학점은 학과 전공선택 또는 타과 전선 인정 과목으로 채울 수 있습니다. 부전공·연계전공·학생설계전공 병행 학생도 이 기준입니다.</p></div>
+          <div class="case"><b>복수전공·연합전공 병행</b><span class="big">49학점</span><p>전공필수 28 + 학과 전공선택 21. 전공선택은 반드시 산업공학과 개설 과목으로 채웁니다.</p></div>
+        </div>
+        <div class="legend-line"><span>대학원 세미나 1학점 별도</span><span>자세한 사례는 자주 묻는 질문 참고</span></div>
+      </section>
+
+      <section class="sec" id="s4">
+        <div class="sec-head"><span class="num">04</span><h2>전공필수 과목</h2><span class="sub">20~26학번 공통 · 10과목 · 28학점</span></div>
+        <div class="blk-groups"><div class="blk-row"><span class="blk-y">1학년</span><div class="blocks"><div class="blk req"><b>산업공학의 이해</b><span>IE.1010<i>406.434</i></span></div></div></div><div class="blk-row"><span class="blk-y">2학년</span><div class="blocks"><div class="blk req"><b>과학적 관리</b><span>IE.2020<i>406.211</i></span></div><div class="blk req"><b>경영과학 1</b><span>IE.2310<i>406.315</i></span></div><div class="blk req"><b>데이터관리와 분석</b><span>IE.2510<i>406.426B</i></span></div><div class="blk req"><b>인간공학</b><span>IE.2610<i>406.304</i></span></div><div class="blk req"><b>인간공학실험</b><span>IE.2620<i>406.305A</i></span></div></div></div><div class="blk-row"><span class="blk-y">3학년</span><div class="blocks"><div class="blk req"><b>경영과학 2</b><span>IE.3410<i>406.317</i></span></div><div class="blk req"><b>산업공학통계</b><span>IE.3420<i>406.432</i></span></div><div class="blk req"><b>생산관리</b><span>IE.3210<i>406.310</i></span></div></div></div><div class="blk-row"><span class="blk-y">4학년</span><div class="blocks"><div class="blk req"><b>경제성공학</b><span>IE.4720<i>406.314</i></span></div></div></div></div>
+      </section>
+
+      <details class="sec" id="s5" open>
+        <summary><div class="sec-head"><span class="num">05</span><h2>학과 전공선택 과목</h2><span class="sub">21학점 이상</span><span class="plus" aria-hidden="true"></span></div></summary>
+        <div class="body">
+          <div class="blocks"><div class="blk el"><b>산업공정설계</b><span>IE.2110<i>406.436</i></span></div><div class="blk el"><b>공학도를 위한 창의적 사고</b><span>IE.3051<i>406.324A</i></span></div><div class="blk el"><b>산업경영수리기법</b><span>IE.3061<i>406.327</i></span></div><div class="blk el"><b>제품개발 및 품질설계</b><span>IE.3151<i>M1505.001500</i></span></div><div class="blk el"><b>서비스공학</b><span>IE.3161<i>406.322</i></span></div><div class="blk el"><b>물류관리</b><span>IE.3251<i>406.325</i></span></div><div class="blk el"><b>최적화모형 및 응용</b><span>IE.3351<i>406.321</i></span></div><div class="blk el"><b>인간공학 설계</b><span>IE.3661<i>406.326</i></span></div><div class="blk el"><b>기술경영</b><span>IE.3710<i>406.319</i></span></div><div class="blk el"><b>기술경영개론</b><span>MOT.3750<i>M1540.000200</i></span></div><div class="blk el"><b>지식경영전략</b><span>MOT.3711<i>4251.002A</i></span></div><div class="blk el"><b>최적화알고리즘</b><span>IE.4362<i>M1505.002000</i></span></div><div class="blk el"><b>시뮬레이션</b><span>IE.4451<i>406.311</i></span></div><div class="blk el"><b>데이터마이닝</b><span>IE.4520<i>406.429</i></span></div><div class="blk el"><b>산업 텍스트 애널리틱스</b><span>IE.4551<i>M1505.002100</i></span></div><div class="blk el"><b>빅데이터 산업응용</b><span>IE.4561<i>M0000.026700</i></span></div><div class="blk el"><b>휴먼인터페이스디자인</b><span>IE.4651<i>406.427A</i></span></div><div class="blk el"><b>핀테크 개론</b><span>IE.4810<i>M1505.001900</i></span></div><div class="blk el"><b>금융공학개론</b><span>IE.4820<i>406.433</i></span></div><div class="blk el"><b>기술창업론</b><span>MOT.4761<i>M1540.000100</i></span></div></div>
+          <div class="legend-line"><span>학과 개설 20과목 · 학부 3·4학년 때 수강한 산업공학과 대학원 교과목도 포함</span></div>
+        </div>
+      </details>
+
+      <details class="sec" id="s6">
+        <summary><div class="sec-head"><span class="num">06</span><h2>타과 전선 인정 과목</h2><span class="sub">10개 학과·전공</span><span class="plus" aria-hidden="true"></span></div></summary>
+        <div class="body">
+          <div class="depts">
+            <span>컴퓨터공학부<i>8과목</i></span><span>기계공학부<i>7과목</i></span><span>건설환경공학부<i>6과목</i></span><span>화학생물공학부<i>3과목</i></span><span>에너지자원공학과<i>4과목</i></span>
+            <span>자연과학대학·수리과학부<i>5과목</i></span><span>통계학과<i>3과목</i></span><span>경영학과<i>7과목</i></span><span>경제학부<i>2과목</i></span><span>연합전공 기술경영<i>1과목</i></span>
+          </div>
+        </div>
+      </details>
+
+      <details class="sec" id="s7">
+        <summary><div class="sec-head"><span class="num">07</span><h2>복수전공 · 부전공</h2><span class="plus" aria-hidden="true"></span></div></summary>
+        <div class="body">
+          <ul class="plain">
+            <li><b>복수전공:</b> 해당 기준년도의 모든 전공필수 교과목을 이수해야 하며, 인간공학실험 및 산업공학의 이해는 면제됩니다.</li>
+            <li><b>복수전공:</b> 학과 개설 전공선택 교과목을 추가로 이수하여 최소 39학점을 만족해야 합니다.</li>
+            <li><b>부전공:</b> 전공교과목 21학점 이상, 이 중 전공필수 12학점 이상을 이수해야 하며 산업공학의 이해는 제외됩니다.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="sec" id="s8">
+        <summary><div class="sec-head"><span class="num">08</span><h2>추가 이수 요건</h2><span class="sub">생명존중 교육 · 공학 3학점 · 외국어진행강좌</span><span class="plus" aria-hidden="true"></span></div></summary>
+        <div class="body">
+          <ul class="plain">
+            <li><b>생명존중(자살예방) 교육 이수:</b> 2016학번부터 적용됩니다.</li>
+            <li><b>공과대학 공통 교과목</b> 중 '공학기타' 제외 영역에서 3학점 이수</li>
+            <li><b>외국어진행강좌 (2024~26학번, 수강 권장):</b> 대학영어 제외, 1강좌 이상의 주전공교과목을 포함하여 3과목 이상</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <p style="margin:0">학생이 정리한 비공식 안내입니다. 최종 기준은 학과 공식 자료를 따릅니다. (자료 확인 2026-07-29)</p>
+  <a href="https://ie.snu.ac.kr/">서울대학교 산업공학과 공식 홈페이지 ↗</a>
+</footer>
+<script src="v5.js"></script>
+</body>
+</html>
