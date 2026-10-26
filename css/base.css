@@ -304,8 +304,9 @@ p {
   text-wrap: pretty;
 }
 
-/* 히어로 아래 간격은 .portal-section의 padding-top이 단독으로 소유한다. */
-.home-copy p:not(.eyebrow):last-child {
+/* 히어로 아래 간격은 .portal-section의 padding-top이 단독으로 소유한다.
+   (.year-picks가 파일 뒤쪽에서 margin-bottom을 주므로 두 클래스로 특이도를 올린다) */
+.year-picks.home-years {
   margin-bottom: 0;
 }
 
@@ -317,6 +318,7 @@ p {
   border-radius: var(--radius-pill);
   font: inherit;
   font-weight: var(--weight-semibold);
+  text-decoration: none;
   cursor: pointer;
 }
 
@@ -355,12 +357,48 @@ p {
   background: var(--surface-hover);
 }
 
-.portal-card .num {
+.portal-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: var(--space-6);
+}
+
+.portal-icon {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border-radius: var(--radius-panel);
+  background: var(--accent-3);
   color: var(--accent-text);
-  font-size: var(--text-base);
-  font-weight: var(--weight-bold);
-  letter-spacing: var(--tracking-wide);
+}
+
+.portal-icon svg,
+.portal-arrow {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.portal-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* 카드 전체가 링크라 '자세히 보기' 문구 대신 화살표 하나가 이동 단서를 맡는다. */
+.portal-arrow {
+  width: 20px;
+  height: 20px;
+  color: var(--text-tertiary);
+  transition: color var(--duration-fast) ease, transform var(--duration-fast) ease;
+}
+
+.portal-card:hover .portal-arrow {
+  color: var(--accent-text);
+  transform: translateX(2px);
 }
 
 .portal-card h2 {
@@ -376,13 +414,57 @@ p {
   line-height: var(--leading-body);
 }
 
-/* CTA만 카드 바닥에 고정 — 본문은 위에서부터 자연스럽게 흐른다. */
-.portal-card .more {
+/* 메타 줄만 카드 바닥에 고정 — 본문은 위에서부터 자연스럽게 흐른다. */
+.portal-card .portal-meta {
   margin-top: auto;
   padding-top: var(--space-4);
-  color: var(--accent-text);
-  font-size: var(--text-md);
+  color: var(--text-tertiary);
+  font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 로드맵은 대표 페이지라 한 줄을 통째로 쓰고 실제 로드맵 이미지를 미리 보여준다. */
+.portal-card--feature {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: var(--space-8);
+  align-items: stretch;
+}
+
+.portal-card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 이미지 높이가 카드를 키우므로 메타 줄은 바닥 고정 대신 설명 바로 아래에 붙인다(카드 안 공백 방지). */
+.portal-card--feature .portal-meta {
+  margin-top: 0;
+}
+
+/* 로드맵 전체를 줄이면 과목명이 뭉개지므로 1~2학년 구간을 확대해 보여준다. */
+.portal-preview {
+  aspect-ratio: 2 / 1;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--border-faint);
+  border-radius: var(--radius-panel);
+  background: var(--background);
+}
+
+.portal-preview img {
+  display: block;
+  width: 180%;
+  max-width: none;
+  height: auto;
+}
+
+@media (max-width: 760px) {
+  .portal-card--feature {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
 }
 
 .section {
