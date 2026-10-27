@@ -796,6 +796,19 @@ p {
   color: var(--text);
 }
 
+.faq-answer p,
+.faq-answer ul {
+  margin: 0;
+}
+
+.faq-answer ul {
+  padding-left: var(--space-5);
+}
+
+.faq-answer > * + * {
+  margin-top: var(--space-3);
+}
+
 .faq-item.open .faq-answer {
   display: block;
 }
