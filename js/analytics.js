@@ -119,7 +119,7 @@
     const guideName = GUIDE_NAMES[getFileName(link.getAttribute("href"))];
     if (!guideName) return null;
 
-    if (link.closest(".portal-card")) {
+    if (link.closest(".home-card")) {
       return { guide_name: guideName, source_location: "home_card" };
     }
     if (link.closest(".nav")) {

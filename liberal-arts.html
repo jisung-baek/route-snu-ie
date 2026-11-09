@@ -144,20 +144,18 @@
   .total-eq .part{min-width:0;padding:14px 8px;}
 }
 </style>
+  <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="css/liberal-arts.css">
 </head>
-<body>
-<header class="topbar">
-  <a class="brand" href="index.html" aria-label="Route SNU IE 홈"><span class="brand-mark"><svg width="18" viewBox="0 0 200 150" fill="none" aria-hidden="true" focusable="false"><path d="M18 104 L52 90 L86 140 L140 28 L182 28" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="182" cy="28" r="17" fill="currentColor"></circle><circle cx="182" cy="28" r="6.5" fill="var(--accent-solid)"></circle></svg></span><span>Route SNU IE</span></a>
-  <nav class="nav" aria-label="주요 메뉴">
-    <a href="roadmap.html">전공 로드맵</a><a href="rules.html">이수규정</a><a href="faq.html">자주 묻는 질문</a><a href="courses.html">개설 과목 검색</a><a class="active" href="liberal-arts.html">교양 이수 가이드</a>
-  </nav>
-</header>
-
+<body class="v7p">
+<header class="bar"><div class="bar-in">
+  <a class="brand" href="index.html" aria-label="Route SNU IE 홈"><span class="mark"><svg width="18" viewBox="0 0 200 150" fill="none" aria-hidden="true"><path d="M18 104 L52 90 L86 140 L140 28 L182 28" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><circle cx="182" cy="28" r="17" fill="currentColor"/><circle cx="182" cy="28" r="6.5" fill="#0a5fd6"/></svg></span>Route SNU IE</a>
+  <nav class="nav" aria-label="주요 메뉴"><a href="roadmap.html">전공 로드맵</a><a href="rules.html">이수규정</a><a href="faq.html">자주 묻는 질문</a><a href="courses.html">개설 과목</a><a href="liberal-arts.html" aria-current="page">교양 이수 가이드</a></nav>
+  <a class="contact" href="https://forms.gle/vGcq96qUARLFE2fM7" target="_blank" rel="noreferrer">문의·제보</a>
+</div></header>
 <main>
   <section class="section liberal-page">
-    <a class="back-link" href="index.html">← 홈으로 돌아가기</a>
     <div class="section-head">
-      <p class="eyebrow">Liberal Arts Guide</p>
       <h1>교양 이수 가이드</h1>
       <p>산업공학과 교양 이수 요건인 <b>학문의 토대 · 지성의 열쇠 · 베리타스</b> 세 축을 영역별로 정리했습니다.
         배치 결과에 따라 수강 과목이 달라지는 <b>수학 · 영어</b>와 조합 규칙이 있는 <b>과학</b>은 특히 꼼꼼히 확인하세요.</p>
@@ -171,7 +169,12 @@
     </div>
 
     <!-- 총괄 -->
-    <section class="total-card">
+    <nav class="cmap" aria-label="교양 52학점 구성">
+  <div class="cmap-axes"><span style="flex:40">학문의 토대 40학점</span><span style="flex:9">지성의 열쇠 9</span><span style="flex:3">베리타스 3</span></div>
+  <div class="cmap-bar"><a href="#a1" style="flex:7" data-a="a1">글쓰기와 말하기<b>7</b></a><a href="#a2" style="flex:6" data-a="a2">외국어<b>6</b></a><a href="#a3" style="flex:16" data-a="a3">수학<b>16</b></a><a href="#a4" style="flex:8" data-a="a4">과학<b>8</b></a><a href="#a5" style="flex:3" data-a="a5">컴퓨팅<b>3</b></a><a href="#a6" style="flex:9" data-a="a6">지성의 열쇠<b>9</b></a><a href="#a7" style="flex:3" data-a="a7">베리타스<b>3</b></a></div>
+  <p class="cmap-total">합계 <b>52학점</b> 이상 · 영역을 누르면 해당 설명으로 이동합니다</p>
+</nav>
+<section class="total-card">
       <h2>교양 52학점 이상, 이렇게 구성됩니다</h2>
       <div class="total-eq">
         <div class="sum"><b>52학점</b><span>이상</span></div>
@@ -239,7 +242,7 @@
     </section>
 
     <!-- 1. 글쓰기와 말하기 -->
-    <section class="lib-card">
+    <section class="lib-card" id="a1">
       <h2><span class="idx">1</span>글쓰기와 말하기<span class="cr-badge">7학점</span></h2>
       <p class="lib-lead">대학 글쓰기 1(2학점) · 대학 글쓰기 2(2학점) · 말하기와 토론(3학점) 세 과목을 모두 이수합니다.</p>
       <div class="seq">
@@ -255,7 +258,7 @@
     </section>
 
     <!-- 2. 외국어 -->
-    <section class="lib-card">
+    <section class="lib-card" id="a2">
       <h2><span class="idx">2</span>외국어<span class="cr-badge">6학점</span></h2>
       <p class="lib-lead">외국어 2개 교과목을 이수합니다. 입학 시 배치 시험(TEPS) 점수 구간에 따라 <b>어느 단계의 영어 과목부터 시작하는지</b>가 달라집니다.
         아래에서 <b>굵게 표시된 과목</b>이 해당 구간의 권장 시작 과목이며, 반드시 첫 학기에 들어야 하는 것은 아닙니다.</p>
@@ -290,7 +293,7 @@
     </section>
 
     <!-- 3. 수학 -->
-    <section class="lib-card">
+    <section class="lib-card" id="a3">
       <h2><span class="idx">3</span>수학<span class="cr-badge">16학점</span></h2>
       <p class="lib-lead">수학 1·2(또는 고급수학 1·2)와 각 연습 과목, 통계학과 통계학실험, 공학수학 1·2를 이수합니다.
         1학년 첫 수학 과목은 입학 시 수학 배치 시험 결과에 따라 정해집니다.</p>
@@ -318,7 +321,7 @@
     </section>
 
     <!-- 4. 과학 -->
-    <section class="lib-card">
+    <section class="lib-card" id="a4">
       <h2><span class="idx">4</span>과학<span class="cr-badge">8학점</span></h2>
       <p class="lib-lead"><b>(과학 과목 + 해당 실험 과목) × 2 = 8학점</b>을 이수해야 합니다. 이론 교과목과 해당 실험 교과목은 같은 학기에 함께 수강하는 것이 원칙입니다.</p>
       <div class="combo-grid">
@@ -371,13 +374,13 @@
     </section>
 
     <!-- 5. 컴퓨팅 -->
-    <section class="lib-card">
+    <section class="lib-card" id="a5">
       <h2><span class="idx">5</span>컴퓨팅<span class="cr-badge">3학점</span></h2>
       <p class="lib-lead" style="margin-bottom:0;"><b>컴퓨터의 개념 및 실습</b> 1과목(3학점)을 이수합니다.</p>
     </section>
 
     <!-- 6. 지성의 열쇠 -->
-    <section class="lib-card">
+    <section class="lib-card" id="a6">
       <h2><span class="idx">6</span>지성의 열쇠<span class="cr-badge">9학점</span></h2>
       <p class="lib-lead">아래 <b>4개 영역 중 3개 영역 이상</b>에 걸쳐 총 9학점을 이수해야 합니다. 한두 영역에 몰아서 듣는 것은 인정되지 않습니다.</p>
       <div class="area-chips">
@@ -391,7 +394,7 @@
     </section>
 
     <!-- 7. 베리타스 -->
-    <section class="lib-card">
+    <section class="lib-card" id="a7">
       <h2><span class="idx">7</span>베리타스<span class="cr-badge">3학점</span></h2>
       <p class="lib-lead">베리타스 영역에서 <b>3학점 이상(수업 1개 이상)</b>을 이수해야 합니다.
         <b>베리타스 강좌 1</b>, <b>베리타스 강좌 2</b>, <b>베리타스 실천</b> 중 어느 것으로 채워도 됩니다.</p>
@@ -420,9 +423,20 @@
   </section>
 </main>
 
-<footer class="footer">
-  <p>Unofficial SNU IE academic navigator.</p>
-  <a href="https://ie.snu.ac.kr/" target="_blank" rel="noreferrer">서울대학교 산업공학과 공식 홈페이지</a>
-</footer>
+<footer class="foot"><span>학생이 정리한 비공식 안내입니다. 최종 기준은 학과 공식 자료를 따릅니다.</span><a href="https://ie.snu.ac.kr/" target="_blank" rel="noreferrer">산업공학과 공식 홈페이지</a></footer>
+<script>
+(function () {
+  var map = document.querySelector('.cmap'), links = map.querySelectorAll('a');
+  var secs = Array.prototype.map.call(links, function (a) { return document.getElementById(a.dataset.a); });
+  var origTop = map.getBoundingClientRect().top + scrollY - 64;
+  function update() {
+    var y = map.getBoundingClientRect().bottom + 40, cur = null;
+    secs.forEach(function (s, i) { if (s.getBoundingClientRect().top <= y) cur = i; });
+    links.forEach(function (a, i) { a.classList.toggle('on', i === cur); if (i === cur) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current'); });
+    map.classList.toggle('stuck', scrollY > origTop);
+  }
+  document.addEventListener('scroll', update, { passive: true }); update();
+})();
+</script>
 </body>
 </html>
