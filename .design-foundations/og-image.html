@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<!-- img/og-image.png 원본 (1200×630). 홈 화면을 바꾸면 이 파일도 맞춰 고친 뒤 1200×630으로 캡처합니다. -->
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; background: #fff; }
+  body { font-family: "Pretendard Variable", Pretendard, sans-serif; color: #191f28; word-break: keep-all;
+         padding: 64px 72px; display: flex; flex-direction: column; }
+  .brand { display: flex; align-items: center; gap: 12px; font-size: 24px; font-weight: 700; letter-spacing: -.02em; }
+  .mark { width: 64px; height: 64px; border-radius: 18px; background: #0a5fd6; color: #fff; display: grid; place-items: center; }
+  h1 { margin-top: 36px; font-size: 92px; font-weight: 700; letter-spacing: -.035em; line-height: 1.05; }
+  .sub { margin-top: 20px; font-size: 34px; font-weight: 500; color: #4e5968; letter-spacing: -.02em; }
+  .cards { margin-top: auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+  .card { background: #f2f4f6; border-radius: 20px; padding: 22px 20px; display: flex; flex-direction: column; gap: 18px; }
+  .card svg { width: 40px; height: 40px; fill: none; stroke: #8fa9cc; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .card b { font-size: 23px; font-weight: 700; letter-spacing: -.02em; }
+</style>
+</head>
+<body>
+  <div class="brand"><span class="mark"><svg width="38" viewBox="0 0 200 150" fill="none"><path d="M18 104 L52 90 L86 140 L140 28 L182 28" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><circle cx="182" cy="28" r="17" fill="currentColor"/><circle cx="182" cy="28" r="6.5" fill="#0a5fd6"/></svg></span></div>
+  <h1>Route SNU IE</h1>
+  <p class="sub">서울대학교 산업공학과 학업 이수 가이드</p>
+  <div class="cards">
+    <div class="card"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="8.5" y="16" width="7" height="5" rx="1.5"/><path d="M10 5.5h4M17.5 8v4H12v4"/></svg><b>전공 로드맵</b></div>
+    <div class="card"><svg viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="m8.5 14.5 2.5 2.5 4.5-4.5"/></svg><b>이수규정</b></div>
+    <div class="card"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M7.5 14h1M11.5 14h1M15.5 14h1M7.5 17.5h1M11.5 17.5h1"/></svg><b>개설 과목</b></div>
+    <div class="card"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5Z"/><path d="M9.8 9.4a2.3 2.3 0 1 1 3.2 2.1c-.6.3-1 .8-1 1.4v.3M12 15.6h.01"/></svg><b>자주 묻는 질문</b></div>
+    <div class="card"><svg viewBox="0 0 24 24"><path d="M12 6.5C10 5 6.5 4.5 3 5.5v13c3.5-1 7-.5 9 1"/><path d="M12 6.5c2-1.5 5.5-2 9-1v13c-3.5-1-7-.5-9 1z"/><path d="M12 6.5v13"/></svg><b>교양 이수 가이드</b></div>
+  </div>
+</body>
+</html>
