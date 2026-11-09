@@ -1,0 +1,116 @@
+/* v7 — 개설 과목 매트릭스 + 기존 페이지 본문(base.css 컴포넌트)을 v7 톤으로 맞추는 덮어쓰기 */
+
+/* ── 개설 과목: 한 과목 = 한 줄, 학기 = 열 ── */
+.ctools { display: grid; gap: 12px; margin-top: 24px; }
+.ctools .search { margin-top: 0; }
+.mbar { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; margin-top: 28px; }
+.mbar .count { margin: 0; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; margin: 0; font-size: 14px; color: var(--gray-700); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.mscroll { margin-top: 12px; }
+.mx { width: 100%; min-width: 820px; border-collapse: collapse; font-size: 15px; }
+.mx th, .mx td { height: 36px; padding: 0; border-bottom: 1px solid var(--gray-100); }
+.mx thead th { position: sticky; top: 64px; z-index: 2; height: 52px; background: #fff; border-bottom: 1px solid var(--gray-300); font-size: 14px; font-weight: 700; color: var(--gray-700); font-variant-numeric: tabular-nums; }
+.mx thead th small { display: block; font-size: 11px; font-weight: 600; color: var(--blue); }
+.mx .c-name { text-align: left; padding-right: 16px; }
+.mx thead .c-name { color: var(--gray-600); }
+.mx tbody .c-name { font-weight: 600; position: sticky; left: 0; background: #fff; }
+.mx .c-term { width: 84px; text-align: center; }
+.mx thead .c-term.past { color: var(--gray-600); font-weight: 500; }
+.mx thead .c-term.now { color: var(--blue); }
+.mx td { text-align: center; }
+.mx td.on, .mx thead th.on { background: var(--blue-50); }
+.mx thead th.on { color: var(--blue); }
+.mx tr.g th { height: 36px; padding-top: 12px; text-align: left; font-size: 13px; font-weight: 700; color: var(--gray-600); border-bottom: 1px solid var(--gray-200); background: #fff; }
+.mx tbody tr:not(.g):hover th, .mx tbody tr:not(.g):hover td { background: var(--gray-50); }
+.mx tbody tr:not(.g):hover td.on { background: var(--blue-50); }
+.mx .tag { margin-left: 8px; padding: 1px 7px; border-radius: 6px; background: #fdeceb; color: var(--clay); font-size: 12px; font-weight: 600; vertical-align: 1px; }
+.mx .nt { display: block; margin-top: 1px; font-size: 12px; font-weight: 500; color: var(--gray-600); }
+.mx td.empty { height: 120px; color: var(--gray-700); font-size: 16px; }
+.mk { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--blue); vertical-align: middle; }
+.mk.ring { background: transparent; box-shadow: inset 0 0 0 2px var(--blue); }
+.mk.q { width: 8px; height: 8px; background: var(--gray-300); }
+td.past .mk { background: var(--gray-300); }
+td.past .mk.ring { background: transparent; box-shadow: inset 0 0 0 2px var(--gray-300); }
+
+/* ── 기존 페이지 본문: base.css 토큰을 v7 값으로 ── */
+.v7p {
+  --background: #ffffff;
+  --surface: #f2f4f6;
+  --surface-hover: #e5e8eb;
+  --surface-active: #d1d6db;
+  --text: #191f28;
+  --text-secondary: #4e5968;
+  --text-tertiary: #6b7684;
+  --border-faint: #f2f4f6;
+  --border-subtle: #e5e8eb;
+  --border: #d1d6db;
+  --accent-3: #e8f1ff;
+  --accent-bg-subtle: #e8f1ff;
+  --radius-panel: 16px;
+  --shadow-raised: 0 8px 24px rgba(25, 31, 40, .10);
+}
+.v7p main { width: 100%; padding: 0; }
+.v7p .section, .v7p .section.narrow { max-width: none; width: min(1200px, calc(100% - 48px)); margin: 0 auto; padding: 56px 0 96px; }
+.v7p .section-head { margin-bottom: 32px; }
+.v7p .section-head h1 { margin: 0 0 14px; font-size: 44px; font-weight: 700; letter-spacing: -.03em; line-height: 1.2; }
+.v7p .section-head p:not(.update-note) { max-width: 72ch; margin: 0; font-size: 17px; line-height: 1.7; color: var(--gray-700); }
+.v7p .faq-list { max-width: 880px; }
+.v7p .notice { margin: 24px 0; }
+.v7p .faq-cta, .v7p .code-guide-page .notice { border-radius: var(--r-card); }
+
+@media (max-width: 900px) {
+  .v7p .section-head h1 { font-size: 34px; }
+  .mx thead th { top: 104px; }
+}
+
+.mx .fold { margin-left: 10px; padding: 3px 10px; border: 0; border-radius: 8px; background: var(--gray-100); color: var(--gray-700); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+.mx .fold:hover { background: var(--gray-200); color: var(--ink); }
+.v7p .faq-cta { border: 0; background: var(--gray-100); }
+.wide .bar-in, .wide .foot { width: min(1500px, calc(100% - 80px)); }
+@media (max-width: 900px) {
+  .mscroll { overflow-x: auto; }
+  .mx thead th { position: static; }
+  .wide .bar-in, .wide .foot { width: calc(100% - 48px); }
+}
+
+/* 대비·띠 정리: 기존 페이지 컴포넌트에서 온 것 */
+.v7p { --text-tertiary: #59636f; --warning-9: #8a6a2a; }
+.v7p .faq-cta, .v7p .change-card, .v7p .multi-major-section, .v7p .rule-section.emphasis { border-left-width: 1px; }
+.v7p .faq-cta { border: 0; }
+
+.ctools { grid-template-columns: minmax(0, 1fr); }
+.ctools .frow { min-width: 0; }
+@media (max-width: 900px) { .mx .c-name { min-width: 150px; } }
+
+/* 개설 과목 카드: 학년별 묶음, 흰 카드, 학기는 칩이 아니라 글줄로 */
+.cgroup { margin-top: 48px; }
+.cgroup h2 { display: flex; align-items: baseline; gap: 8px; margin: 0 0 14px; font-size: 20px; font-weight: 700; letter-spacing: -.02em; }
+.cgroup h2 span { font-size: 15px; font-weight: 600; color: var(--gray-600); font-variant-numeric: tabular-nums; }
+.cgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.ccard { padding: 20px 22px; border: 1px solid var(--gray-200); border-radius: 16px; background: #fff; }
+.ccard header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.ccard h3 { margin: 0; font-size: 18px; font-weight: 700; letter-spacing: -.02em; line-height: 1.4; }
+.ccard .badge { flex: none; margin-top: 2px; padding: 2px 8px; border-radius: 6px; background: var(--gray-100); color: var(--gray-700); font-size: 12px; font-weight: 600; white-space: nowrap; }
+.ccard .badge.req { background: #fdeceb; color: var(--clay); }
+.ccard dl { margin: 16px 0 0; display: grid; gap: 8px; }
+.ccard dl > div { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 12px; align-items: baseline; }
+.ccard dt { font-size: 13px; font-weight: 600; color: var(--gray-600); }
+.ccard dd { margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.ccard .t { display: inline-flex; align-items: center; gap: 5px; height: 30px; padding: 0 11px; border-radius: 999px; background: var(--gray-100); font-size: 14px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ccard .t small { font-size: 12px; font-weight: 600; color: var(--gray-700); }
+.ccard .t.next { background: var(--blue-50); color: var(--blue); }
+.ccard .t.next small { color: var(--blue); }
+.ccard .t.on { background: var(--blue); color: #fff; }
+.ccard .t.on small { color: rgba(255, 255, 255, .85); }
+.ccard .past .t { height: 26px; padding: 0 9px; background: #fff; box-shadow: inset 0 0 0 1px var(--gray-200); font-size: 13px; font-weight: 500; color: var(--gray-600); }
+.ccard .past .t small { font-size: 11px; color: var(--gray-600); }
+.ccard .past .t.on { background: var(--blue); box-shadow: none; color: #fff; }
+.ccard .past .t.on small { color: rgba(255, 255, 255, .85); }
+.ccard dl > div { align-items: start; }
+.ccard dt { line-height: 30px; }
+.ccard .past dt { line-height: 26px; }
+.ccard .none { font-size: 15px; color: var(--gray-600); }
+#grid .empty { margin-top: 32px; }
+@media (max-width: 1100px) { .cgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .cgrid { grid-template-columns: 1fr; } .cgroup { margin-top: 36px; } }

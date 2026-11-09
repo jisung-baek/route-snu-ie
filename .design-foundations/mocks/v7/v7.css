@@ -1,0 +1,123 @@
+/* v7 시안 — 흔한 정석(토스 수준). 부연 설명 없이 제목·숫자·목록만. */
+:root {
+  --bg: #ffffff;
+  --gray-50: #f9fafb;
+  --gray-100: #f2f4f6;
+  --gray-200: #e5e8eb;
+  --gray-300: #d1d6db;
+  --gray-600: #6b7684;   /* 흰 바탕 4.6:1 */
+  --gray-700: #4e5968;
+  --ink: #191f28;
+  --blue: #0a5fd6;
+  --blue-hover: #0a54c0;
+  --blue-50: #e8f1ff;
+  --clay: #b3261e;
+  --r-card: 20px;
+  --r-field: 12px;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); }
+body { min-height: 100vh; display: flex; flex-direction: column; }
+a { color: inherit; text-decoration: none; }
+::selection { background: var(--blue-50); }
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 8px; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* 상단 바 */
+.bar { position: sticky; top: 0; z-index: 5; background: #fff; border-bottom: 1px solid var(--gray-100); }
+.bar-in { width: min(1200px, calc(100% - 48px)); height: 64px; margin: 0 auto; display: flex; align-items: center; gap: 40px; }
+.brand { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
+.mark { width: 30px; height: 30px; border-radius: 9px; background: var(--blue); color: #fff; display: grid; place-items: center; }
+.nav { display: flex; gap: 4px; }
+.nav a { padding: 8px 14px; border-radius: 10px; font-size: 15px; font-weight: 600; color: var(--gray-700); transition: background-color .15s, color .15s; }
+.nav a:hover { background: var(--gray-100); color: var(--ink); }
+.nav a[aria-current="page"] { color: var(--blue); }
+.contact { margin-left: auto; font-size: 15px; font-weight: 600; color: var(--gray-700); }
+.contact:hover { color: var(--ink); }
+
+main { flex: 1; width: min(1200px, calc(100% - 48px)); margin: 0 auto; padding: 56px 0 96px; }
+h1 { margin: 0; font-size: 44px; font-weight: 700; letter-spacing: -.03em; line-height: 1.2; }
+.home h1 { font-size: 56px; }
+
+/* 학번 칩 */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+.chip { height: 40px; padding: 0 18px; border: 0; border-radius: 999px; background: var(--gray-100); color: var(--gray-700); font: inherit; font-size: 15px; font-weight: 600; display: inline-flex; align-items: center; cursor: pointer; transition: background-color .15s, color .15s; font-variant-numeric: tabular-nums; }
+.chip:hover { background: var(--gray-200); color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--blue); color: #fff; }
+.chip[aria-pressed="true"]:hover { background: var(--blue-hover); }
+
+/* 홈 카드 */
+.grid { display: grid; gap: 16px; margin-top: 48px; }
+.grid.two { grid-template-columns: 1.35fr 1fr; }
+.grid.three { grid-template-columns: repeat(3, 1fr); margin-top: 16px; }
+.card { position: relative; display: flex; flex-direction: column; justify-content: space-between; min-height: 176px; padding: 28px; border-radius: var(--r-card); background: var(--gray-100); transition: background-color .2s var(--ease), transform .2s var(--ease); }
+.card:hover { background: var(--gray-200); }
+.card:active { transform: scale(.985); }
+.card h2 { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -.02em; }
+.card .fig { font-size: 32px; font-weight: 700; letter-spacing: -.02em; color: var(--blue); font-variant-numeric: tabular-nums; }
+.card .fig small { margin-left: 2px; font-size: 18px; font-weight: 600; }
+.card.big { min-height: 260px; }
+.card .shot { margin-top: 20px; height: 168px; border-radius: 12px; background: #fff url("../../../img/roadmap-undergrad.png") left top / 140% auto no-repeat; }
+.card .chev { position: absolute; top: 28px; right: 28px; width: 24px; height: 24px; color: var(--gray-600); transition: transform .2s var(--ease); }
+.card:hover .chev { transform: translateX(3px); color: var(--ink); }
+
+/* 읽는 페이지 */
+.head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+.btn { height: 44px; padding: 0 18px; border-radius: var(--r-field); background: var(--gray-100); font-size: 15px; font-weight: 600; color: var(--ink); display: inline-flex; align-items: center; gap: 6px; transition: background-color .15s; }
+.btn:hover { background: var(--gray-200); }
+.band { height: 12px; margin: 40px calc(50% - 50vw); background: var(--gray-100); }
+.sec h2 { margin: 0 0 8px; font-size: 22px; font-weight: 700; letter-spacing: -.02em; }
+.total { display: flex; align-items: baseline; gap: 6px; margin: 4px 0 20px; font-size: 48px; font-weight: 700; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.total small { font-size: 22px; font-weight: 600; color: var(--gray-700); }
+.rows { list-style: none; margin: 0; padding: 0; }
+.rows li { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 60px; padding: 14px 0; border-bottom: 1px solid var(--gray-100); font-size: 17px; }
+.rows li:last-child { border-bottom: 0; }
+.rows .k { color: var(--gray-700); }
+.rows .v { font-weight: 700; font-variant-numeric: tabular-nums; }
+.rows li.sub .k { padding-left: 20px; }
+.rows li.sub { font-size: 16px; min-height: 52px; padding: 12px 0; }
+.cbar { display: flex; gap: 3px; height: 10px; margin: 8px 0 12px; }
+.cbar i { border-radius: 999px; }
+.cbar .a { flex: 28; background: var(--blue); }
+.cbar .b { flex: 21; background: #8db7f0; }
+.cbar .c { flex: 10; background: var(--gray-200); }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 64px; }
+.code { color: var(--gray-600); font-size: 15px; font-weight: 500; font-variant-numeric: tabular-nums; }
+
+/* 개설 과목 */
+.search { display: flex; align-items: center; gap: 10px; height: 56px; margin-top: 28px; padding: 0 20px; border-radius: 16px; background: var(--gray-100); }
+.search svg { width: 22px; height: 22px; color: var(--gray-600); flex: none; }
+.search input { flex: 1; border: 0; background: transparent; font: inherit; font-size: 18px; color: var(--ink); outline: none; }
+.search input::placeholder { color: var(--gray-700); }
+.search:focus-within { outline: 2px solid var(--blue); outline-offset: 0; }
+.grp { margin: 40px 0 4px; font-size: 15px; font-weight: 700; color: var(--gray-600); }
+.course { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 16px; min-height: 64px; border-bottom: 1px solid var(--gray-100); }
+.course .n { font-size: 17px; font-weight: 600; }
+.course .tag { margin-left: 8px; padding: 2px 8px; border-radius: 6px; background: #fdeceb; color: var(--clay); font-size: 13px; font-weight: 600; }
+.terms { display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap; }
+.terms span { padding: 5px 10px; border-radius: 8px; background: var(--gray-100); font-size: 14px; font-weight: 600; color: var(--gray-700); font-variant-numeric: tabular-nums; }
+.terms span.now { background: var(--blue-50); color: var(--blue); }
+.empty { padding: 64px 0; text-align: center; font-size: 17px; color: var(--gray-700); }
+
+.foot { width: min(1200px, calc(100% - 48px)); margin: 0 auto; padding: 28px 0 40px; border-top: 1px solid var(--gray-100); display: flex; justify-content: space-between; gap: 16px; font-size: 14px; color: var(--gray-600); }
+.foot a { font-weight: 600; color: var(--gray-700); }
+
+@media (max-width: 900px) {
+  .bar-in { flex-wrap: wrap; height: auto; padding-top: 14px; row-gap: 6px; }
+  .nav { order: 3; width: 100%; overflow-x: auto; margin: 0 -14px; padding-bottom: 8px; scrollbar-width: none; }
+  .nav a { white-space: nowrap; }
+  main { padding-top: 32px; }
+  h1, .home h1 { font-size: 34px; }
+  .grid.two, .grid.three, .two-col { grid-template-columns: 1fr; }
+  .card, .card.big { min-height: 132px; }
+  .card .shot { height: 120px; }
+  .head { flex-direction: column; align-items: flex-start; }
+  .course { grid-template-columns: 1fr; gap: 8px; padding: 14px 0; }
+  .terms { justify-content: flex-start; }
+  .foot { flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }

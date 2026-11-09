@@ -675,14 +675,50 @@ const majorCreditRows = [
 const courseGrid = document.querySelector("#courseGrid");
 const courseSearch = document.querySelector("#courseSearch");
 const courseCount = document.querySelector("#courseCount");
-const courseFilters = document.querySelector("#courseFilters");
-let activeFilter = "all";
+const courseTypes = document.querySelector("#courseTypes");
+const courseTerms = document.querySelector("#courseTerms");
+let activeType = "all";   // all · required · elective · graduate
+let activeTerm = "all";   // all · 2026-2 …  (구분과 학기는 함께 걸 수 있다)
 let selectedRulesYear = 2025;
 let lastTrackedSearchSignature = "";
+
+const COURSE_GROUP_ORDER = ["1학년", "2학년", "3학년", "4학년", "공대공통과목", "타과수강전선", "교양", "대학원"];
 
 function debounce(fn, ms) {
   let timer;
   return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), ms); };
+}
+
+function matchesCourseType(course) {
+  if (activeType === "required") return course.type === "전필";
+  if (activeType === "elective") return course.type === "전선";
+  if (activeType === "graduate") return course.category === "대학원";
+  return true;
+}
+
+// 학기 pill: 예정 줄의 첫 다음 학기는 연한 파랑, 학기 필터로 고른 학기는 진한 파랑. 메모는 연합전공만 표시한다.
+function offeringPill([term, note], isNext) {
+  const classes = ["t"];
+  if (term === activeTerm) classes.push("on");
+  if (isNext && activeTerm === "all") classes.push("next");
+  const joint = note.includes("연합전공") ? '<small title="연합전공">연합</small>' : "";
+  const title = term === currentTerm() ? ' title="이번 학기"' : "";
+  return `<span class="${classes.join(" ")}"${title}>${escapeHtml(term)}${joint}</span>`;
+}
+
+function courseCard(course) {
+  const now = currentTerm();
+  const badgeText = { 전필: "전공필수", 전선: "전공선택" }[course.type] || course.type;
+  const badge = badgeText ? `<span class="badge${course.type === "전필" ? " req" : ""}">${escapeHtml(badgeText)}</span>` : "";
+  const upcoming = course.offerings.filter(([term]) => term >= now);
+  const past = course.offerings.filter(([term]) => term < now);
+  const nextIndex = upcoming.findIndex(([term]) => term > now);
+  const upcomingPills = upcoming.length
+    ? upcoming.map((offering, i) => offeringPill(offering, i === nextIndex)).join("")
+    : '<span class="none">예정 없음</span>';
+  let rows = `<div><dt>예정</dt><dd>${upcomingPills}</dd></div>`;
+  if (past.length) rows += `<div class="past"><dt>지난</dt><dd>${past.map((offering) => offeringPill(offering, false)).join("")}</dd></div>`;
+  return `<article class="ccard course-card"><header><h3>${escapeHtml(course.name)}</h3>${badge}</header><dl>${rows}</dl></article>`;
 }
 
 function renderCourses() {
@@ -692,40 +728,23 @@ function renderCourses() {
   const filtered = getVisibleCourses().filter((course) => {
     const offeringText = course.offerings.map(([term, note]) => `${term} ${note}`).join(" ");
     const haystack = `${course.category} ${course.name} ${course.type} ${offeringText}`.toLowerCase();
-    const matchesQuery = haystack.includes(query);
-    const matchesFilter =
-      activeFilter === "all" ||
-      (activeFilter === "required" && course.type === "전필") ||
-      (activeFilter === "elective" && course.type === "전선") ||
-      (activeFilter === "graduate" && course.category === "대학원") ||
-      course.offerings.some(([term]) => term === activeFilter);
-    return matchesQuery && matchesFilter;
+    return haystack.includes(query)
+      && matchesCourseType(course)
+      && (activeTerm === "all" || course.offerings.some(([term]) => term === activeTerm));
   });
 
   if (courseCount) {
-    courseCount.textContent = `${filtered.length}개 과목`;
+    courseCount.textContent = `${activeTerm === "all" ? "" : `${activeTerm}학기 개설 · `}${filtered.length}개 과목`;
   }
 
-  courseGrid.innerHTML = filtered.map((course) => {
-    const isGraduate = course.category === "대학원";
-    return `
-    <article class="course-card">
-      <header>
-        <div>
-          <span class="course-code">${escapeHtml(course.category)}</span>
-          <h3>${escapeHtml(course.name)}</h3>
-        </div>
-        ${isGraduate ? "" : (course.type ? `<span class="badge ${course.type === "전필" ? "required" : ""}">${escapeHtml(course.type)}</span>` : '<span class="badge">교과목</span>')}
-      </header>
-      <div class="offering-list">
-        ${course.offerings.map(([term, note]) => {
-          const detail = note === "O" ? "" : note.replace(/^O/, "").trim();
-          return `<span>${escapeHtml(term)}${detail ? ` · ${escapeHtml(detail)}` : ""}</span>`;
-        }).join("")}
-      </div>
-    </article>
-  `;
+  // 학년별로 묶는다. 목록에 없는 새 영역이 데이터에 생기면 끝에 붙인다.
+  const extra = [...new Set(filtered.map((course) => course.category))].filter((c) => !COURSE_GROUP_ORDER.includes(c));
+  const html = COURSE_GROUP_ORDER.concat(extra).map((category) => {
+    const list = filtered.filter((course) => course.category === category);
+    if (!list.length) return "";
+    return `<section class="cgroup"><h2>${escapeHtml(category)}<span>${list.length}</span></h2><div class="cgrid">${list.map(courseCard).join("")}</div></section>`;
   }).join("");
+  courseGrid.innerHTML = html || '<p class="empty">조건에 맞는 과목이 없습니다. 학기나 구분을 바꿔 보세요.</p>';
 
   return filtered.length;
 }
@@ -999,57 +1018,36 @@ function initSourceDate() {
   });
 }
 
-// 필터 버튼: 전체/전공필수/전공선택/대학원은 HTML에 있고, 학기 버튼은 데이터의 학기 목록에서 만든다.
+// 필터: 구분 버튼은 HTML에 있고, 학기 버튼은 데이터의 학기 목록에서 만든다. 두 줄은 따로 골라 함께 적용된다.
 function initCourseFilters() {
-  if (!courseFilters) return;
+  if (!courseTypes || !courseTerms) return;
 
-  getVisibleTerms().forEach((term) => {
-    const button = document.createElement("button");
-    button.className = "filter";
-    button.type = "button";
-    button.dataset.filter = term;
-    button.textContent = term;
-    courseFilters.appendChild(button);
-  });
+  const now = currentTerm();
+  courseTerms.innerHTML = '<button class="chip filter" type="button" data-filter="all" aria-pressed="true">전체 학기</button>'
+    + getVisibleTerms().map((term) => {
+      const past = term < now ? " past" : "";
+      const dot = term === now ? '<i class="now-dot" title="이번 학기"></i>' : "";
+      return `<button class="chip filter${past}" type="button" data-filter="${escapeHtml(term)}" aria-pressed="false">${escapeHtml(term)}${dot}</button>`;
+    }).join("");
 
-  const filterButtons = Array.from(courseFilters.querySelectorAll(".filter"));
-  filterButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const previousFilter = activeFilter;
-      activeFilter = button.dataset.filter;
-      filterButtons.forEach((target) => target.classList.toggle("active", target === button));
+  const bind = (box, getValue, setValue, toEventValue) => {
+    box.addEventListener("click", (event) => {
+      const button = event.target.closest("button");
+      if (!button) return;
+      const previous = getValue();
+      setValue(button.dataset.filter);
+      box.querySelectorAll("button").forEach((target) => target.setAttribute("aria-pressed", String(target === button)));
       const visibleResultsCount = renderCourses();
-
-      if (activeFilter !== previousFilter) {
+      if (getValue() !== previous) {
         window.trackEvent?.("course_filter_selected", {
-          filter_value: activeFilter,
+          filter_value: toEventValue(getValue()),
           visible_results_count: visibleResultsCount
         });
       }
     });
-  });
-}
-
-function initFeedbackButton() {
-  if (document.querySelector(".feedback-float")) return;
-
-  const button = document.createElement("a");
-  button.className = "feedback-float";
-  button.href = "https://forms.gle/vGcq96qUARLFE2fM7";
-  button.target = "_blank";
-  button.rel = "noreferrer";
-  button.setAttribute("aria-label", "Route SNU IE 문의 및 제보 폼 열기");
-  button.title = "문의 및 제보";
-  button.innerHTML = `
-    <svg class="feedback-float-icon" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9H13a8 8 0 0 1 8 8v.5Z"></path>
-      <path d="M8.5 10.5h7"></path>
-      <path d="M8.5 13.5h4.2"></path>
-    </svg>
-    <span class="feedback-float-label">문의·제보</span>
-  `;
-
-  document.body.appendChild(button);
+  };
+  bind(courseTypes, () => activeType, (value) => { activeType = value; }, (value) => value);
+  bind(courseTerms, () => activeTerm, (value) => { activeTerm = value; }, (value) => (value === "all" ? "all_terms" : value));
 }
 
 if (courseSearch) {
@@ -1061,7 +1059,7 @@ if (courseSearch) {
       return;
     }
 
-    const searchSignature = `${searchTerm}\u0000${activeFilter}`;
+    const searchSignature = `${searchTerm}\u0000${activeType}\u0000${activeTerm}`;
     if (searchSignature === lastTrackedSearchSignature) return;
 
     window.trackEvent?.("course_searched", {
@@ -1084,4 +1082,3 @@ renderCourses();
 initRulesPage();
 initHomeStats();
 initSourceDate();
-initFeedbackButton();

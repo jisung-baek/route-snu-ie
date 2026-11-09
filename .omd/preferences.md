@@ -32,7 +32,7 @@ timestamp: 2026-07-22T01:31:35.533Z
 scope: spacing
 signal: review
 confidence: explicit
-status: applied
+status: superseded
 applied_at: 2026-07-22T01:42:18.994Z
 applied_design_md_hash: 47616155bcfc
 source_agent: claude-code
@@ -42,3 +42,5 @@ source_context: ".reviews/designer-review-round-1.md"
 No spacing literals outside the 4px `--space-*` scale — every margin/padding/gap resolves to a token.
 
 Evidence: `92px` / `36px` / `30px` / `22px` / `18px` / `10px` / `100px` found across the home hero and portal cards in css/base.css.
+
+> Superseded 2026-11-09 by the v7 DESIGN.md: there is no spacing token scale any more; match the nearest existing component in `css/site.css`. The one-owner-per-gap rule above still holds.
