@@ -6,7 +6,8 @@
   "engines": { "node": ">=20" },
   "scripts": {
     "test": "node --test",
-    "run": "node bin/run.js"
+    "run": "node bin/run.js",
+    "codes": "node bin/build-codes.js"
   },
   "dependencies": {
     "exceljs": "4.4.0"

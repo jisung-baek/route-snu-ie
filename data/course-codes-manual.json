@@ -1,0 +1,9 @@
+{
+  "_readme": "docs/ie_codes.xlsx(공과대학 코드 개편표)에 없는 과목의 교과목번호를 손으로 적는 곳입니다. name은 개설 예정 엑셀의 과목명과 공백만 달라도 됩니다. level은 undergraduate 또는 graduate. 적은 칸만 엑셀 표 값을 덮고, former(이름이 바뀌기 전 과목의 번호)는 덧붙습니다. 고친 뒤 scripts/update-courses에서 npm run codes를 실행하세요. 아직 못 찾은 과목: 빅데이터의 이해(교양), 스마트서비스최적화(대학원).",
+  "courses": [
+    { "name": "공학수학1", "level": "undergraduate", "old": "F31.201" },
+    { "name": "공학수학2", "level": "undergraduate", "old": "F31.202" },
+    { "name": "컴퓨터의개념및실습", "level": "undergraduate", "old": "F37.202" },
+    { "name": "볼록최적화", "level": "graduate", "former": [{ "name": "최적화원론", "old": "406.563" }] }
+  ]
+}
