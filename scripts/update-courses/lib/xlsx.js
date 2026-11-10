@@ -16,4 +16,18 @@ async function readWorkbookRows(buffer) {
   return { sheetName: sheet.name, rows };
 }
 
-module.exports = { readWorkbookRows };
+// 모든 시트를 [{ name, rows }]로 읽습니다 (교과목번호 표처럼 학사/대학원 시트가 나뉜 파일용).
+async function readAllSheets(buffer) {
+  const workbook = new ExcelJS.Workbook();
+  await workbook.xlsx.load(buffer);
+  return workbook.worksheets.map((sheet) => {
+    const rows = [];
+    sheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+      rows[rowNumber - 1] = row.values.slice(1);
+    });
+    for (let i = 0; i < rows.length; i += 1) if (!rows[i]) rows[i] = [];
+    return { name: sheet.name, rows };
+  });
+}
+
+module.exports = { readWorkbookRows, readAllSheets };

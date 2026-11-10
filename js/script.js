@@ -123,10 +123,34 @@ function shiftTerm(term, delta) {
   return `${Math.floor(index / 2)}-${(index % 2) + 1}`;
 }
 
+// 교과목번호: 학과 엑셀에는 번호가 없어서 js/course-codes.js(window.COURSE_CODES, docs/ie_codes.xlsx로 생성)에서
+// 과목명으로 찾는다. 키 규칙은 scripts/update-courses/lib/course-codes.js의 courseNameKey()와 같아야 한다.
+function courseNameKey(name) {
+  return String(name || "").replace(/\(구[^)]*\)/g, "").replace(/\s+/g, "");
+}
+
+function lookupCourseCodes(course) {
+  const table = window.COURSE_CODES;
+  if (!table || typeof table !== "object") return null;
+  const key = courseNameKey(course.name);
+  const order = course.category === "대학원" ? ["graduate", "undergraduate"] : ["undergraduate", "graduate"];
+  for (const level of order) {
+    const hit = table[level] && table[level][key];
+    if (hit && (hit.old || hit.new)) {
+      const former = Array.isArray(hit.former) ? hit.former.filter((f) => f && f.old) : [];
+      return { old: hit.old || null, new: hit.new || null, former };
+    }
+  }
+  return null;
+}
+
 // courses-data.js를 싣는 페이지(index, courses)에서만 처음 쓸 때 변환한다. 다른 페이지에서 경고가 뜨지 않게 지연시킨다.
 let courseSourceCache = null;
 function getCourseSource() {
-  if (!courseSourceCache) courseSourceCache = normalizeCourses(window.COURSE_SOURCE);
+  if (!courseSourceCache) {
+    const source = normalizeCourses(window.COURSE_SOURCE);
+    courseSourceCache = { ...source, courses: source.courses.map((course) => ({ ...course, codes: lookupCourseCodes(course) })) };
+  }
   return courseSourceCache;
 }
 
@@ -718,7 +742,17 @@ function courseCard(course) {
     : '<span class="none">예정 없음</span>';
   let rows = `<div><dt>예정</dt><dd>${upcomingPills}</dd></div>`;
   if (past.length) rows += `<div class="past"><dt>지난</dt><dd>${past.map((offering) => offeringPill(offering, false)).join("")}</dd></div>`;
-  return `<article class="ccard course-card"><header><h3>${escapeHtml(course.name)}</h3>${badge}</header><dl>${rows}</dl></article>`;
+  return `<article class="ccard course-card"><header><h3>${escapeHtml(course.name)}</h3>${badge}</header>${courseCodeLine(course.codes)}<dl>${rows}</dl></article>`;
+}
+
+// 신 코드를 앞에, 구 교과목번호를 "구"와 함께 뒤에 둔다. 번호를 못 찾은 과목은 줄을 그리지 않는다.
+function courseCodeLine(codes) {
+  if (!codes) return "";
+  const parts = [];
+  if (codes.new) parts.push(`<span>${escapeHtml(codes.new)}</span>`);
+  if (codes.old) parts.push(`<span>${codes.new ? "구 " : ""}${escapeHtml(codes.old)}</span>`);
+  for (const f of codes.former) parts.push(`<span>${escapeHtml(f.name ? `${f.name} ` : "이전 ")}${escapeHtml(f.old)}</span>`);
+  return `<p class="code">${parts.join("")}</p>`;
 }
 
 function renderCourses() {
@@ -727,7 +761,10 @@ function renderCourses() {
   const query = courseSearch.value.trim().toLowerCase();
   const filtered = getVisibleCourses().filter((course) => {
     const offeringText = course.offerings.map(([term, note]) => `${term} ${note}`).join(" ");
-    const haystack = `${course.category} ${course.name} ${course.type} ${offeringText}`.toLowerCase();
+    const codeText = course.codes
+      ? [course.codes.new, course.codes.old, ...course.codes.former.map((f) => `${f.name} ${f.old}`)].filter(Boolean).join(" ")
+      : "";
+    const haystack = `${course.category} ${course.name} ${course.type} ${codeText} ${offeringText}`.toLowerCase();
     return haystack.includes(query)
       && matchesCourseType(course)
       && (activeTerm === "all" || course.offerings.some(([term]) => term === activeTerm));

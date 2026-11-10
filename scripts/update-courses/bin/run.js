@@ -20,10 +20,12 @@ const { parseCourseRows, diffAgainstPrevious } = require("../lib/parse-courses")
 const { fetchPost, downloadAttachment } = require("../lib/post");
 const { renderDataFile, readDataFile } = require("../lib/data-file");
 const { prBody, issueBody } = require("../lib/report");
+const { readCodesFile, lookupCodes } = require("../lib/course-codes");
 
 const ROOT = path.resolve(__dirname, "../../..");
 const SCHEMA_PATH = path.join(ROOT, "data/course-schema.json");
 const DATA_PATH = path.join(ROOT, "js/courses-data.js");
+const CODES_PATH = path.join(ROOT, "js/course-codes.js");
 const OUT_DIR = path.resolve(__dirname, "../out");
 
 function parseArgs(argv) {
@@ -91,6 +93,15 @@ async function main() {
     throw error;
   }
   const diff = diffAgainstPrevious(previous?.courses, result.courses, schema);
+  // 화면은 js/course-codes.js에서 과목명으로 교과목번호를 찾는다. 새 과목이나 이름이 바뀐 과목은 번호가 빠지므로 알린다.
+  const codes = readCodesFile(CODES_PATH);
+  const noCode = codes ? result.courses.filter((course) => !lookupCodes(codes, course)) : [];
+  if (noCode.length) {
+    diff.warnings.push({
+      code: "course_code_missing",
+      message: `교과목번호를 못 찾은 과목 ${noCode.length}개 (data/course-codes-manual.json에 적고 npm run codes): ${noCode.map((c) => c.name).join(", ")}`
+    });
+  }
 
   const payload = {
     schemaVersion: 1,
